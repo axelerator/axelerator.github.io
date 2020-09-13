@@ -4,16 +4,18 @@
     <a href="{{ menu[1].url }}">{{ menu[1].name }}</a>
   {% endfor %}
   </div>
-  <ul id="lang-picker">
-        <li>
-          {{  site.locales[page.lang].flag-icon  }}
-        </li>
+  <div id="lang-picker">
+    {{  site.locales[page.lang].flag-icon  }}
+    <ul>
       {% assign posts=site.posts | concat: site.pages | where:"ref", page.ref | sort: 'lang' %}
       {% for post in posts %}
-        <li>
-          <a href="{{ post.url }}" class="{{ post.lang }}">{{  site.locales[post.lang].flag-icon  }}</a>
-        </li>
+        {% if post.lang != page.lang %}
+          <li>
+            <a href="{{ post.url }}" class="{{ post.lang }}">{{  site.locales[post.lang].flag-icon  }}</a>
+          </li>
+        {% endif %}
       {% endfor %}
+    </ul>
 
   </div>
 

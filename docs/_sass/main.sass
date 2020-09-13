@@ -3,11 +3,17 @@ nav
   justify-content: space-between
 
 #lang-picker
-  list-style-type: none
-  a
-    background: none
-  li
+  position: relative
+  font-size: 1.4rem
+  ul
     display: none
-    &:first-child
+    position: absolute
+    list-style-type: none
+    margin: 0
+    padding: 0
+    a
+      background: none
+  &:hover
+    ul
       display: block
 
