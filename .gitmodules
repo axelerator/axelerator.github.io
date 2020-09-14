@@ -1,0 +1,3 @@
+[submodule "docs/elm-nano-examples"]
+	path = docs/elm-nano-examples
+	url = git@github.com:axelerator/elm-nano-examples.git
