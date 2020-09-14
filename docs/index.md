@@ -1,18 +1,21 @@
 ---
-# Feel free to add content and custom Front Matter to this file.
-# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-
 layout: default
-title: Welcome!
+title: Hi!
 ref: home
 lang: en
 ---
-v0.2
+
+Once per year I get reminded that I still pay for this domain. It's been a decade since there was some content here and I finally have something to write about.
+
+So for now I am starting a series about Elm, my current favorite language to play around in. But with time I might use this space to share ramblings about other areas of interes as well 😅
+
+## Latest posts
 {% assign posts=site.posts | where:"lang", page.lang %}
-<ul>
 {% for post in posts %}
-    <li>
-        <a href="{{ post.url }}">{{ post.title }}</a>
-    </li>
+  <h3>
+    <div><a href="{{ post.url }}">{{ post.title }}</a></div>
+    <div class="post-date">{{ post.date | date: '%B %d, %Y' }}</div>
+  </h3>
+  {{ post.excerpt }}
+  <a href="{{ post.url }}">more..</a>
 {% endfor %}
-</ul>
