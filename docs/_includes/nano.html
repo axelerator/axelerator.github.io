@@ -1,0 +1,9 @@
+{% assign f="elm-nano-examples/" | append: include.file %}
+{% assign file= include.file | split: "/" | last %}
+
+<h4>{{ file }}</h4>
+<label for="mn-demo" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="mn-demo" class="margin-toggle"/>
+<span class="marginnote">Visit <code>{{file}}</code> in context with the other files for this nano example on <a href="https://github.com/axelerator/elm-nano-examples/blob/master/{{ include.file }}">Github</a></span>
+<pre><code class="language-{{ include.lang }}">{% raw_include {{ f }}  %}</code></pre>
+
