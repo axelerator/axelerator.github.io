@@ -17,5 +17,5 @@ So for now I am starting a series about Elm, my current favorite language to pla
     <div class="post-date">{{ post.date | date: '%B %d, %Y' }}</div>
   </h3>
   {{ post.excerpt }}
-  <a href="{{ post.url }}">more..</a>
+  <hr />
 {% endfor %}

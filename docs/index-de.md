@@ -19,5 +19,5 @@ Ich starte erstmal mit eine Artikelserie über Elm - meine derzeitige Lieblingss
     <div class="post-date">{{ post.date | date: '%B %d, %Y' }}</div>
   </h3>
   {{ post.excerpt }}
-  <a href="{{ post.url }}">more..</a>
+  <hr />
 {% endfor %}
