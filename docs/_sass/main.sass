@@ -4,18 +4,23 @@ nav
 
 #lang-picker
   position: relative
-  font-size: 1.4rem
   ul
-    display: none
-    position: absolute
     list-style-type: none
     margin: 0
     padding: 0
     a
       background: none
+    li
+      font-size: 1em
+      text-align: right
+      visibility: hidden
+      &:first-child
+        visibility: visible
+        
   &:hover
     ul
-      display: block
+      li
+        visibility: visible
 
 // override default background color of highligh.js
 .hljs 

@@ -5,8 +5,17 @@
   {% endfor %}
   </div>
   <div id="lang-picker">
-    {{  site.locales[page.lang].flag-icon  }}
     <ul>
+      <li>
+         {% if post.lang == 'de' %}
+           Sprache:
+         {% else %}
+           Language:
+         {% endif %}
+
+        {{  site.locales[page.lang].flag-icon  }}
+
+      </li>
       {% assign posts=site.posts | concat: site.pages | where:"ref", page.ref | sort: 'lang' %}
       {% for post in posts %}
         {% if post.lang != page.lang %}
