@@ -31,7 +31,7 @@ The first row is the signature of the function and it can be read like this:
 > `fieldView` is a function with two parameters of type `Int`
 > and it returns a value of type `Html Msg` .
 
-## "But why are the parameter Types not enclosed in paranthesis like in a normal language?"
+## "But why are the parameter Types not enclosed in parenthesis like in a normal language?"
 The reason for that is, that this is not the only way the signature can be interpreted!
 You could also read it like this:
 
@@ -92,7 +92,7 @@ rowView rowNumber =
 ```
 
 And now comes the ![mind blown](/assets/mindblown.gif) moment.
-If we remove the paranthesis in the definition of  `fieldInRow : Int -> (Int -> Html Msg)` we see it is exactly the same as
+If we remove the parenthesis in the definition of  `fieldInRow : Int -> (Int -> Html Msg)` we see it is exactly the same as
 the defintion of `fieldView : Int -> Int -> Html Msg`.
 
 And the functionality is also exactly the same. That's why we can just leave the whole function `fieldInRow` away.
