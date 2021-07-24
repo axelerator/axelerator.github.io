@@ -93,7 +93,7 @@ subscriptions _ =
     Time.every 1000 GravityTick
 ```
 
-![Elm application loop](/assets/posts/tetris-gravity/elmloop.svg)
+![Elm application loop](/assets/posts/tetris-gravity/elmloopsubs.svg)
 
 Mit der [`every` Funktion](https://package.elm-lang.org/packages/elm/time/latest/Time#every) die uns von Elm zur Verfügung gestellt wird können wir eine solche Quelle registrieren.
 
