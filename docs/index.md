@@ -5,9 +5,14 @@ ref: home
 lang: en
 ---
 
-Once per year I get reminded that I still pay for this domain. It's been a decade since there was some content here and I finally have something to write about.
+Welcome to my blog where I'm currently publishing the show notes to my weekly [livecoding stream on twitch - every Wednesday 7pm (EST)](https://www.twitch.tv/programmingisfun).
 
-So for now I am starting a series about Elm, my current favorite language to play around in. But with time I might use this space to share ramblings about other areas of interes as well 😅
+Inspired by [Shaun Lebrons ClojureScript implementation](https://shaunlebron.github.io/t3tr0s-slides/#0) I'm trying to showcase the beauty that webdevelopment in the Elm programming language is.
+The audience are developers that may have experience with other languages or frameworks for webdevelopment already. Although no particular familiarity with JavaScript or the browser API is needed.
+
+I'm trying to keep episodes between 30 and 90 minutes. After recording each episode I'm trying to publish a little write-up here where I go into detail about some concepts that developers with a less functional background might have questions about.
+
+
 
 ## Latest posts
 {% assign posts=site.posts | where:"lang", page.lang %}
