@@ -7,7 +7,10 @@ lang: de
 permalink: /elm/de/tetris-collision
 ---
 
-<img src="/assets/posts/tetris-collision/collision_cropped.gif" alt="Kollisionserkennung" style="float: left; padding-right: 5px"/>Diese Woche gibt es einen kombinierten Artikel die beiden letzten Episoden. Inhaltilich habe ich mich in beiden Sitzungen mit der Kollisionserkennung auseinadergesetzt. Nachdem ich in Episode 6 kniffligen Bug eingebaut hab, nehme ich in Episode 7 die Gelegenheit wahr zu zeigen wie Test Driven Development mit `elm-test` helfen kann solche Situationen zu vermeiden.
+<img src="/assets/posts/tetris-collision/collision_cropped.gif" alt="Kollisionserkennung" style="float: left; padding-right: 5px"/>Diese Woche gibt es einen kombinierten Artikel die beiden letzten Episoden. Inhaltilich habe ich mich in beiden Sitzungen mit der Kollisionserkennung auseinadergesetzt. Nachdem ich in [Episode 6](https://www.youtube.com/watch?v=KXtmFh0C-9s) kniffligen Bug eingebaut hab, nehme ich in [Episode 7](https://www.youtube.com/watch?v=ZXMQCuvLHMg) die Gelegenheit wahr zu zeigen wie Test Driven Development mit `elm-test` helfen kann solche Situationen zu vermeiden.
+
+Episode 7 [on Github](https://github.com/axelerator/elm-tetris/tree/episode7)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZXMQCuvLHMg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 1. [Konsolen-Logging mit Elm](#debug)

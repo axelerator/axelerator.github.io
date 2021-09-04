@@ -8,9 +8,10 @@ permalink: /elm/en/tetris-collision
 ---
 
 <img src="/assets/posts/tetris-collision/collision_cropped.gif" alt="collision detection" style="float: left; padding-right: 5px"/>
-This article is the summary of the last two episodes. Tetris-wise I'm trying to implement the functionality that lets the current piece rest on the ground or other previously dropped pieces. After I introduced a gnarly logic error in episode 6 I decided to start from scratch in episode 7. This gave me the opportunity to talk about `elm-test` and to show the strengths of the Test Driven Development technique. 
+This article is the summary of the last two episodes. Tetris-wise I'm trying to implement the functionality that lets the current piece rest on the ground or other previously dropped pieces. After I introduced a gnarly logic error in [episode 6](https://www.youtube.com/watch?v=KXtmFh0C-9s) I decided to start from scratch in [episode 7](https://www.youtube.com/watch?v=ZXMQCuvLHMg). This gave me the opportunity to talk about `elm-test` and to show the strengths of the Test Driven Development technique. 
 
-
+Episode 7 [on Github](https://github.com/axelerator/elm-tetris/tree/episode7)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZXMQCuvLHMg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 1. [Console logging in Elm](#debug)
 2. [Installation und Verwendung von `elm-test`](#elm-test)
