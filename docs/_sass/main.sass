@@ -1,37 +1,139 @@
+@import "3dtext"
+@import url('');
+$fa-font-path: "/assets/webfonts"
+@import "fontawesome/fontawesome"
+@import "fontawesome/brands.scss";
+@import "fontawesome/solid.scss";
+
+
+body 
+  background: rgb(255,255,254);
+  background: linear-gradient(90deg, rgba(255,255,254,1) 0%, rgba(255,255,248,1) 50%, rgba(255,255,254,1) 100%);
+
+
+
+
+$primarycolour: rgb(255,255,255)
+#bg 
+  pointer-events: none
+  position: absolute
+  top: -5.5rem
+  left: 3rem
+  font-size: 10em
+  color: #FFFFF8
+  font-weight: 700
+  line-height: 1
+  letter-spacing: 0.4rem
+  @include text3d(adjust-color($primarycolour, $lightness: -8%),
+  $depth: 8,
+  $primaryshadowcolour: adjust-color($primarycolour, $lightness: -10%, $saturation: +20%) ,
+  $shadowopacity: .3)
+
+
 nav
+  margin-top: 4rem
   display: flex
   justify-content: space-between
+  width: 55%
+  border: 1px dotted #CFCFC8
+  border-width: 1px 0
+  font-size: 1.5rem
+  color: #8F8F88
+  .pages
+    display: flex
+    a:not(:hover)
+      background: none
+    > div
+      margin: 1rem 1.5rem
+  .links
+    margin: 1.1rem 1.5rem 0 0
+    a:not(:hover)
+      background: none
+    color: #AFAFA8
+
+    .twitter 
+      @extend %fa-icon
+      @extend .fab
+
+      &:before 
+        content: fa-content($fa-var-twitter)
+
+    .github
+      @extend %fa-icon
+      @extend .fab
+
+      &:before 
+        content: fa-content($fa-var-github)
+
+    .rss
+      @extend %fa-icon
+      @extend .fas
+
+      &:before 
+        content: fa-content($fa-var-rss)
+
+    .linkedin
+      @extend %fa-icon
+      @extend .fab
+
+      &:before 
+        content: fa-content($fa-var-linkedin)
+
+    .youtube
+      @extend %fa-icon
+      @extend .fab
+
+      &:before 
+        content: fa-content($fa-var-youtube)
+
+    .twitch
+      @extend %fa-icon
+      @extend .fab
+
+      &:before 
+        content: fa-content($fa-var-twitch)
+
 
 #lang-picker
+  margin: 1rem 1rem 0 0
+
   position: relative
+  .current
+    cursor: pointer
+
   ul
+    position: absolute
     list-style-type: none
     margin: 0
     padding: 0
+    display: none
     a
       background: none
-    li
-      font-size: 1rem
-      text-align: right
-      visibility: hidden
-      &:first-child
-        visibility: visible
-        
+
   &:hover
     ul
+      display: block
       li
         visibility: visible
+    
+
 
 // override default background color of highligh.js
 .hljs 
   background-color: transparent
 
 .home
-  h3
-    display: flex
-    justify-content: space-between
-    .post-date
-      margin-right: 3rem
+  section
+    h3
+      display: flex
+      justify-content: space-between
+      margin-bottom: 0.1em
+    .post-meta
+      font-size: 0.9rem
+      color: #9F9F98
+      margin-top: 0.1em
+    img
+      margin: 0 0 1rem 1rem
 
 blockquote
   p
