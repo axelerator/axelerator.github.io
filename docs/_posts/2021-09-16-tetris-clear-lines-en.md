@@ -8,11 +8,7 @@ permalink: /elm/en/tetris-clear-rows
 ---
 
 <img src="/assets/posts/tetris-clear-rows/teaser.gif" style="float:left; margin: 5px 10px 10px 0"/>
-Damit mein Tetris spielbar wird sorge ich in  
-dafür, dass vollständige Zeilen verschwinden. Mit mehr Unit-Tests und der Anwendung der Faltung einer Liste nähere ich mich einem vollständigen Version.
-
 For my Tetris to be actually playable I'm adding in [episode 10 (55min)](https://www.youtube.com/watch?v=b1vnT6XTFP4) the code to have full rows cleared. With the help of more unit tests and the infamous `fold` function, I'm inching my way towards a complete solution.
-
 
 The state of the code after this episode is captured in the [episode10 Branch](https://github.com/axelerator/elm-tetris/tree/episode10). The changes I made can be found in the last [Commit](https://github.com/axelerator/elm-tetris/commit/74ac057b1037e10cd6c47b63647952c943054718).
 
