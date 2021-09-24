@@ -16,7 +16,7 @@ The last [commit](https://github.com/axelerator/elm-tetris/commit/8838b88b82af29
 
 This time I didn't really use any new, fancy concepts. But this is another feature that differentiates *Elm* from many other programming languages. The Syntax is comparatively simple. In other languages, like *Ruby* or *Python* for example, we find syntax elements for many dogmas (object oriented *and* functional).
 As a result, there are naturally multiple ways to approach a problem, none of which is necessarily more dogmatic to the language than the other.
-The fact that Elm is dedicated to the *functional* approach **only** leads to fewer diverging ways to solve a particular problem. This leaders to more unified code which helps to understand code that I've not written myself faster. And conversely also to write code that **other people** understand faster.
+The fact that Elm is dedicated to the *functional* approach **only** leads to fewer diverging ways to solve a particular problem. This leads to more unified code which helps to understand code that I've not written myself faster. And conversely also to write code that **other people** understand faster.
 
 Of course, there is still enough room to express things a bit differently, even in Elm. A tool that I often only think of on the second attempt is **pattern matching**. But I did manage to think of it for this week's changes eventually.
 
