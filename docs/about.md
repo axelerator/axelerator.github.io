@@ -10,7 +10,7 @@ Hi 👋
 
 <img src="/assets/axel-small.jpg" width="150" height="150" alt="Axel"/>
 
-my name is Axel.
+My name is Axel.
 
 I like a lot of things, some about which I might write here on my blog.
 I earn my living with software development since over twenty years and I still enjoy it.
