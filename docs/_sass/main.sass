@@ -1,14 +1,14 @@
 @import "3dtext"
-@import url('');
+@import url('')
 $fa-font-path: "/assets/webfonts"
 @import "fontawesome/fontawesome"
-@import "fontawesome/brands.scss";
-@import "fontawesome/solid.scss";
+@import "fontawesome/brands.scss"
+@import "fontawesome/solid.scss"
 
 
 body 
-  background: rgb(255,255,254);
-  background: linear-gradient(90deg, rgba(255,255,254,1) 0%, rgba(255,255,248,1) 50%, rgba(255,255,254,1) 100%);
+  background: rgb(255,255,254)
+  background: linear-gradient(90deg, rgba(255,255,254,1) 0%, rgba(255,255,248,1) 50%, rgba(255,255,254,1) 100%)
 
 
 
@@ -24,10 +24,7 @@ $primarycolour: rgb(255,255,255)
   font-weight: 700
   line-height: 1
   letter-spacing: 0.4rem
-  @include text3d(adjust-color($primarycolour, $lightness: -8%),
-  $depth: 8,
-  $primaryshadowcolour: adjust-color($primarycolour, $lightness: -10%, $saturation: +20%) ,
-  $shadowopacity: .3)
+  @include text3d(adjust-color($primarycolour, $lightness: -8%), $depth: 8, $primaryshadowcolour: adjust-color($primarycolour, $lightness: -10%, $saturation: +20%) , $shadowopacity: .3)
 
 
 nav
