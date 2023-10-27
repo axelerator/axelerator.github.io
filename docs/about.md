@@ -4,6 +4,7 @@ title: About
 ref: about
 lang: en
 permalink: /about/
+tags: elm
 ---
 
 Hi 👋

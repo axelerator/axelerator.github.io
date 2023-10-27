@@ -5,6 +5,7 @@ date:   2021-07-07 20:00:00 -0400
 ref: basic-board
 lang: de
 permalink: /elm/de/board
+tags: elm
 ---
 
 Nachdem wir uns letzte Episode Zeile für Zeile durch die *Hello World* Anwendung gekämpft haben, schauen wir heute nochmal etwas abstrakter auf die Natur

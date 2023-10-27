@@ -3,6 +3,7 @@ layout: default
 title: Hi!
 ref: home
 lang: en
+tags: elm
 ---
 
 Welcome to my blog where I'm currently publishing the show notes to my weekly [livecoding stream on twitch - every Wednesday 7pm (EST)](https://www.twitch.tv/programmingisfun).

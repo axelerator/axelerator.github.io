@@ -5,6 +5,7 @@ date:   2021-08-26 20:00:00 -0400
 ref: tetris-collision
 lang: de
 permalink: /elm/de/tetris-collision
+tags: elm
 ---
 
 <img src="/assets/posts/tetris-collision/collision_cropped.gif" alt="Kollisionserkennung" style="float: left; padding-right: 5px"/>Diese Woche gibt es einen kombinierten Artikel die beiden letzten Episoden. Inhaltilich habe ich mich in beiden Sitzungen mit der Kollisionserkennung auseinadergesetzt. Nachdem ich in [Episode 6](https://www.youtube.com/watch?v=KXtmFh0C-9s) kniffligen Bug eingebaut hab, nehme ich in [Episode 7](https://www.youtube.com/watch?v=ZXMQCuvLHMg) die Gelegenheit wahr zu zeigen wie Test Driven Development mit `elm-test` helfen kann solche Situationen zu vermeiden.

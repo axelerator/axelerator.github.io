@@ -5,6 +5,7 @@ date:   2021-09-04 16:00:00 -0400
 ref: tetris-rotation
 lang: de
 permalink: /elm/de/tetris-rotation
+tags: elm
 ---
 
 <img src="/assets/posts/tetris-rotation/rotation.gif" alt="Rotation" style="float: right; padding-right: 5px"/>

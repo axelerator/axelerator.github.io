@@ -5,6 +5,7 @@ date:   2021-07-24 11:30:00 -0400
 ref: tetris-gravity
 lang: de
 permalink: /elm/de/tetris-gravity
+tags: elm
 ---
 
 Nach der Mammutepisode letzte Woche habe ich es diese Woche bei verdaulichen 30 Minuten belassen.

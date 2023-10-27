@@ -5,6 +5,7 @@ date:   2021-09-23 18:00:00 -0400
 ref: tetris-game-over
 lang: en
 permalink: /elm/en/tetris-game-over
+tags: elm
 ---
 
 <img src="/assets/posts/tetris-game-over/game-over.gif" style="float:right; margin: 5px 10px 10px 0"/>

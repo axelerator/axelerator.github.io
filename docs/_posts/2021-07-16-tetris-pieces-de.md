@@ -5,6 +5,7 @@ date:   2021-07-16 16:00:00 -0400
 ref: tetris-pieces
 lang: de
 permalink: /elm/de/tetris-pieces
+tags: elm
 ---
 
 Diese Woche habe ich die Datenstrukturen entwickelt die notwendig sind um die charakteristischen Tetristeile zu definieren und auf unserem Board darzustellen.

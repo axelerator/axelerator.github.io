@@ -5,6 +5,7 @@ date:   2021-09-11 16:00:00 -0400
 ref: tetris-limit-movement
 lang: de
 permalink: /elm/de/tetris-limit-movement
+tags: elm
 ---
 
 In [Episode 9 (48min)](https://www.youtube.com/watch?v=ZacgfAavKzQ) stelle ich sicher das wir das aktuelle Teil nicht außerhalb des Spielbretts oder in andere Teile hineinbewegen können. Dabei muss ich zwei Argumente einer Funktion umdrehen und nutze dies für eine funktionale Fingerübung.

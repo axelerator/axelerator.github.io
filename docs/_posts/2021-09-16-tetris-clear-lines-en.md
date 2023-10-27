@@ -5,6 +5,7 @@ date:   2021-09-16 19:00:00 -0400
 ref: tetris-clear-rows
 lang: en
 permalink: /elm/en/tetris-clear-rows
+tags: elm
 ---
 
 <img src="/assets/posts/tetris-clear-rows/teaser.gif" style="float:left; margin: 5px 10px 10px 0"/>

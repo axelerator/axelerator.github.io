@@ -5,6 +5,7 @@ date:   2021-06-27 18:00:00 -0400
 ref: elm-stream
 lang: de
 permalink: /elm/de/stream-elm
+tags: elm
 ---
 
 Das einzige was noch energiezehrender ist als lange Texte lesen ist lange Texte schreiben.

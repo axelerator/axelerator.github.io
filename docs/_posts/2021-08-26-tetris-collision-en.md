@@ -5,6 +5,7 @@ date:   2021-08-26 20:00:00 -0400
 ref: tetris-collision
 lang: en
 permalink: /elm/en/tetris-collision
+tags: elm
 ---
 
 <img src="/assets/posts/tetris-collision/collision_cropped.gif" alt="collision detection" style="float: left; padding-right: 5px"/>

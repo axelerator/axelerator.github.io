@@ -5,6 +5,7 @@ date:   2021-07-16 16:00:00 -0400
 ref: tetris-pieces
 lang: en
 permalink: /elm/en/tetris-pieces
+tags: elm
 ---
 
 This week I developed the data structures that are necessary to define and render the characteristic Tetris pieces. I was a bit surprised it took me more than 1.5 hours, but I never was the fastest 😅.

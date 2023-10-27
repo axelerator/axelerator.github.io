@@ -5,6 +5,7 @@ date:   2021-06-27 18:00:00 -0400
 ref: elm-stream
 lang: en
 permalink: /elm/en/stream-elm
+tags: elm
 ---
 
 The only thing that's even more energy draining than reading long texts is writing them.

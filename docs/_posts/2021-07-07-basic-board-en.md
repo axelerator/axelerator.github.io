@@ -5,6 +5,7 @@ date:   2021-07-07 20:00:00 -0400
 ref: basic-board
 lang: en
 permalink: /elm/en/board
+tags: elm
 ---
 
 After we looked at the structure of an Elm app line by line last week, we had a more abstract look at the mechanics of an Elm app today. But after that we jumped right into the code that would render the empty Tetris board.

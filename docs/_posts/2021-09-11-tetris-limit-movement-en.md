@@ -5,6 +5,7 @@ date:   2021-09-11 16:00:00 -0400
 ref: tetris-limit-movement
 lang: en
 permalink: /elm/en/tetris-limit-movement
+tags: elm
 ---
 
 In [episode 9 (48min)](https://www.youtube.com/watch?v=ZacgfAavKzQ) I make sure the current piece can't be moved out of the board or into other pieces. With that came the opportunity to do a little functional finger exercise and develop a function that swaps the arguments of another function.

@@ -5,6 +5,7 @@ date:   2021-07-24 11:30:00 -0400
 ref: tetris-gravity
 lang: en
 permalink: /elm/en/tetris-gravity
+tags: elm
 ---
 
 After the marathon episode last week I kept it to more digestible 30 minutes this time.

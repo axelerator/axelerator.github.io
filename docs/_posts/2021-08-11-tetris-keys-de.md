@@ -5,6 +5,7 @@ date:   2021-08-13 15:00:00 -0400
 ref: tetris-key-strokes
 lang: de
 permalink: /elm/de/tetris-key-strokes
+tags: elm
 ---
 
 In [dieser Episode (40min)](https://www.youtube.com/watch?v=JG3zzF_jRVc&t=1013s) schauen wir uns an wie wir auf globale Tastaturereignisse reagieren. Wir bemühen ein weiteres mal das *Subscription-System* welches wir [letztes mal](/elm/en/tetris-gravity) kennengelernt haben.

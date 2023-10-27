@@ -5,6 +5,7 @@ date:   2021-10-16 18:00:00 -0400
 ref: tetris-fade-out
 lang: de
 permalink: /elm/de/tetris-fade-out
+tags: elm
 ---
 
 <img src="/assets/posts/tetris-fade-out/fade.gif" style="float:left; margin: 5px 10px 10px 0"/>

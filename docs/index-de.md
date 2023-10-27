@@ -4,6 +4,7 @@ title: Moin!
 lang: de
 ref: home
 permalink: /de
+tags: elm
 ---
 
 Willkommen auf meinem Blog, wo ich zurzeit meine Shownotizen zu meinem [wöchentlichen Livecoding Stream](https://www.twitch.tv/programmingisfun) veröffentliche.
