@@ -1,0 +1,54 @@
+<html  data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/assets/interactive/styles.css">
+  <title>Interactive</title>
+  <script src="www/interactive.js"></script>
+
+  <style>
+    body {
+      max-width: 800px;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <p>
+      The other supported types actually come from before we had figured out a way to do JSON decoders. If you choose to use them, there are some subtleties to be aware of. The following examples show the desired flag type, and then the sub-points show what would happen with a couple different JS values:
+  </p>
+  <div id="variants"></div>
+  <p>
+      The other supported types actually come from before we had figured out a way to do JSON decoders. If you choose to use them, there are some subtleties to be aware of. The following examples show the desired flag type, and then the sub-points show what would happen with a couple different JS values:
+  </p>
+  <div id="features"></div>
+  <p>
+      The other supported types actually come from before we had figured out a way to do JSON decoders. If you choose to use them, there are some subtleties to be aware of. The following examples show the desired flag type, and then the sub-points show what would happen with a couple different JS values:
+  </p>
+  <div id="subscribe"></div>
+  <div id="unsubscribe"></div>
+  <script>
+  var variants = Elm.Interactive.init({
+    node: document.getElementById('variants'),
+    flags: { kind: "Variants" }
+  });
+
+  var features = Elm.Interactive.init({
+    node: document.getElementById('features'),
+    flags: { kind: "Features" }
+  });
+
+  var subscribe = Elm.Interactive.init({
+    node: document.getElementById('subscribe'),
+    flags: { kind: "Subscribe" }
+  });
+
+  var unsubscribe = Elm.Interactive.init({
+    node: document.getElementById('unsubscribe'),
+    flags: { kind: "Unsubscribe", email: "at@42ls.de" }
+  });
+
+  </script>
+</body>
+</html>
