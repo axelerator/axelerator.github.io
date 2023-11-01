@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Hi!</title>
+  </head>
+  <body class="home">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/">Home</a></div>
+  
+    <div><a href="/about">About</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇺🇸</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+          <li>
+            <a href="/de" class="de">🇩🇪</a>
+          </li>
+        
+      
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Hi!</h1>
+       <p>I’m building a digital filing cabinet to order the chaos in my (and potentially your life).
+Whether you’re a companion in struggling with staying on top of letters and e-mails or a fellow
+developer curious how this adventure unrolls, this is the place where I will regularly share my
+progress and learning, both form a technical as well as a business perspective.</p>
+
+<h2 id="posts">Posts</h2>
+
+<section>
+    <h3><a href="/business/en/building-in-the-open">Building in the open</a></h3>
+    <p class="post-meta">published: October 19, 2022</p>
+    <p><img src="/assets/posts/building-in-the-open/features.svg" width="130" height="130" style="float:right; margin: 5px 10px 10px 0" />
+Join me as I embark on a transparent journey to develop a digital filing cabinet that prioritizes your privacy.
+Using my years of experience in web development, I aim to craft a solution that bridges the gap between convenience and data security, 
+all while sharing each step of the process with you. 
+Follow along for live coding sessions, insights, and the chance to shape a product designed for individuals, families, and SMEs alike.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/tetris-fade-out">Episode 12 &amp; 13: Fade out and clean up</a></h3>
+    <p class="post-meta">published: October 16, 2021</p>
+    <p><img src="/assets/posts/tetris-fade-out/fade.gif" style="float:left; margin: 5px 10px 10px 0" />
+In <a href="https://www.youtube.com/watch?v=7HhOdCNfEj4">episode 12(1h:25m)</a> I started with building a simple score tracker. Adding gradual fading became a bit of a cliffhanger, because I introduced a gnarly bug that I was only able to resolve in <a href="https://www.youtube.com/watch?v=OfNkjrJGtyc">episode 13 (1h:20)</a>.
+I used this as motivation to clean up and reorganize the code with the help of the glorious <a href="https://github.com/neoclide/coc.nvim"><em>Conquer of Completion</em></a> Vim plugin.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/tetris-game-over">Episode 11: Game Over</a></h3>
+    <p class="post-meta">published: September 23, 2021</p>
+    <p><img src="/assets/posts/tetris-game-over/game-over.gif" style="float:right; margin: 5px 10px 10px 0" />
+There are still a few elements missing to be able to call our Tetris complete. However, with the changes from <a href="https://youtu.be/To2MtBs3w6A">episode 11 (40min)</a> we’re at least able to tell the player <em>“Game Over”</em>.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/tetris-clear-rows">Episode 10: Clearing lines</a></h3>
+    <p class="post-meta">published: September 16, 2021</p>
+    <p><img src="/assets/posts/tetris-clear-rows/teaser.gif" style="float:left; margin: 5px 10px 10px 0" />
+For my Tetris to be actually playable I’m adding in <a href="https://www.youtube.com/watch?v=b1vnT6XTFP4">episode 10 (55min)</a> the code to have full rows cleared. With the help of more unit tests and the infamous <code class="language-plaintext highlighter-rouge">fold</code> function, I’m inching my way towards a complete solution.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/tetris-limit-movement">Episode 9: Preventing invalid movements</a></h3>
+    <p class="post-meta">published: September 11, 2021</p>
+    <p>In <a href="https://www.youtube.com/watch?v=ZacgfAavKzQ">episode 9 (48min)</a> I make sure the current piece can’t be moved out of the board or into other pieces. With that came the opportunity to do a little functional finger exercise and develop a function that swaps the arguments of another function.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/tetris-rotation">Episode 8: Rotation and random new pieces</a></h3>
+    <p class="post-meta">published: September 04, 2021</p>
+    <p><img src="/assets/posts/tetris-rotation/rotation.gif" alt="Rotation" style="float: right; padding-right: 5px" />
+In <a href="https://youtu.be/Mv6FOrcLXFs">Episode 8 (60min)</a> I implement the rotation of the current piece. That worked out so fast that I also looked at generating random pieces instead of the hardcoded one when a new piece has to be created.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/tetris-collision">Episode 6 &amp; 7: Collision detection and Test Driven Development</a></h3>
+    <p class="post-meta">published: August 27, 2021</p>
+    <p><img src="/assets/posts/tetris-collision/collision_cropped.gif" alt="collision detection" style="float: left; padding-right: 5px" />
+This article is the summary of the last two episodes. Tetris-wise I’m trying to implement the functionality that lets the current piece rest on the ground or other previously dropped pieces. After I introduced a gnarly logic error in <a href="https://www.youtube.com/watch?v=KXtmFh0C-9s">episode 6</a> I decided to start from scratch in <a href="https://www.youtube.com/watch?v=ZXMQCuvLHMg">episode 7</a>. This gave me the opportunity to talk about <code class="language-plaintext highlighter-rouge">elm-test</code> and to show the strengths of the Test Driven Development technique.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/tetris-key-strokes">Episode 5: Registering keystrokes</a></h3>
+    <p class="post-meta">published: August 13, 2021</p>
+    <p>In <a href="https://www.youtube.com/watch?v=JG3zzF_jRVc&amp;t=1013s">this episode (40min)</a> we investigate how to react to global keyboard events. Once more we’re putting the “subscription system” to use which we got to know <a href="/elm/en/tetris-gravity">last episode</a></p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/tetris-gravity">Episode 4: Applying 'gravity' to the current piece with subscriptions</a></h3>
+    <p class="post-meta">published: July 24, 2021</p>
+    <p>After the marathon episode last week I kept it to more digestible 30 minutes this time.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/tetris-pieces">Episode 3: Definition, Rendering of Tetris pieces and static typing</a></h3>
+    <p class="post-meta">published: July 16, 2021</p>
+    <p>This week I developed the data structures that are necessary to define and render the characteristic Tetris pieces. I was a bit surprised it took me more than 1.5 hours, but I never was the fastest 😅.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/board">Episode 2: Rendering the empty board and partial function application</a></h3>
+    <p class="post-meta">published: July 08, 2021</p>
+    <p>After we looked at the structure of an Elm app line by line last week, we had a more abstract look at the mechanics of an Elm app today. But after that we jumped right into the code that would render the empty Tetris board.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/hot-elm">Episode 1: Project setup for the Elm Tetris clone</a></h3>
+    <p class="post-meta">published: July 01, 2021</p>
+    <p>In this episode I shared my hot code replace setup for Elm explorations with you. After struggling with the limitations of <code class="language-plaintext highlighter-rouge">elm reactor</code> I build this little boiler plate setup to shorten my feedback loop.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/stream-elm">A stream, because: why not 🤷</a></h3>
+    <p class="post-meta">published: June 27, 2021</p>
+    <p>The only thing that’s even more energy draining than reading long texts is writing them.
+That’s why I’ve decided to give the “stream format” a try.</p>
+
+  </section>
+<hr />
+
+<section>
+    <h3><a href="/elm/en/nano-examples">Practical exmaples in Elm</a></h3>
+    <p class="post-meta">published: June 26, 2021</p>
+    <p>I am starting a series of small articles to motivate you and get you started with Elm development.
+I don’t want to prove to you how Elm has to make you more productive or how your programs are more robust than with other frameworks. There are enough articles about that out there 😉.
+ For me coding in Elm is fun and it brings back some of the memories of how it felt when In picked up programming. And I want to share that.</p>
+
+  </section>
+<hr />
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

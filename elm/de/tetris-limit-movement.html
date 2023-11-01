@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 9: Eingeschränkt bewegungsfähig</title>
+  </head>
+  <body class="tetris-limit-movement">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/elm/en/tetris-limit-movement" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 9: Eingeschränkt bewegungsfähig</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+11 September 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p>In <a href="https://www.youtube.com/watch?v=ZacgfAavKzQ">Episode 9 (48min)</a> stelle ich sicher das wir das aktuelle Teil nicht außerhalb des Spielbretts oder in andere Teile hineinbewegen können. Dabei muss ich zwei Argumente einer Funktion umdrehen und nutze dies für eine funktionale Fingerübung.</p>
+
+<p>Die Code-Änderungen von dieser Woche gibt es im <a href="https://github.com/axelerator/elm-tetris/tree/episode9">episode9 Branch</a> bzw <a href="https://github.com/axelerator/elm-tetris/commit/c9e1d2564626e3584e96500ee210ad14a7a9b1c4">Commit</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZacgfAavKzQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<ol>
+  <li><a href="#canmove">Bewegung erlaubt?</a></li>
+  <li><a href="#curry">Exkurs <em>Currying</em></a></li>
+</ol>
+
+<h3 id="-bewegung-erlaubt"><a name="canmove"></a> Bewegung erlaubt?</h3>
+
+<p>Der Einstiegspunkt für diese Episode war die <a href="https://github.com/axelerator/elm-tetris/blob/episode8/src/Main.elm#L222"><code class="language-plaintext highlighter-rouge">movePiece</code> Funktion</a>. Das Ziel war es hier Logik hinzuzufügen die die Ausführung der Bewegung nur zulässt, wenn die Spielregeln es auch zulassen.</p>
+
+<p>Mit fast 50 Zeilen Code ist die <code class="language-plaintext highlighter-rouge">movePiece</code> Funktion bereits verhältnismäßig lang. Doch durch Nutzung ein paar einfacher Syntaxelemente bleibt die finale Funktion mit der zusätzlichen Funktionalität bei der gleichen Länge.</p>
+
+<p>Die Erklärung für ‘was erlaubt’ ist, habe ich in meinem Kopf wie folgt definiert:</p>
+
+<blockquote>
+  <p>Alle Plätze die der aktuelle Spielstein einnehmen <strong>würde</strong>, wenn die Bewegung ausgeführt wird müssen leer sein.
+Wenn das nicht der Fall ist, wird die Bewegung nicht ausgeführt.</p>
+</blockquote>
+
+<p>Der signifankte Teil der sich geändert hat sieht wie folgt aus:</p>
+
+<pre><code class="language-Elm">movePiece : Key -&gt; Model -&gt; Model
+movePiece key model =
+  ...
+  let
+      canMove =
+          all ((==) (Just Empty)) &lt;|
+              map (flip lookUp model.board) &lt;|
+                  occupiedPositions movedPiece
+  in
+  if canMove then
+      { model | currentPiece = Just movedPiece }
+
+  else
+      model
+</code></pre>
+
+<p>Hohe Softwarequalität drückt sich meiner Meinung nach darin aus, wenn sich das ‘mentale Modell’ möglichst direkt aus dem Code ablesen lässt.</p>
+
+<p>Die Art wie sich Ausdrücke in Elm kombinieren lassen ermöglicht dies meiner Meinung nach sehr elegant.
+Wenn wir die Berechnung von <code class="language-plaintext highlighter-rouge">canMove</code> von unten nach oben lesen, ist <code class="language-plaintext highlighter-rouge">canMove</code> wahr wenn:</p>
+
+<ul>
+  <li>die Positionen des bewegten Teils (<code class="language-plaintext highlighter-rouge">occupiedPositions movedPiece</code>)</li>
+  <li>transformiert in welchen Zustand dieses Feld auf dem aktuellen Brett hat (<code class="language-plaintext highlighter-rouge">map (flip lookUp model.board)</code>)</li>
+  <li>alle leer sind (<code class="language-plaintext highlighter-rouge">all ((==) (Just Empty))</code>)</li>
+</ul>
+
+<h3 id="-exkurs-currying"><a name="curry"></a> Exkurs <em>Currying</em></h3>
+
+<p>Das funktionalen Programmieren habe ich dank meines ehemaligen Professor <a href="https://github.com/UweSchmidt">Uwe Schmidt</a> entdeckt. Die theoretischen Hintegründe aus der Vorlesung sind jedoch nur teilweise hängengeblieben. Und so bin ich im Livestream doch etwas ins Stolpern geraten als es darum ging zu erklären was genau bei der <a href="https://github.com/axelerator/elm-tetris/blob/episode9/src/Main.elm#L250"><code class="language-plaintext highlighter-rouge">flip</code> Funktion</a> passiert.</p>
+
+<p>Deswegen gebe ich hier nun eine etwas detailierte Erklärung dazu was <code class="language-plaintext highlighter-rouge">Currying</code> bedeutet.
+In den <a href="https://blog.axelerator.de/elm/de/board">vergangenen Episoden</a> habe ich mehrfach von <em>‘partieller Anwendung’</em> Gebrauch gemacht.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Currying</code> beschreibt den Vorgang eine Funktion so aufzubrechen, dass jeder Parameterwert einzeln aufgerufen/gebunden werden kann. Bei Sprachen wie Elm und Haskell bekommen sind Funktionen ‘von Haus aus’ gecurried.</p>
+
+<p>In JavaScript is Currying auch möglich, allerdings müssen wir es hier explizit ausfomulieren.</p>
+
+<pre><code class="language-Javascript">// not curried
+function addAndMultiply(a, b, times) {
+  return (a + b) * times;
+}
+
+// curried
+function addAndMultiplyCurried(a) {
+  return function(b) {
+    return function(times) {
+      return (a + b) * times;
+    }
+  }
+}
+
+// curried ES6
+const addAndMultiplyCurriedES6 = 
+  (a) =&gt; 
+    (b) =&gt; 
+      (times) =&gt; (a + b) * times;
+
+// same result
+addAndMultiply(1,2,3) == addAndMultiplyCurried(1)(2)(3)
+</code></pre>
+
+<p>Funktionen die “gecurried” sind sind vielseitiger einsetzbar als ihre nicht-gecurrieten Gegenstücke. Bereits in unserem kleinen Tetrisprogramm machen wir davon ein paar mal gebraucht.</p>
+
+<p>Currying alleine macht ein Programm nicht autmatisch X% besser. Ich würde sogar behaupten, dass wenn man in einer Sprache wie JavaScript in der man seine Funktionnsdefinition umschreiben muss, der Aufwand es nicht wert ist.</p>
+
+<p>In Sprachen jedoch wo es currying ‘gratis’ dazu gibt, wird es zu einer Selbstverständlichkeit die man schnell nicht mehr missen möchte. Und je größer ein Softwareprojekt wird, desto größer sind die Effizienzgewinne von solch kleinen Optimierungen.</p>
+
+<p>Ein ‘Fun Fact’ den man nennen muss, wenn man über Currying spricht ist, dass es nach <a href="https://de.wikipedia.org/wiki/Haskell_Brooks_Curry">Haskell Curry</a> benannt wurde. Seine Ideen beruhen auf den Grundlagen der kobinatorischen Logik die von <a href="https://de.wikipedia.org/wiki/Moses_Sch%C3%B6nfinkel">Moses Schönfinkel</a> vor <strong>über 100 Jahren</strong> entwickelt wurden.
+Der Name ‘Currying’ hat sich mutmaßlich durchgesetzt, weil eine Funktion ‘schönfinkeln’ halt nur im deutschen Sprachraum von der Zunge rollt.</p>
+
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

@@ -1,0 +1,1279 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://blog.axelerator.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.axelerator.de/" rel="alternate" type="text/html" /><updated>2023-11-01T21:43:02+00:00</updated><id>https://blog.axelerator.de/feed.xml</id><title type="html">Rants &amp;amp; ramblings of yours truly</title><subtitle>Mostly posts about how to make getting started with Elm easy and the general joys of functional programming.</subtitle><entry xml:lang="en"><title type="html">Building in the open</title><link href="https://blog.axelerator.de/business/en/building-in-the-open" rel="alternate" type="text/html" title="Building in the open" /><published>2022-10-19T22:00:00+00:00</published><updated>2022-10-19T22:00:00+00:00</updated><id>https://blog.axelerator.de/business/en/building-in-the-open-en</id><content type="html" xml:base="https://blog.axelerator.de/business/en/building-in-the-open"><![CDATA[<p><img src="/assets/posts/building-in-the-open/features.svg" width="130" height="130" style="float:right; margin: 5px 10px 10px 0" />
+Join me as I embark on a transparent journey to develop a digital filing cabinet that prioritizes your privacy.
+Using my years of experience in web development, I aim to craft a solution that bridges the gap between convenience and data security, 
+all while sharing each step of the process with you. 
+Follow along for live coding sessions, insights, and the chance to shape a product designed for individuals, families, and SMEs alike.</p>
+
+<hr />
+
+<p>Content:</p>
+
+<ul>
+  <li><a href="#intro">Intro</a></li>
+  <li><a href="#who">Who is this for?</a></li>
+  <li><a href="#usp">This is what I’m building</a></li>
+  <li><a href="#building">If you build it, <del>they will come</del> nobody cares</a></li>
+</ul>
+
+<hr />
+
+<p><a name="intro"></a></p>
+
+<p>I started web development in the last millennium with the help of a website called 
+<label for="selfhtml" class="margin-toggle">⊕</label>
+<input type="checkbox" id="selfhtml" class="margin-toggle" />
+<span class="marginnote">
+    <img src="/assets/posts/building-in-the-open/selfhtml.jpg" alt="Selfhtml.de in 1998" /><br />
+    Screenshot of SelfHtml.de from 1998 taken with the 
+    <a href="https://web.archive.org/web/20000915151937/http://www.netzwelt.com/selfhtml/tcab.htm">WaybackMachine</a>
+</span>
+ <a href="https://wiki.selfhtml.org/">SELFHTML</a></p>
+
+<p>I ran my own <a href="https://www.fortytools.com/">software company</a> with two friends in Germany for nearly a decade. 
+And then, five years ago, after I moved to Canada to work for Shopify.
+I’m currently enjoying some free time between jobs and want to use these months to 
+spin up a product/business as a solo entrepreneur with an idea I’ve been thinking about for nearly ten years.</p>
+
+<p>Here is the problem I want to solve with my software:</p>
+
+<p><label for="unread" class="margin-toggle">⊕</label>
+<input type="checkbox" id="unread" class="margin-toggle" />
+<span class="marginnote">
+    <img src="/assets/posts/building-in-the-open/unread.svg" style="width: 5em" alt="Mail logo indicating a lot of unreal e-mails" />
+</span></p>
+
+<blockquote>
+  <p>You get a notification about an new e-mail. You open it and at a glance you can tell it’s important and have to <strong>act</strong> on it.</p>
+
+  <p>But you don’t have the time to do it <strong>right now</strong>.</p>
+
+  <p>So you leave it marked as <em>unread</em>.</p>
+</blockquote>
+
+<p>I do this with physical mail too – And it is a nightmare. I end up with stacks of unopened letters scattered through my apartment. Some of them urgent, some of them
+important, some of them both, some of them none of it.</p>
+
+<p>And then comes the dreaded moment where I have to find that <strong>one letter</strong>.</p>
+
+<p>I never committed to an existing software because these days this most likely means I have to give a very complete 
+picture of my personal life. Additionally</p>
+
+<ul>
+  <li>I can only maintain access to my data as long as I pay them a monthly fee</li>
+  <li>They will potentially use/sell my data</li>
+  <li>They might give generous access to government(s) agencies</li>
+  <li>Might be accessed by third parties through a data leak</li>
+</ul>
+
+<p>While there are alternatives like <em>Paperless</em> <label for="paperless" class="margin-toggle">⊕</label>
+<input type="checkbox" id="paperless" class="margin-toggle" />
+<span class="marginnote">
+    <img src="/assets/posts/building-in-the-open/paperless.png" style="width: 5em" alt="Mail logo indicating a lot of unreal e-mails" /><br />
+    <a href="https://github.com/paperless-ngx/paperless-ngx">Paperless</a> is a self hosted open-source document management system.
+</span>
+ it is only accessible to people who are already well versed in
+hosting their own servers.</p>
+
+<p>I want to solve this problem for myself as well as non-technical people. Hitting the right spot between ease-of-use, level of privacy and cost to operate is 
+always an trade off based on ones current situation. Knowing this I will be building a software that allows users to choose a compromise that suits <em>their</em> needs
+and change their mind over time.</p>
+
+<h3 id="-who-is-this-for"><a name="who"></a> Who is this for?</h3>
+
+<p>I’ve talked to a lot of friends and family and a lot of people struggle with <em>document management</em> in similar ways. Not surprisingly the amount of important 
+mail multiplies once you start a family and you receive documents that you have to manage on behalf of your children.</p>
+
+<p>So while the <em>MVP</em> <label for="mvp-def" class="margin-toggle">⊕</label>
+<input type="checkbox" id="mvp-def" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://en.wikipedia.org/wiki/Minimum_viable_product" title="Check out the definition on Wikipedia">MVP</a> stands for <em>“Minimum Viable Product”</em>
+</span>
+ that I will build in the beginning
+will focus on individuals a <strong>multiuser</strong> concept will be part of the foundations software design.</p>
+
+<p>To some degree a solution of this problem could be even applied to SMEs <label for="sme-def" class="margin-toggle">⊕</label>
+<input type="checkbox" id="sme-def" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://en.wikipedia.org/wiki/Small_and_medium-sized_enterprises" title="Check out the definition on Wikipedia">SME</a> stands for <em>“Small and medium-sized enterprises”</em>
+</span>
+.
+For example at Fortytools we were between 15-20 people and had a lot going on between our own SaaS and our contracting business. We had enough <em>paperwork</em> to deal
+with to employ someone. And documents often had to retrieved, processed and shared with other users.</p>
+
+<h3 id="-this-is-what-im-building"><a name="usp"></a> This is what I’m building</h3>
+
+<p>The core of the software I am going to build can best be described as a digital filing cabinet. That in itself is not especially novel, but I was surprised at
+how few solutions there are that do not satisfy my personal requirements for such a solution.</p>
+
+<p><em>“Data privacy”</em> is the least interesting feature in any software until someone 
+gets access to you data who is not supposed to. Which happens a lot more often than you think!</p>
+
+<p><img src="/assets/posts/building-in-the-open/breaches23.svg" alt="data breaches" /></p>
+
+<p>Giving your data to a <em>SaaS</em> <label for="saas-def" class="margin-toggle">⊕</label>
+<input type="checkbox" id="saas-def" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://en.wikipedia.org/wiki/Software_as_a_service">SaaS</a> Software as a service is a software licensing and delivery model in which software is licensed on a subscription basis and is centrally hosted.
+</span>
+ provider is certainly the most convenient. It’s also arguably likely to loose your data when you rely
+on the backup tools of a cloud provider than managing external disks and thumb drives.</p>
+
+<p>However not all SaaS providers are set up equally and there are a lot of data breaches each year. Larger companies are usually good
+at protecting your data against unauthorized access. However if your are <em>not</em> paying a significant price tag, for example for Google Drive,
+the provider will use your data in one way or another to monetize their project. Yes they will look <strong>into</strong> files. If you create
+a comparison Google Sheet for Baby strollers, you <strong>will</strong> get ads of baby products.</p>
+
+<p>So I want to make <strong>privacy</strong> a major concern and allow you to run the software without any connection to the internet.
+<strong>But</strong> I also want to make the software as easily accessible as possible.
+So I will launch the software in different <em>variants</em> that allows you to pick your sweet sweet spot between <em>privacy</em> and <em>comfort</em>.</p>
+<div id="variants"></div>
+
+<p>And most importantly I will make it <strong>easy to switch</strong> between these. One of the main technical ingredients to achieve this is to store
+everything in <em>files</em>. Documents will be stored <em>by year</em> and <em>by month</em>. An extremely simple scheme that will be manageable even if you
+stop using the software altogether.</p>
+
+<div id="features"></div>
+
+<h3 id="-if-you-build-it-they-will-come-nobody-cares"><a name="building"></a> If you build it, <del>they will come</del> nobody cares</h3>
+
+<p>There is this platitude about how it’s not enough to just build a good product.
+The gist is that you should start starting marketing &amp; sales activities as soon as you start building.</p>
+
+<p>And the reason this is still being told is that especially solo developers are likely to fall into this trap.
+There is a high temptation wanting the first release to be perfect, wanting to add just one more feature..
+Another catalyst for this line of thinking/feeling is that it’s better to start with a “big bang”.</p>
+
+<p>It’s been proven over and over again that this is <strong>not</strong> the case.
+So to avoid falling into this trap I decided to <strong>“build in the open”</strong> from the start.</p>
+
+<p>Practically that means I’m going to stream live on Twitch as I write the first lines of code.
+I’ll be happy to answer questions and will be talking in more detail about some of technical
+decisions for this project.</p>
+
+<p>Watching live coding sessions is not always most captivating and I also want to share non-technical challenges
+along the way. So I will also build other channels (more blog posts Instagram, Youtube, Podcast, Newsletter). I’m also 
+interested in learning from other peoples journey.</p>
+
+<p>So if you’re interested in following my journey I’d love to send you my weekly newsletter where I share recent progress.</p>
+
+<div id="subscribe"></div>
+
+<link rel="stylesheet" href="/assets/interactive/styles.css" />
+
+<script src="/assets/interactive/interactive.js"></script>
+
+<script>
+  var variants = Elm.Interactive.init({
+    node: document.getElementById('variants'),
+    flags: { kind: "Variants", lang: "en" }
+  });
+
+  var features = Elm.Interactive.init({
+    node: document.getElementById('features'),
+    flags: { kind: "Features" , lang: "en" }
+  });
+
+  var subscribe = Elm.Interactive.init({
+    node: document.getElementById('subscribe'),
+    flags: { kind: "Subscribe" }
+  });
+</script>]]></content><author><name></name></author><category term="solopreneur" /><category term="business" /><summary type="html"><![CDATA[Join me as I embark on a transparent journey to develop a digital filing cabinet that prioritizes your privacy. Using my years of experience in web development, I aim to craft a solution that bridges the gap between convenience and data security, all while sharing each step of the process with you. Follow along for live coding sessions, insights, and the chance to shape a product designed for individuals, families, and SMEs alike.]]></summary></entry><entry xml:lang="de"><title type="html">Bauen im Freien</title><link href="https://blog.axelerator.de/business/de/building-in-the-open" rel="alternate" type="text/html" title="Bauen im Freien" /><published>2022-10-19T22:00:00+00:00</published><updated>2022-10-19T22:00:00+00:00</updated><id>https://blog.axelerator.de/business/de/building-in-the-open-de</id><content type="html" xml:base="https://blog.axelerator.de/business/de/building-in-the-open"><![CDATA[<p><img src="/assets/posts/building-in-the-open/features.svg" width="130" height="130" style="float:right; margin: 5px 10px 10px 0" />
+Begleite mich wie ich meinen <em>digitalen Aktenschrank</em> und mein 1-Mann-Startup darum in der Öffentlichkeit baue.
+Mit langjähriged Erfahrungen in der Softwareentwicklung strebe ich an, eine Lösung zu schaffen, die die Lücke zwischen Bequemlichkeit und Datensicherheit schließt,
+während ich jeden Schritt des Prozesses mit Dir teile.</p>
+
+<p>Verfolge Livecoding Sessions, Erkenntnisse und die Möglichkeit, ein Produkt mitzugestalten, das für Einzelpersonen,
+Familien und KMUs gleichermaßen konzipiert ist.</p>
+
+<hr />
+
+<p>Content:</p>
+
+<ul>
+  <li><a href="#intro">Intro</a></li>
+  <li><a href="#who">Für wen?</a></li>
+  <li><a href="#usp">Das wird gebaut</a></li>
+  <li><a href="#building">If you build it, <del>they will come</del> nobody cares</a></li>
+</ul>
+
+<hr />
+
+<p><a name="intro"></a></p>
+
+<p>Ich habe mit der Webentwicklung im letzten Jahrtausend begonnen,
+und zwar mit Hilfe einer Website namens <label for="selfhtml" class="margin-toggle">⊕</label>
+<input type="checkbox" id="selfhtml" class="margin-toggle" />
+<span class="marginnote">
+    <img src="/assets/posts/building-in-the-open/selfhtml.jpg" alt="Selfhtml.de in 1998" /><br />
+    Screenshot of SelfHtml.de from 1998 taken with the 
+    <a href="https://web.archive.org/web/20000915151937/http://www.netzwelt.com/selfhtml/tcab.htm">WaybackMachine</a>
+</span>
+ <a href="https://wiki.selfhtml.org/">SELFHTML</a> im Jahr 1998.</p>
+
+<p>Fast ein Jahrzehnt lang habe ich in Deutschland gemeinsam mit zwei Freunden mein eigenes <a href="(https://www.fortytools.com/)">Softwareunternehmen</a> geführt.
+Vor fünf Jahren bin ich dann nach Kanada gezogen, 
+um bei Shopify zu arbeiten. 
+Derzeit genieße ich etwas Freizeit zwischen den Jobs und möchte diese Monate nutzen,
+um als Solo-Unternehmer ein Produkt/Geschäft aufzubauen - eine Idee, über die ich seit fast zehn Jahren nachdenke.</p>
+
+<p>Hier ist das Problem, das ich mit meiner Software lösen möchte:</p>
+
+<p><label for="unread" class="margin-toggle">⊕</label>
+<input type="checkbox" id="unread" class="margin-toggle" />
+<span class="marginnote">
+    <img src="/assets/posts/building-in-the-open/unread.svg" style="width: 5em" alt="Mail logo mit einer hohen Anzahl ungelesener E-Mails" />
+</span></p>
+
+<blockquote>
+  <p>De bekommst eine Benachrichtigung über eine neue E-Mail. Du öffnest sie und erkennst sofort, 
+dass sie wichtig ist und Du darauf reagieren musst.</p>
+
+  <p>Aber Du hast jetzt keine Zeit dafür.</p>
+
+  <p>Also läst Du sie als ungelesen markiert.</p>
+</blockquote>
+
+<p>Mir geht es mit physischer Post genauso – und es ist ein Albtraum. 
+Ich habe Stapel ungeöffneter Briefe in meiner Wohnung.
+Einige davon sind dringend, andere wichtig, manche beides, manche keins von beidem.</p>
+
+<p>Und dann kommt der gefürchtete Moment, in dem ich diesen <strong>einen</strong> Brief finden muss.</p>
+
+<p>Ich konnte mich nie für eine bestehende Software entscheiden, 
+weil dies heutzutage höchstwahrscheinlich bedeutet, dass ich einem Cloud-Software-Anbieter 
+ein sehr vollständiges Bild meines persönlichen Lebens geben muss.</p>
+
+<p>Dazu kommt:</p>
+
+<ul>
+  <li>ich muss einen monatlichen Beitrag zahlen um weiter auf meine Daten zugreifen zu können</li>
+  <li>der Anbieter verkauft Teile meiner Daten für zusätzlichen Profit</li>
+  <li>der Anbieter teilt Daten großzügig mit Behörden im In- und Ausland</li>
+  <li>der Anbieter wird Ziel eines Hackerangriffs und meine Daten gelangen in die Hände Unbefugter</li>
+</ul>
+
+<p>While there are alternatives like <em>Paperless</em>  it is only accessible to people who are already well versed in
+hosting their own servers.</p>
+
+<p>Es gibt zwar Open-Source Alternativen wie <label for="paperless" class="margin-toggle">⊕</label>
+<input type="checkbox" id="paperless" class="margin-toggle" />
+<span class="marginnote">
+    <img src="/assets/posts/building-in-the-open/paperless.png" style="width: 5em" alt="Mail logo indicating a lot of unreal e-mails" /><br />
+    <a href="https://github.com/paperless-ngx/paperless-ngx">Paperless</a> ist eine selbst gehostete Dokumenten Management Lösung.
+</span>
+ <em>Paperless</em>,
+diese sind aber häufig nur für Leute zugänglich die sich im Betrieb von Server auskennen.</p>
+
+<p>Ich möchte dieses Problem für mich selbst sowie für technisch weniger versierte Personen lösen.
+Es ist immer ein Kompromiss zwischen Benutzerfreundlichkeit, Datenschutz und Betriebskosten. 
+Mein Ziel ist es eine Software entwickeln, die es den Benutzern ermöglicht, einen Kompromiss zu wählen,
+der ihren Bedürfnissen entspricht, und im Laufe der Zeit ihre Meinung zu ändern.</p>
+
+<h3 id="-für-wen"><a name="who"></a> Für wen?</h3>
+
+<p>Ich habe mit vielen Freunden und Familienmitgliedern gesprochen,
+und die meisten haben ähnliche Probleme mit der Dokumentenverwaltung.
+Und sobald man eine Familie gründet kommt eine Menge an wichtiger Post steigt,
+, die man im Namen seiner Kinder verwalten muss dazu.</p>
+
+<p>Der <label for="mvp-def" class="margin-toggle">⊕</label>
+<input type="checkbox" id="mvp-def" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://de.wikipedia.org/wiki/Minimum_Viable_Product">MVP</a> steht für <em>“Minimum Viable Product”</em>
+</span>
+ MVP, den ich zu Beginn entwickeln werde,
+wird sich also auf Einzelpersonen konzentrieren, aber ein Multiuser-Konzept wird Teil des Software-Designs sein.</p>
+
+<p>In gewissem Maße könnte eine Lösung dieses Problems sogar auf <label for="sme-def" class="margin-toggle">⊕</label>
+<input type="checkbox" id="sme-def" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://de.wikipedia.org/wiki/Kleine_und_mittlere_Unternehmen">KMU</a> steht für r <em>“Kleine und mittlere Unternehmen”</em>
+</span>
+KMU angewendet werden.
+Zum Beispiel waren wir bei Fortytools zwischen 15-20 Personen und hatten mit unserem 
+eigenen Produkt und Entwicklungsarbeit für andere Unternehmen viel zu tun. 
+Wir hatten genug Papierkram zu erledigen, um jemanden einzustellen. 
+Dokumente mussten oft abgerufen, verarbeitet und mit anderen Benutzern geteilt werden.</p>
+
+<h3 id="-this-is-what-im-building"><a name="usp"></a> This is what I’m building</h3>
+
+<p>Das Herzstück der Software, die ich entwickeln werde,
+lässt sich am besten als digitales Aktenschrank beschreiben.
+Das ist an sich nichts Neues, aber ich war überrascht,
+wie wenige Lösungen es gibt, die meinen persönlichen Anforderungen an eine solche Lösung nicht gerecht werden.</p>
+
+<p>“Datenschutz” ist ein Feature in jeder Software, aber normalerweise nicht eines über das irgendjemand aufgeregt ist.</p>
+
+<p>Bis jemand Zugriff auf Daten erhält, der das nicht sollte. 
+Und das passiert viel häufiger, als man denkt!</p>
+
+<p><img src="/assets/posts/building-in-the-open/breaches23.svg" alt="Datatenpannen 2023" /></p>
+
+<p>Deine Daten einem SaaS <label for="saas-def" class="margin-toggle">⊕</label>
+<input type="checkbox" id="saas-def" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://en.wikipedia.org/wiki/Software_as_a_service">SaaS</a> Software und die bei einem externen IT-Dienstleister betrieben und vom Kunden als Dienstleistung genutzt werden kann.
+</span>
+ Anbieter zu geben, ist sicherlich am bequemsten.
+Dort sind sie vermutlich auch besser gegen Verlust geschützt als sich auf manuelle Backups zu verlassen.</p>
+
+<p>Allerdings sind nicht alle SaaS-Anbieter gleich aufgestellt und es gibt jedes Jahr viele Datenverletzungen. 
+Größere Unternehmen sind in der Regel gut darin, Ihre Daten vor unbefugtem Zugriff zu schützen. 
+Bei günstigen Lösungen, zum Beispiel Google Drive, wird der Anbieter Deine Daten auf die eine oder andere Weise nutzen, 
+um ihr Projekt zu monetarisieren. Ja, sie werden in Deine Dateien schauen. 
+Wenn Du zum Beispiel eine Tabelle in Google Sheets zum Vergleich für Kinderwagen hast, 
+wurst Du in den nächsten Tagen Werbung für Babyprodukte erhalten.</p>
+
+<p>Ich werde in meiner Lösung den Datenschutz zu einem zentralen Anliegen machen und 
+es ermöglichen, die Software ohne jegliche Internetverbindung zu betreiben.</p>
+
+<p>Aber ich möchte auch, dass die Software so zugänglich wie möglich ist. 
+Daher werde ich die Software in verschiedenen Varianten anbieten, die es ermöglichen, 
+den perfekten Mittelweg zwischen Datenschutz und Komfort zu wählen.</p>
+
+<div id="variants"></div>
+
+<p>Am wichtigsten für dieses Modell ist, dass es <strong>einfach</strong> ist zwischen diesen <strong>Varianten zu wechseln</strong>.
+Der Kernidee dieses zu ermöglichen ist alle Informationen in einfachen Dateien zu speichern anstatt auf 
+eine Datenbank zu setzen.</p>
+
+<p>Diese Dateien werden nach einem einfachen Schema (Jahr/Monat) in Ordern abgelegt. Diese ermöglichtes Dokumente
+wiederzufinden selbst wenn man aufgehört hat meine Anwendung zu benutzen.</p>
+
+<div id="features"></div>
+
+<h3 id="-if-you-build-it-they-will-come-nobody-cares"><a name="building"></a> If you build it, <del>they will come</del> nobody cares</h3>
+
+<p>Heißt so viel wie</p>
+
+<blockquote>
+  <p>Wenn du es baust,
+<del>werden sie schon kommen</del></p>
+
+  <p>interessiert es kein Schwein.</p>
+</blockquote>
+
+<p>Es spiegelt die, besonderns bei Entwicklern verbreitete, Idee wider, dass man lediglich ein gutes Produkt bauen muss und es
+sich dann schon rumspricht. Eine anderer Versuchung ist es das Produkt vor der Veröffentlichung zu perfektionieren, um
+mit einem <em>“Big Bang”</em> zu starten.</p>
+
+<p>Die Realität ist aber, dass das für die Mehrheit der digitalen Produkte nicht ausreicht. 
+Deswegen habe ich beschlossen meine Produkt von Anfang an ind der Öffentlichkeit zu bauen.</p>
+
+<p>Praktisch heißt das, dass ich regelmäßig live auf Twitch programmieren und dabei gerne auch Fragen beantworten werde. 
+Aber da das für viele nicht besonder spannend ist werde ich auch noch andere Wege erforschen meine Erfahrungen
+im Aufbau dieses Ein-Mann-Unternehmens zu teilen (mehr Blog-Artikel, Instragram, Youtube, Podcasts?).</p>
+
+<p>Falls sich das für dich spannend anhört freue ich mich wenn du dich für meinen wöchentlichen Newsletter einträgst.</p>
+
+<div id="subscribe"></div>
+
+<link rel="stylesheet" href="/assets/interactive/styles.css" />
+
+<script src="/assets/interactive/interactive.js"></script>
+
+<script>
+  var variants = Elm.Interactive.init({
+    node: document.getElementById('variants'),
+    flags: { kind: "Variants", lang: "de" }
+  });
+
+  var features = Elm.Interactive.init({
+    node: document.getElementById('features'),
+    flags: { kind: "Features", lang: "de"  }
+  });
+
+  var subscribe = Elm.Interactive.init({
+    node: document.getElementById('subscribe'),
+    flags: { kind: "Subscribe" }
+  });
+</script>]]></content><author><name></name></author><summary type="html"><![CDATA[Begleite mich wie ich meinen digitalen Aktenschrank und mein 1-Mann-Startup darum in der Öffentlichkeit baue. Mit langjähriged Erfahrungen in der Softwareentwicklung strebe ich an, eine Lösung zu schaffen, die die Lücke zwischen Bequemlichkeit und Datensicherheit schließt, während ich jeden Schritt des Prozesses mit Dir teile.]]></summary></entry><entry xml:lang="en"><title type="html">Episode 12 &amp;amp; 13: Fade out and clean up</title><link href="https://blog.axelerator.de/elm/en/tetris-fade-out" rel="alternate" type="text/html" title="Episode 12 &amp;amp; 13: Fade out and clean up" /><published>2021-10-16T22:00:00+00:00</published><updated>2021-10-16T22:00:00+00:00</updated><id>https://blog.axelerator.de/elm/en/tetris-fade-out-clean-up-en</id><content type="html" xml:base="https://blog.axelerator.de/elm/en/tetris-fade-out"><![CDATA[<p><img src="/assets/posts/tetris-fade-out/fade.gif" style="float:left; margin: 5px 10px 10px 0" />
+In <a href="https://www.youtube.com/watch?v=7HhOdCNfEj4">episode 12(1h:25m)</a> I started with building a simple score tracker. Adding gradual fading became a bit of a cliffhanger, because I introduced a gnarly bug that I was only able to resolve in <a href="https://www.youtube.com/watch?v=OfNkjrJGtyc">episode 13 (1h:20)</a>.
+I used this as motivation to clean up and reorganize the code with the help of the glorious <a href="https://github.com/neoclide/coc.nvim"><em>Conquer of Completion</em></a> Vim plugin.</p>
+
+<p>For episode 12 I created a single <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6">commit</a> as before. It’s the head of the <a href="https://github.com/axelerator/elm-tetris/tree/episode12">episode12 branch</a>.</p>
+
+<p>For the changes of episode 13, I went with a different approach. Since I reorganized the code a lot a large number of lines changed. To keep them comprehensible I separated them into multiple smaller commits. Of course, there is still also the <a href="https://github.com/axelerator/elm-tetris/tree/episode13">episode13 branch</a> that represents the state of the code after that episode. To see only the steps I did in that episode you can check out this <a href="https://github.com/axelerator/elm-tetris/pull/1/commits"><em>pull request</em></a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7HhOdCNfEj4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OfNkjrJGtyc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<hr />
+
+<p>Content:</p>
+
+<ul>
+  <li><a href="#scoring">Score tracking</a></li>
+  <li><a href="#fading">Fading cleared lines</a></li>
+  <li><a href="#cleanup">Clean up</a></li>
+</ul>
+
+<hr />
+
+<h3 id="-score-tracking"><a name="scoring"></a> Score tracking</h3>
+
+<p>To be able to keep score I added a new <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R39">type <code class="language-plaintext highlighter-rouge">Score</code></a> that I use in the <code class="language-plaintext highlighter-rouge">GameDetails</code>.
+I implemented it in the most simple way: Clearing 1 row = 1 Point. The real Tetris has a much more sophisticated scoring algorithm (Source: <a href="https://tetris.fandom.com/wiki/Scoring">Tetris Wiki</a>)</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Level</th>
+      <th style="text-align: center">Points for 1 line</th>
+      <th style="text-align: center">2 lines</th>
+      <th style="text-align: center">3 lines</th>
+      <th style="text-align: center">4 lines</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">40</td>
+      <td style="text-align: center">100</td>
+      <td style="text-align: center">300</td>
+      <td style="text-align: center">1200</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">80</td>
+      <td style="text-align: center">200</td>
+      <td style="text-align: center">600</td>
+      <td style="text-align: center">2400</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">120</td>
+      <td style="text-align: center">300</td>
+      <td style="text-align: center">900</td>
+      <td style="text-align: center">3600</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">9</td>
+      <td style="text-align: center">400</td>
+      <td style="text-align: center">1000</td>
+      <td style="text-align: center">3000</td>
+      <td style="text-align: center">12000</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">level(n) =  40 * (n + 1) 100 * (n + 1) 300 * (n + 1) 1200 * (n + 1)</code></p>
+
+<hr />
+
+<h3 id="-fading-cleared-lines"><a name="fading"></a> Fading cleared lines</h3>
+
+<p>To be able to fade a row I <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R82">added a new variant <code class="language-plaintext highlighter-rouge">FadingRow</code></a> to the <code class="language-plaintext highlighter-rouge">Row</code> type.</p>
+
+<pre><code class="language-Elm">type Row
+    = Row (List Field)
+    | FadingRow (List Field) Opacity
+</code></pre>
+<p>A fading row represents a row that was logically removed but is visually still present.
+Next to the tile information it also contains a value for the opacity.</p>
+
+<p>To be able to progress the fading out in the speed I desire I need to update our model more often. To achieve that we’re now firing the <code class="language-plaintext highlighter-rouge">GravityTick</code> every <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R548"><em>30</em> instead of every <em>100</em></a> milliseconds.
+For every tick we decrease the opacity of all fading rows a bit with the <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R462"><code class="language-plaintext highlighter-rouge">progressFading</code> function</a> until they’ve completely vanished.</p>
+
+<p>It was when I tried to integrate <code class="language-plaintext highlighter-rouge">progressFading</code> in all the right places that I introduced the error that eventually made me give up that day. As part of updating the <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R531"><code class="language-plaintext highlighter-rouge">eraseCompleteRows</code> function</a> I reset the <code class="language-plaintext highlighter-rouge">currentPiece</code>.
+The <a href="https://github.com/axelerator/elm-tetris/commit/4bac5a1f167b593b9f949ff66a8868b8f7c5e5b2">first change in episode 13</a> resolves the error and finally the fading works as expected.</p>
+
+<hr />
+
+<h3 id="-clean-up"><a name="cleanup"></a> Clean up</h3>
+
+<p>The rest of that episode I spend separating the general application from the ‘pure’ game logic. Though I wouldn’t go as far as calling it a <em>refactoring</em> since I’ve been mainly moving functions from one module to another.</p>
+
+<p>For that task, I put a new tool of my development environment to use. <a href="https://github.com/neoclide/coc.nvim">Conquer of Completion</a> (short <em>CoC</em>) is a Vim plugin that uses the <a href="https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/">Language Server Protocol</a> to support the developer with language-specific hints. The same protocol is used in Visual Studio Code for many languages for autocompletion and other features like organizing inputs.</p>
+
+<p>With the help of <em>CoC</em> execution operations like moving functions to a different module can be executed much more efficiently. Tedious subtasks like updating imports and removing unused code are reduced to executing the actions proposed by the plugin inline.</p>
+
+<p>Most of the significant steps to set up <em>CoC</em> with Elm for Vim are outlined in the  <a href="https://github.com/elm-tooling/elm-language-server">Elm Language Server project</a>.</p>
+
+<p>I think I’ll do a special episode soon showing how to set up a complete Elm development environment with Vim from scratch.</p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[In episode 12(1h:25m) I started with building a simple score tracker. Adding gradual fading became a bit of a cliffhanger, because I introduced a gnarly bug that I was only able to resolve in episode 13 (1h:20). I used this as motivation to clean up and reorganize the code with the help of the glorious Conquer of Completion Vim plugin.]]></summary></entry><entry xml:lang="de"><title type="html">Episode 12 &amp;amp; 13: Ausblenden und Aufräumen</title><link href="https://blog.axelerator.de/elm/de/tetris-fade-out" rel="alternate" type="text/html" title="Episode 12 &amp;amp; 13: Ausblenden und Aufräumen" /><published>2021-10-16T22:00:00+00:00</published><updated>2021-10-16T22:00:00+00:00</updated><id>https://blog.axelerator.de/elm/de/tetris-fade-out-clean-up-de</id><content type="html" xml:base="https://blog.axelerator.de/elm/de/tetris-fade-out"><![CDATA[<p><img src="/assets/posts/tetris-fade-out/fade.gif" style="float:left; margin: 5px 10px 10px 0" />
+In <a href="https://www.youtube.com/watch?v=7HhOdCNfEj4">Episode 12(1h:25m)</a> habe ich zunächst einen einfachen Zähler für die entfernten Reihen gebaut. Das graduelle Ausblenden ist zu einen Cliffhanger geworden, da ich dort einen Fehler eingebaut hab, den ich erst in <a href="https://www.youtube.com/watch?v=OfNkjrJGtyc">Episode 13 (1h:20)</a> auflöse. Das nehme ich zum Anlass den Code mit Hilfe des großartigen <a href="https://github.com/neoclide/coc.nvim"><em>Conquer of Completion</em></a> etwas aufzuräumen.</p>
+
+<p>Für Episode 12 habe ich wie bisher einen einzelnen <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6">Commit</a> erzeugt und einen <a href="https://github.com/axelerator/elm-tetris/tree/episode12">Branch</a> der den Code am Ende der Episode enthält.</p>
+
+<p>Die Codeänderungen für Episode 13 habe ich etwas anders organisiert. Da ich den Code großzügig umorganisiert habe betreffen die Änderungen viele Zeilen.
+Damit die Git Historie trotzdem übersichtlich bleibt habe ich mehrere kleine Commits erzeugt.
+Es gibt natürlich trotzdem einen <a href="https://github.com/axelerator/elm-tetris/tree/episode13"><code class="language-plaintext highlighter-rouge">episode13</code> Branch</a> der den Endzustand enthält. Die Entwicklung zwischen den Episoden 12 und 13 habe ich aber diesmal in einem <a href="https://github.com/axelerator/elm-tetris/pull/1/commits"><strong>Pull-Request</strong></a> zusammengefasst.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7HhOdCNfEj4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OfNkjrJGtyc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<hr />
+
+<p>Inhalt:</p>
+
+<ul>
+  <li><a href="#scoring">Punktestand</a></li>
+  <li><a href="#fading">Ausblenden</a></li>
+  <li><a href="#cleanup">Aufräumen</a></li>
+</ul>
+
+<hr />
+
+<h3 id="-punktestand"><a name="scoring"></a> Punktestand</h3>
+
+<p>Um sich vergleichen zu können habe ich dem Spiel einen <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R39">Typen <code class="language-plaintext highlighter-rouge">Score</code> für den Punktestand</a> hinzugefügt.
+Ich habe die einfachst mögliche Implementierung gewählt: 1 Zeile = 1 Punkt. Das echte Punktesystem von Tetris is um einiges komplizierter (Quelle: <a href="https://tetris.fandom.com/wiki/Scoring">Tetris Wiki</a>)</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Level</th>
+      <th style="text-align: center">Points for 1 line</th>
+      <th style="text-align: center">2 lines</th>
+      <th style="text-align: center">3 lines</th>
+      <th style="text-align: center">4 lines</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">40</td>
+      <td style="text-align: center">100</td>
+      <td style="text-align: center">300</td>
+      <td style="text-align: center">1200</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">80</td>
+      <td style="text-align: center">200</td>
+      <td style="text-align: center">600</td>
+      <td style="text-align: center">2400</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">120</td>
+      <td style="text-align: center">300</td>
+      <td style="text-align: center">900</td>
+      <td style="text-align: center">3600</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">9</td>
+      <td style="text-align: center">400</td>
+      <td style="text-align: center">1000</td>
+      <td style="text-align: center">3000</td>
+      <td style="text-align: center">12000</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">level(n) =  40 * (n + 1) 100 * (n + 1) 300 * (n + 1) 1200 * (n + 1)</code></p>
+
+<hr />
+
+<h3 id="-ausblenden"><a name="fading"></a> Ausblenden</h3>
+
+<p>Für das Ausblenden habe ich eine <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R82">neue ‘Zeilenvariante’ hinzugefügt</a>:</p>
+
+<pre><code class="language-Elm">type Row
+    = Row (List Field)
+    | FadingRow (List Field) Opacity
+</code></pre>
+
+<p>Die <code class="language-plaintext highlighter-rouge">FadingRow</code> stellt eine Zeile dar die logisch entfernt wurde aber visuell noch teilweise sichtbar ist.
+Neben den einzelnen Spalten enthält sie auch einen Transparenzwert.
+Um das Ausblenden in einer optisch ansprechenden Geschwindigkeit zu erreichen feuern wir jetzt unseren <code class="language-plaintext highlighter-rouge">GravityTick</code> alle <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R548"><em>30</em> anstatt <em>100</em> Millisekunden</a> und erhöhen die Transparenz der ‘ausblendenden’ Reihen bei jedem Tick mit der <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R462"><code class="language-plaintext highlighter-rouge">progressFading</code> Funktion</a>.</p>
+
+<p>Bei dem Versuch <code class="language-plaintext highlighter-rouge">progressFading</code> an all den richtigen Stellen aufzurufen habe ich dann auch den Fehler eingebaut. Als Teil von <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code> habe ich <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R531">das aktuelle Teil zurückgesetzt</a>.
+Der <a href="https://github.com/axelerator/elm-tetris/commit/4bac5a1f167b593b9f949ff66a8868b8f7c5e5b2">erste Commit</a> von Episode 13 behebt diesen Fehler und alles funktioniert wie erwartet.</p>
+
+<hr />
+
+<h3 id="-aufräumen"><a name="cleanup"></a> Aufräumen</h3>
+
+<p>Den Rest dieser Episode verbringe ich damit die allgemeine Anwendungslogik von der ‘reinen’ Spiellogik zu trennen. Ich würde es allerdings noch nicht als eine Rafaktorisierung bezeichnen denn die Änderungen sind alle recht ‘mechanisch’. Damit meine ich, dass die Funktionen sich fast nicht geändert haben sondern lediglich den Ort gewechselt haben wo sie gespeichert sind.</p>
+
+<p>Dabei habe ich mir ein neues Werkzeug in meiner Entwicklungsumgebung zu Nutze gemacht. <a href="https://github.com/neoclide/coc.nvim">Conquer of Completion</a> kur <em>CoC</em> ist ein Vim Plugin, dass das <a href="https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/">Language Server Protocol</a> nutzt um den Entwickler mit Sprachspezifischen Hinweisen zu unterstützen. Es ist das gleiche Protokoll das auch in VS Code für viele Sprachen verwendet wird um Autovervollständigung und andere Funktionen wie das Organisieren von Imports zu unterstützen.</p>
+
+<p>Mit Hilfe des <em>CoC</em> lassen sich Operationen wie das Verschieben von Funktionen deutlich effizienter ausführen, da das Plugin lästige Tätigkeiten, wie das importieren von Modulen und entfernen von ungenutztem Code automatisiert.</p>
+
+<p>Ein paar entscheidende Hinweise wie dieses Setup einzurichten ist habe ich in dem Projekt für den <a href="https://github.com/elm-tooling/elm-language-server">Elm Language Server</a> gefunden.</p>
+
+<p>Ich denke ich werde in naher Zukunft nochmal eine dedizierte Episode zur Einrichtung eine Elm Entwicklungsumgebung machen.</p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[In Episode 12(1h:25m) habe ich zunächst einen einfachen Zähler für die entfernten Reihen gebaut. Das graduelle Ausblenden ist zu einen Cliffhanger geworden, da ich dort einen Fehler eingebaut hab, den ich erst in Episode 13 (1h:20) auflöse. Das nehme ich zum Anlass den Code mit Hilfe des großartigen Conquer of Completion etwas aufzuräumen.]]></summary></entry><entry xml:lang="en"><title type="html">Episode 11: Game Over</title><link href="https://blog.axelerator.de/elm/en/tetris-game-over" rel="alternate" type="text/html" title="Episode 11: Game Over" /><published>2021-09-23T22:00:00+00:00</published><updated>2021-09-23T22:00:00+00:00</updated><id>https://blog.axelerator.de/elm/en/tetris-game-over-en</id><content type="html" xml:base="https://blog.axelerator.de/elm/en/tetris-game-over"><![CDATA[<p><img src="/assets/posts/tetris-game-over/game-over.gif" style="float:right; margin: 5px 10px 10px 0" />
+There are still a few elements missing to be able to call our Tetris complete. However, with the changes from <a href="https://youtu.be/To2MtBs3w6A">episode 11 (40min)</a> we’re at least able to tell the player <em>“Game Over”</em>.</p>
+
+<p>The last <a href="https://github.com/axelerator/elm-tetris/commit/8838b88b82af29c95ac3a0bfafe17eba27b254b9">commit</a> on the <a href="https://github.com/axelerator/elm-tetris/tree/episode11">episode11 branch</a> reflects the changes I made during the recording.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/To2MtBs3w6A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>This time I didn’t really use any new, fancy concepts. But this is another feature that differentiates <em>Elm</em> from many other programming languages. The Syntax is comparatively simple. In other languages, like <em>Ruby</em> or <em>Python</em> for example, we find syntax elements for many dogmas (object oriented <em>and</em> functional).
+As a result, there are naturally multiple ways to approach a problem, none of which is necessarily more dogmatic to the language than the other.
+The fact that Elm is dedicated to the <em>functional</em> approach <strong>only</strong> leads to fewer diverging ways to solve a particular problem. This leads to more unified code which helps to understand code that I’ve not written myself faster. And conversely also to write code that <strong>other people</strong> understand faster.</p>
+
+<p>Of course, there is still enough room to express things a bit differently, even in Elm. A tool that I often only think of on the second attempt is <strong>pattern matching</strong>. But I did manage to think of it for this week’s changes eventually.</p>
+
+<p>The most important change however was the <em>‘upgrade’</em> of our central <code class="language-plaintext highlighter-rouge">Model</code> type from an <em>alias</em> to an <em>algebraic data type</em>.</p>
+
+<p><em>before</em>:</p>
+<pre><code class="language-Elm">type alias Model =
+  { board : Board
+  , currentPiece : Maybe CurrentPiece
+  }
+</code></pre>
+
+<p><em>after</em>:</p>
+<pre><code class="language-Elm">type Model =
+    = RunningGame GameDetails
+    | GameOver Board
+</code></pre>
+
+<p>Even though the <em>“content”</em> of the two variants is nearly the same it pays off to introduce a clear distinction between the two game states <strong>now</strong>. A variety of operations doesn’t make sense to apply when the game has ended.
+By expressing that state in its own proper variant we can let the compiler direct us to the places in the code where we should check if the logic still adds up for our new case.</p>
+
+<p>One central place for that is the <code class="language-plaintext highlighter-rouge">update</code> function. As mentioned in the stream I learned the following trick from <a href="https://twitter.com/rtfeldman">Richard Feldman</a>. He maintains the <a href="https://github.com/rtfeldman/elm-spa-example"><em>Elm SPA example</em></a>, a fully-fledged fullstack application built with Elm, which contains lots of useful patterns on how to deal with real-world problems.</p>
+
+<p>I changed our <code class="language-plaintext highlighter-rouge">update</code> function from</p>
+
+<pre><code class="language-Elm">update : Msg -&gt; Model -&gt; ( Model, Cmd Msg )
+update msg model =
+  case msg of
+    GravityTick _ -&gt;
+      dropCurrentPiece model
+</code></pre>
+
+<p>to look like this (abbreviated):</p>
+<pre><code class="language-Elm">update : Msg -&gt; Model -&gt; ( Model, Cmd Msg )
+update msg model =
+  case ( msg, model ) of
+    ( GravityTick _, RunningGame gameDetails ) -&gt;
+      dropCurrentPiece gameDetails
+</code></pre>
+
+<p>By extending the expression between <code class="language-plaintext highlighter-rouge">case ... of</code> to a <strong>tuple</strong> of <code class="language-plaintext highlighter-rouge">msg</code> <strong>and</strong> <code class="language-plaintext highlighter-rouge">model</code> we can now also match on the state of our model.
+We also add a “fallthrough” branch that gets matched for all the combinations we didn’t explicitly name.
+That has the pleasant effect that we <strong>don’t</strong> need to specify the combinations that don’t make sense, for example <code class="language-plaintext highlighter-rouge">(KeyDown key, GameOver)</code></p>
+
+<p>That means in the end we need <em>less code</em>, which is usually desirable. But it also comes with one drawback. We lose the luxury of the compiler being able to point us to the <code class="language-plaintext highlighter-rouge">update</code> function whenever we add a new variant to our <code class="language-plaintext highlighter-rouge">Msg</code> type. In the edited version of our <code class="language-plaintext highlighter-rouge">update</code> function we now have the <code class="language-plaintext highlighter-rouge">_ -&gt; ...</code> branch that will also match any new variant we match.
+So in the end one has to balance what’s more important on a case-by-case basis.</p>
+
+<ul>
+  <li>How many cases do I have to be explicit if I don’t want to add the fall through?</li>
+  <li>How easy is it to find out where I need to extend case expressions if I add a new variant?</li>
+</ul>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[There are still a few elements missing to be able to call our Tetris complete. However, with the changes from episode 11 (40min) we’re at least able to tell the player “Game Over”.]]></summary></entry><entry xml:lang="de"><title type="html">Episode 11: Game Over</title><link href="https://blog.axelerator.de/elm/de/tetris-game-over" rel="alternate" type="text/html" title="Episode 11: Game Over" /><published>2021-09-23T22:00:00+00:00</published><updated>2021-09-23T22:00:00+00:00</updated><id>https://blog.axelerator.de/elm/de/tetris-game-over-de</id><content type="html" xml:base="https://blog.axelerator.de/elm/de/tetris-game-over"><![CDATA[<p><img src="/assets/posts/tetris-game-over/game-over.gif" style="float:right; margin: 5px 10px 10px 0" />
+Noch fehlen ein paar Elemente damit unser Tetris ‘vollständig’ ist. Aber zumindest können wir nach <a href="https://youtu.be/To2MtBs3w6A">Episode 11 (40min)</a> sagen “Game Over”.</p>
+
+<p>Die Code-Änderungen von dieser Woche gibt es im <a href="https://github.com/axelerator/elm-tetris/tree/episode11">episode11 Branch</a> bzw <a href="https://github.com/axelerator/elm-tetris/commit/8838b88b82af29c95ac3a0bfafe17eba27b254b9">Commit</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/To2MtBs3w6A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>Diese Woche habe ich keine großartig neuen Konzepte genutzt. Aber gerade das ist etwas wo sich <em>Elm</em> von vielen anderen Sprachen abgrenzt. Die Syntax ist verhältnismäßig übersichtlich. In anderen Sprachen wie Ruby oder Python finden wir mehrere Dogmen (objektorientiert und funktional). 
+Daher ergeben sich auch mehrere Ansätze ein Problem zu lösen von denen nicht unbedingt einer mehr oder weniger den Prinipien der Sprache entsprechen muss. Der ganzheitlich funktionale Ansatz von Elm führt zu einheitlicheren Lösungen. Das hilft es schneller Code zu verstehen, den man nicht selber geschrieben hat. Und natürlich auch selber besser verständlichen Code zu schreiben.</p>
+
+<p>Dennoch gibt es natürlich auch innerhalb der Syntax noch genügend unterschiedliche Möglichkeiten sich auszudrücken. Ein Werkzeug an das ich häufig erst im zweiten Durchgang denke ist das <em>pattern matching</em>.</p>
+
+<p>Die wichtigste Änderung war die Änderung des zentralen <code class="language-plaintext highlighter-rouge">Model</code> Typs von einem <em>alias</em> zu eine <em>algebarischen Datentypen</em>.</p>
+
+<p><em>vorher</em>:</p>
+<pre><code class="language-Elm">type alias Model =
+  { board : Board
+  , currentPiece : Maybe CurrentPiece
+  }
+</code></pre>
+
+<p><em>nachher</em>:</p>
+<pre><code class="language-Elm">type Model =
+    = RunningGame GameDetails
+    | GameOver Board
+</code></pre>
+
+<p>Auch wenn der <em>“Inhalt”</em> der beiden Varianten nahezu identisch ist lohnt es sich <strong>jetzt</strong> eine klare Unterscheidung zwischen den beiden Zuständen einzuführen. Eine ganze Reihe von Operationen, beziehungweise Ereignissen machen keinen Sinn mehr wenn das Spiel zu Ende ist.
+Indem wir dies als eigene Variante ausdrücken ermöglichen wir es dem Compiler uns zu “allen Stellen zu führen” an denen wir unsere Logik daraufhin untersuchen sollten.</p>
+
+<p>Ein zentrale Stelle ist die <code class="language-plaintext highlighter-rouge">update</code> Funktion. Wie im Stream erwähnt habe ich mir die Awendung des <em>pattern matching</em> für die <a href="https://github.com/rtfeldman/elm-spa-example"><code class="language-plaintext highlighter-rouge">update</code> Funktion</a> bei <a href="https://twitter.com/rtfeldman">Richard Feldman</a> abgeschaut.
+Sein <a href="https://github.com/rtfeldman/elm-spa-example"><em>Elm SPA example</em></a> ist eine vollständige Elm Anwendung bei der man sich einige gute Muster abschauen kann.</p>
+
+<p>Der Anfang der <code class="language-plaintext highlighter-rouge">update</code> Funktion:</p>
+
+<pre><code class="language-Elm">update : Msg -&gt; Model -&gt; ( Model, Cmd Msg )
+update msg model =
+  case msg of
+    GravityTick _ -&gt;
+      dropCurrentPiece model
+</code></pre>
+
+<p>sieht nach der Bearbeitung wie folgt aus:</p>
+<pre><code class="language-Elm">update : Msg -&gt; Model -&gt; ( Model, Cmd Msg )
+update msg model =
+  case ( msg, model ) of
+    ( GravityTick _, RunningGame gameDetails ) -&gt;
+      dropCurrentPiece gameDetails
+</code></pre>
+
+<p>In dem wir den Ausdruck zwischen <code class="language-plaintext highlighter-rouge">case</code> und <code class="language-plaintext highlighter-rouge">of</code> auf ein Tupel von der <code class="language-plaintext highlighter-rouge">msg</code> <strong>und</strong> dem aktuellen <code class="language-plaintext highlighter-rouge">model</code> erweitern können wir jetzt in jedem Zweig neben der Nachricht auch mit dem aktuellen Spielzustand vergleichen.</p>
+
+<p>Desweiteren fügen wir einen Zweig hinzu der für alle Kombinationen aufgerufen wird die wir <em>nicht</em> explizit erwähnen.</p>
+
+<p>So ergibt sich die angenehme Situation, dass wir ungültige Kombinationen, wie zum Beispiel <code class="language-plaintext highlighter-rouge">(KeyDown key, GameOver)</code> nicht spezifieren brauchen.</p>
+
+<p>Das heißt am Ende kommen wir mit weniger Code aus. Weniger Code ist natürlich immer erstrebenswert. Allerdings hat diese Lösung auch einen Nachteil.
+In der vorherigen Version weist uns der Compiler auf einen fehlenden Zweig in der <code class="language-plaintext highlighter-rouge">update</code> Funktion hin sobald wir eine neue Variante für unseren <code class="language-plaintext highlighter-rouge">Msg</code> Datentypen hinzufügen. Das tut er in der überarbeiteten Version nun nicht mehr, da wir mit dem <code class="language-plaintext highlighter-rouge">_ -&gt; ...</code> Zweig ja ein “passendes” Muster haben.
+Man muss also bei der Anwedung dieser Optimierung gut überlegen was einem wichtiger ist.</p>
+
+<ul>
+  <li>Wieviele Zweige muss ich explizit aufzählen falls ich ohne den <code class="language-plaintext highlighter-rouge">_ -&gt; ..</code> Zweig arbeite?</li>
+  <li>Wie einfach ist es die Stellen zu finden die angefasst werden müssen, wenn ich <strong>mit</strong> dem <code class="language-plaintext highlighter-rouge">_ -&gt; ..</code> Zweig arbeite?</li>
+</ul>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Noch fehlen ein paar Elemente damit unser Tetris ‘vollständig’ ist. Aber zumindest können wir nach Episode 11 (40min) sagen “Game Over”.]]></summary></entry><entry xml:lang="de"><title type="html">Episode 10: Komplette Reihen verschwinden mit Falten</title><link href="https://blog.axelerator.de/elm/de/tetris-clear-rows" rel="alternate" type="text/html" title="Episode 10: Komplette Reihen verschwinden mit Falten" /><published>2021-09-16T23:00:00+00:00</published><updated>2021-09-16T23:00:00+00:00</updated><id>https://blog.axelerator.de/elm/de/tetris-clear-lines-de</id><content type="html" xml:base="https://blog.axelerator.de/elm/de/tetris-clear-rows"><![CDATA[<p><img src="/assets/posts/tetris-clear-rows/teaser.gif" style="float:left; margin: 5px 10px 10px 0" />
+Damit mein Tetris spielbar wird sorge ich in <a href="https://www.youtube.com/watch?v=b1vnT6XTFP4">Episode 10 (55min)</a> 
+dafür, dass vollständige Zeilen verschwinden. Mit mehr Unit-Tests und der Anwendung der Faltung einer Liste nähere ich mich einem vollständigen Version.</p>
+
+<p>Die Code-Änderungen von dieser Woche gibt es im <a href="https://github.com/axelerator/elm-tetris/tree/episode10">episode10 Branch</a> bzw <a href="https://github.com/axelerator/elm-tetris/commit/74ac057b1037e10cd6c47b63647952c943054718">Commit</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/b1vnT6XTFP4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>Es ist immer sehr befriedigend wenn man sich einen Plan zurechtlegt und die Ausführung dann auch einigermaßen danach abläuft.
+Dementsprechend hat die Aufzeichnung dieser Episode auch Spaß gemacht. Die initiale Idee war es die <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code> zu entwickeln, welche ein Board von den vollständigen Reihen befreien sollte.</p>
+
+<p>Da ich bereits in <a href="/elm/de/tetris-collision">Episode 7</a> ein Setup für automatisierte Tests eingerichtet hatte, fiel die Entscheidung nicht schwer diesmal gleich mit einem Test loszulegen.</p>
+
+<p>Der Algorithmus für den ich mich am Ende entschieden habe läuft wie folgt ab:</p>
+
+<ol>
+  <li>Durchlaufe alle Zeilen des Spielbretts:
+    <ul>
+      <li><em>1a</em> für eine <strong>unvollständige</strong> Reihe: Sammele sie als <em>“Boden”</em>-Reihe für das Folgespielbrett</li>
+      <li><em>1b</em> für eine <strong>vollständige</strong> Reihe: Sammel eine leere <em>“Kopf”</em>-Reihe in einer Extra-Liste</li>
+    </ul>
+  </li>
+  <li>Erstelle das Folgespielbrett mit den <em>“Boden”</em>-Reihen (1a) unten und hänge die <em>“Kopf”</em>-Reihen (1b) darüber.</li>
+</ol>
+
+<p>Bei der Implementierung habe ich mich für die Nutzung der <code class="language-plaintext highlighter-rouge">foldr</code> Funktion entschieden. Da einige Programmierer Angst vor dieser Funktion zu haben scheinen möchte ich hier die Gelegenheit nutzen ein paar Unklarheiten zu breinigen.</p>
+
+<h3 id="wofür-ist-foldr-gut">Wofür ist <code class="language-plaintext highlighter-rouge">foldr</code> gut?</h3>
+
+<p><code class="language-plaintext highlighter-rouge">foldr</code> existiert in vielen Sprachen, sie heißt nur manchmal anders:</p>
+
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce">reduce</a> in JavaScript</li>
+  <li><a href="https://ruby-doc.org/core-3.0.2/Enumerable.html#method-i-inject">inject</a> in Ruby</li>
+</ul>
+
+<p>Ähnlich wie <code class="language-plaintext highlighter-rouge">map</code> können wir <code class="language-plaintext highlighter-rouge">fold</code> eine Funktion als Parameter übergeben, die für jedes Element ausgeführt wird. Im Gegensatz zu <code class="language-plaintext highlighter-rouge">map</code> braucht das Ergebnis allerdings nicht zwingend eine Liste zu sein, sonder kann von einem beliebigem Typ sein.
+In diesem Sinne ist <code class="language-plaintext highlighter-rouge">fold</code> also <em>“mächtiger”</em> als <code class="language-plaintext highlighter-rouge">map</code>.</p>
+
+<p>Diese Macht erkaufen wir uns allerdings auch mit etwas mehr Komplexität. Vergleichen wir einmal die Signaturen von <code class="language-plaintext highlighter-rouge">map</code> und <code class="language-plaintext highlighter-rouge">foldr</code>:</p>
+
+<pre><code class="language-Elm">map :   (a -&gt; b)             -&gt; List a -&gt; List b
+
+foldr : (a -&gt; b -&gt; b)  -&gt;  b -&gt; List a -&gt; b
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">map</code> ist einfach: Es verwandelt eine Liste von Elementen vom typ <code class="language-plaintext highlighter-rouge">a</code> in eine gleich lange Liste von Elementen vom Typ <code class="language-plaintext highlighter-rouge">b</code>. Dafür verwendet <code class="language-plaintext highlighter-rouge">map</code> die Funktion <code class="language-plaintext highlighter-rouge">(a -&gt; b)</code> die wir übergeben.</p>
+
+<p>Ich habe die einzelnen Parameter in Signaturen bewusst ausgerichtet um die Unterschiede zu verdeutlichen.
+Für <code class="language-plaintext highlighter-rouge">fold</code> taucht <code class="language-plaintext highlighter-rouge">b</code> jetzt an viel mehr Stellen auf! 
+Der Rückgabewert ist jetzt nur noch <code class="language-plaintext highlighter-rouge">b</code> anstatt <code class="language-plaintext highlighter-rouge">List b</code>!
+Unsere “Faltfunktion” ist nicht mehr <code class="language-plaintext highlighter-rouge">(a -&gt; b)</code> sondern <code class="language-plaintext highlighter-rouge">(a -&gt; b -&gt; b)</code>. Das heißt um den Rückggabewert <em>pro Element</em> zu berechnen müssen wir zusätzlich einen weiteren Wert vom selben Typ wie dem Ergebnis unserer Faltoperation konsumieren.
+Und dann ist da noch das <code class="language-plaintext highlighter-rouge">b</code> “in der Mitte” - der zweite Parameter den wir <code class="language-plaintext highlighter-rouge">foldr</code> übergeben müssen, bevor wir es auf die Liste von <code class="language-plaintext highlighter-rouge">a</code> anwenden können.</p>
+
+<p>Wie immer wird hoffentlich alles klarer wenn wir uns ein einfaches Beispiel anschauen. 
+Sagen wir mal, wir möchten eine Funktion <code class="language-plaintext highlighter-rouge">totalLength</code> implementieren die Anzahl aller Buchstaben in einer Liste von Wörter berechnet.</p>
+
+<pre><code class="language-Elm">totalLength : List String -&gt; Int
+</code></pre>
+
+<p>In einer imperativen Sprache mit <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in"><code class="language-plaintext highlighter-rouge">for</code>-Schleife</a> können wir das ganze so berechnen:</p>
+
+<pre><code class="language-JavaScript">function totalLength(words) {
+  var sum = 0;
+  for (let word of words) {
+    sum = sum + word.length
+  }
+  return sum;
+}
+
+totalLength(['x', 'yy', 'zzz']) == 6 // true
+</code></pre>
+
+<p>Eine solche Lösung wäre nicht zulässig in Elm da wir keine <em>Variablen</em> haben deren Wert wir überschreiben können. Deswegen gibt es auch keine <code class="language-plaintext highlighter-rouge">for</code>-Schleife in Elm. Aber <code class="language-plaintext highlighter-rouge">fold</code> erledigt den gleichen Job mindestens genauso gut. Um zu verstehen wie man <code class="language-plaintext highlighter-rouge">foldr</code> verwendet bauen wir unsere JavaScript-Lösung von oben wie folgt um.</p>
+
+<p>Refaktorisierung 1:</p>
+
+<pre><code class="language-JavaScript">function totalLength2(words) {
+  var init = 0;
+  var adder = 
+    function(word, accu) { 
+      return accu + word.length; 
+    }
+
+  var sum = init;
+  for (let word of words) {
+    sum = adder(word, sum);
+  }
+  return sum;
+}
+</code></pre>
+
+<p>Refaktorisierung 2:</p>
+
+<pre><code class="language-JavaScript">function fold(f, init, array) {
+  var sum = init;
+  for (let item of array) {
+    sum = f(item, sum);
+  }
+  return sum;
+}
+
+function totalLength3(words) {
+  var init = 0;
+  var adder = 
+    function(word, accu) { 
+      return accu + word.length; 
+    }
+  return fold(adder, init, words);
+}
+</code></pre>
+
+<p>Jetzt haben wir unsere eigene <code class="language-plaintext highlighter-rouge">fold</code>-Implementierung in JavaScript geschrieben. Und genaus wie wir sie dort verwenden rufen wir sie auch in Elm auf:</p>
+
+<pre><code class="language-Elm">totalLength : List String -&gt; Int
+totalLength words =
+  let
+    init = 0
+    adder word accu =
+      accu + (String.length word)
+  in
+    List.foldr adder init words
+</code></pre>
+
+<h2 id="anwendung-von-fold-in-erasecompleterows">Anwendung von <code class="language-plaintext highlighter-rouge">fold</code> in <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code></h2>
+
+<p>Die Funktion heißt <code class="language-plaintext highlighter-rouge">fold</code> oder <code class="language-plaintext highlighter-rouge">reduce</code> weil wir häufig eine potentiell lange Liste auf einen <em>kleinen, einzelnen</em> Wert reduzieren.</p>
+
+<p>Wie einfach der Wert ist auf den reduzieren hängt von der Funktion ab mit der wir “falten”.
+Die <a href="https://github.com/axelerator/elm-tetris/blob/74ac057b1037e10cd6c47b63647952c943054718/src/Main.elm#L396">Anwendung von <code class="language-plaintext highlighter-rouge">fold</code> in <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code></a> erzeugt als Rückgabewert ein Paar von Listen von Reihen.</p>
+
+<pre><code class="language-Elm">folder : Row -&gt; ( List Row, List Row ) -&gt; ( List Row, List Row )
+folder ((Row fields) as row) ( nonEmptyRows, header ) =
+    if isFull row then
+        ( nonEmptyRows
+        , mkEmptyRow (length fields) 0 :: header
+        )
+
+    else
+        ( row :: nonEmptyRows
+        , header
+        )
+
+( allNonEmptyRows, finalHeader ) =
+    foldr folder ( [], [] ) board.rows
+</code></pre>
+
+<p>Wenn wir die Typparameter in unserem <code class="language-plaintext highlighter-rouge">foldr</code> Ausdruck auswerten ergibt das die folgenden Typen.
+Ich definiere zunächst einen Typalias, damit alles in eine Zeile passt.</p>
+
+<pre><code class="language-Elm">type alias RowTuple = (List Row, List Row)
+
+foldr : ( a   -&gt;    b    -&gt;     b   )  -&gt;   b  -&gt; List  a  -&gt;    b
+foldr : (Row -&gt; RowTuple -&gt; RowTuple)  -&gt;  RowTuple -&gt; List Row -&gt; RowTuple
+</code></pre>
+
+<p>Der zweite Parameter für <code class="language-plaintext highlighter-rouge">foldr</code> ist also der <code class="language-plaintext highlighter-rouge">b</code> für den ersten Aufruf unserer “Faltfunktion”. Jeder weitere Aufruf bekommt als <code class="language-plaintext highlighter-rouge">b</code> den Rückggabewert der “Faltfunktion” des vorherigen Listenelements.</p>
+
+<p>Das erstemal das unsere <code class="language-plaintext highlighter-rouge">folder</code>-Funktion von aufgerufen wird:</p>
+
+<pre><code class="language-Elm">folder : Row -&gt; ( List Row, List Row ) -&gt; ( List Row, List Row )
+folder row ( nonEmptyRows, header ) = ..
+</code></pre>
+
+<p>enthält <code class="language-plaintext highlighter-rouge">row</code> die erste Reihe und <code class="language-plaintext highlighter-rouge">( nonEmptyRows, header )</code> hat den Wert <code class="language-plaintext highlighter-rouge">( [], [] )</code>, denn das ist der zweite Parameter in unserem Aufruf: <code class="language-plaintext highlighter-rouge">foldr folder ( [], [] ) board.rows</code>.</p>
+
+<ul>
+  <li>Ist diese Reihe voll hängen wir eine leere Reihen an den hinteren Wert des Paares.</li>
+  <li>Ist die Reihe <em>nicht</em> voll, hängen wir sie an den vorderen Teil des Paares.</li>
+</ul>
+
+<p>Der so berechnete Rückgabewert wird (neben der nächsten Reihe) der neue Eingabewert für den nächsten `folder-Aufruf. Das wird solange wiederholt bis wir alle Reihen bearbeitet haben.
+Danach haben wir zwei Listen in dem Ergebnispaar: Eine mit ‘unvollständigen’ Reihen die den unteren Teil des Bretts bilden, und eine Liste mit leeren Reihen die wir oben drauf packen um die entfernten, vollständigen Reihen zu kompenieren.</p>
+
+<p><img src="/assets/posts/tetris-clear-rows/fold.svg" style="width: 100%" /></p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Damit mein Tetris spielbar wird sorge ich in Episode 10 (55min) dafür, dass vollständige Zeilen verschwinden. Mit mehr Unit-Tests und der Anwendung der Faltung einer Liste nähere ich mich einem vollständigen Version.]]></summary></entry><entry xml:lang="en"><title type="html">Episode 10: Clearing lines</title><link href="https://blog.axelerator.de/elm/en/tetris-clear-rows" rel="alternate" type="text/html" title="Episode 10: Clearing lines" /><published>2021-09-16T23:00:00+00:00</published><updated>2021-09-16T23:00:00+00:00</updated><id>https://blog.axelerator.de/elm/en/tetris-clear-lines-en</id><content type="html" xml:base="https://blog.axelerator.de/elm/en/tetris-clear-rows"><![CDATA[<p><img src="/assets/posts/tetris-clear-rows/teaser.gif" style="float:left; margin: 5px 10px 10px 0" />
+For my Tetris to be actually playable I’m adding in <a href="https://www.youtube.com/watch?v=b1vnT6XTFP4">episode 10 (55min)</a> the code to have full rows cleared. With the help of more unit tests and the infamous <code class="language-plaintext highlighter-rouge">fold</code> function, I’m inching my way towards a complete solution.</p>
+
+<p>The state of the code after this episode is captured in the <a href="https://github.com/axelerator/elm-tetris/tree/episode10">episode10 Branch</a>. The changes I made can be found in the last <a href="https://github.com/axelerator/elm-tetris/commit/74ac057b1037e10cd6c47b63647952c943054718">Commit</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/b1vnT6XTFP4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>It’s always satisfying when you lay out a plan and the implementation actually adheres to it. That’s why recording this episode was extra fun. Of course, developing (at least partially) <em>test-driven</em> helped with that.</p>
+
+<p>The initial idea was to come up with an <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code> function that takes a board and returns a new one where the <em>complete</em> rows have been removed</p>
+
+<p>It was easy to start by writing a test since I had already set up unit tests in <a href="/elm/en/tetris-collision">Episode 7</a>.</p>
+
+<p>The algorithm I wanted to implement has the following steps.</p>
+
+<ol>
+  <li>Run through all rows of the board and for each:
+    <ul>
+      <li><em>1a</em> for an <strong>incomplete</strong> row: collect it as a  <em>“bottom”</em>-row for the resulting board</li>
+      <li><em>1b</em> for a <strong>complete</strong> row: add an <strong>empty</strong> row in a new list of <em>“header”</em>-rows</li>
+    </ul>
+  </li>
+  <li>Create the result by <em>appending</em> the empty “header” (1b) rows on top of the incomplete “bottom” (1a) rows</li>
+</ol>
+
+<p>For the implementation, I went with the <a href="https://package.elm-lang.org/packages/elm/core/latest/List#foldr">foldr</a> function. Since a few people seem to be a bit anxious when it comes to folding I want to use the first application of in in my Tetris as an opportunity to go a bit into detail about how it works.</p>
+
+<h3 id="what-is-foldr-good-for">What is <code class="language-plaintext highlighter-rouge">foldr</code> good for?</h3>
+
+<p><code class="language-plaintext highlighter-rouge">foldr</code> exists in many languages, but is sometimes referred to under a different name:</p>
+
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce">reduce</a> in JavaScript</li>
+  <li><a href="https://ruby-doc.org/core-3.0.2/Enumerable.html#method-i-inject">inject</a> in Ruby</li>
+</ul>
+
+<p>Similarly to <code class="language-plaintext highlighter-rouge">map</code> we pass it a function that’s executed for every element in a collection (that we also have to pass).
+Contrary to <code class="language-plaintext highlighter-rouge">map</code> though the result doesn’t <em>have</em> to be a list of the same length. It can be of an arbitrary type.
+In that sense, it’s more flexible or powerful.</p>
+
+<p>On the flip side, we’re buying this extra flexibility with a tad more complexity. That becomes obvious if we compare the signatures of <code class="language-plaintext highlighter-rouge">map</code> vs. <code class="language-plaintext highlighter-rouge">foldr</code>.</p>
+
+<pre><code class="language-Elm">map :   (a -&gt; b)             -&gt; List a -&gt; List b
+
+foldr : (a -&gt; b -&gt; b)  -&gt;  b -&gt; List a -&gt; b
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">map</code> is relatively simple: It transforms a list of items of type <code class="language-plaintext highlighter-rouge">a</code> into a list of elements of type <code class="language-plaintext highlighter-rouge">b</code>.
+Just by calling the “transformer” function <code class="language-plaintext highlighter-rouge">(a -&gt; b)</code> for each element.</p>
+
+<p>I aligned the types of the different parameters to emphasize the differences between the two.
+For <code class="language-plaintext highlighter-rouge">fold</code> the <code class="language-plaintext highlighter-rouge">b</code> type occurs a lot more often now!
+And the <em>return type</em> is now <strong>just</strong> <code class="language-plaintext highlighter-rouge">b</code> instead of <code class="language-plaintext highlighter-rouge">List b</code> as for <code class="language-plaintext highlighter-rouge">map</code>.</p>
+
+<p>What was a simple <code class="language-plaintext highlighter-rouge">(a -&gt; b)</code> transformer function for map has now become an <code class="language-plaintext highlighter-rouge">(a -&gt; b -&gt; b)</code>. That means the function that gets called <em>per Element</em> now <strong>also</strong> needs a value of the same type as the result of the whole operation.</p>
+
+<p>And then there is the new <code class="language-plaintext highlighter-rouge">b</code> parameter in the middle. The second parameter we have to pass to <code class="language-plaintext highlighter-rouge">foldr</code> before we can pass it the list.</p>
+
+<p>Let’s look at a simpler application to understand better how these parameters work together.
+Imagine we want to create a function <code class="language-plaintext highlighter-rouge">totalLength</code> that gives us the total number of characters for a given list of words.</p>
+
+<pre><code class="language-Elm">totalLength : List String -&gt; Int
+</code></pre>
+
+<p>An imperative solution in JavaScript with a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in"><code class="language-plaintext highlighter-rouge">for</code> loop</a> could look like this.</p>
+
+<pre><code class="language-JavaScript">function totalLength(words) {
+  var sum = 0;
+  for (let word of words) {
+    sum = sum + word.length
+  }
+  return sum;
+}
+
+totalLength(['x', 'yy', 'zzz']) == 6 // true
+</code></pre>
+
+<p>Such a solution is not possible in Elm. We can’t <strong>reassign</strong> variables, so the whole construct of such a <code class="language-plaintext highlighter-rouge">for</code> loop doesn’t make sense, and consequently, there is not even syntax for it in Elm.
+But we have <code class="language-plaintext highlighter-rouge">foldr</code>, that gets the job <strong>at least</strong> as well done as a <code class="language-plaintext highlighter-rouge">for</code> loop.</p>
+
+<p>To understand how to use <code class="language-plaintext highlighter-rouge">foldr</code> we will progressively <em>functionalize</em> our JavaScript solution.</p>
+
+<p>Refactoring 1:</p>
+
+<pre><code class="language-JavaScript">function totalLength2(words) {
+  var init = 0;
+  var adder = 
+    function(word, accu) { 
+      return accu + word.length; 
+    }
+
+  var sum = init;
+  for (let word of words) {
+    sum = adder(word, sum);
+  }
+  return sum;
+}
+</code></pre>
+<p>This does still the same as our initial implementation. And so will the next one.</p>
+
+<p>Refactoring 2:</p>
+
+<pre><code class="language-JavaScript">function fold(f, init, array) {
+  var sum = init;
+  for (let item of array) {
+    sum = f(item, sum);
+  }
+  return sum;
+}
+
+function totalLength3(words) {
+  var init = 0;
+  var adder = 
+    function(word, accu) { 
+      return accu + word.length; 
+    }
+  return fold(adder, init, words);
+}
+</code></pre>
+
+<p>Now we have our own ‘fold’ implementation in JavaScript. And the way we call it is exactly the same way we use the <code class="language-plaintext highlighter-rouge">foldr</code> function in Elm.</p>
+
+<pre><code class="language-Elm">totalLength : List String -&gt; Int
+totalLength words =
+  let
+    init = 0
+    adder word accu =
+      accu + (String.length word)
+  in
+    List.foldr adder init words
+</code></pre>
+
+<h2 id="application-of-foldr-in-erasecompleterows">Application of <code class="language-plaintext highlighter-rouge">foldr</code> in <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code></h2>
+
+<p>The function is called <code class="language-plaintext highlighter-rouge">fold</code> or <code class="language-plaintext highlighter-rouge">reduce</code> because its application often takes a potentially long list and transforms it into a <em>single, small</em> value.</p>
+
+<p>In the end, how small the resulting value is, depends primarly on the function we’re <em>folding with</em>.</p>
+
+<p>The <a href="https://github.com/axelerator/elm-tetris/blob/74ac057b1037e10cd6c47b63647952c943054718/src/Main.elm#L396">application of <code class="language-plaintext highlighter-rouge">foldr</code> in <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code></a> creates a <code class="language-plaintext highlighter-rouge">Tuple</code> or pair where each element is a list of rows.</p>
+
+<p>That’s the case because the function <em>we’re folding with</em> has this return type.</p>
+
+<pre><code class="language-Elm">folder : Row -&gt; ( List Row, List Row ) -&gt; ( List Row, List Row )
+folder ((Row fields) as row) ( nonEmptyRows, header ) =
+    if isFull row then
+        ( nonEmptyRows
+        , mkEmptyRow (length fields) 0 :: header
+        )
+
+    else
+        ( row :: nonEmptyRows
+        , header
+        )
+
+( allNonEmptyRows, finalHeader ) =
+    foldr folder ( [], [] ) board.rows
+</code></pre>
+
+<p>If we evaluate the type parameters of our <code class="language-plaintext highlighter-rouge">foldr</code> call we get the following picture.
+I start by defining a little type alias to keep the listing more concise</p>
+
+<pre><code class="language-Elm">type alias RowTuple = (List Row, List Row)
+
+foldr : ( a   -&gt;    b    -&gt;     b   )  -&gt;   b  -&gt; List  a  -&gt;    b
+foldr : (Row -&gt; RowTuple -&gt; RowTuple)  -&gt;  RowTuple -&gt; List Row -&gt; RowTuple
+</code></pre>
+
+<p>The <em>second</em> parameter for <code class="language-plaintext highlighter-rouge">foldr</code> is the <code class="language-plaintext highlighter-rouge">b</code> our “folder” gets passed in for the call with the first <code class="language-plaintext highlighter-rouge">Row</code>.
+Every following call to <code class="language-plaintext highlighter-rouge">folder</code> gets the <strong>return</strong> value of the previous call as its <code class="language-plaintext highlighter-rouge">b</code> parameter.</p>
+
+<p>The first time our <code class="language-plaintext highlighter-rouge">folder</code> function gets called:</p>
+
+<pre><code class="language-Elm">folder : Row -&gt; ( List Row, List Row ) -&gt; ( List Row, List Row )
+folder row ( nonEmptyRows, header ) = ..
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">row</code> will contain the first row and <code class="language-plaintext highlighter-rouge">( nonEmptyRows, header )</code> will have the value <code class="language-plaintext highlighter-rouge">([], [])</code>. Because the latter is the <strong>second parameter</strong> of our call:  <code class="language-plaintext highlighter-rouge">foldr folder ( [], [] ) board.rows</code></p>
+
+<ul>
+  <li>is the row <strong>complete</strong> we’ll append <strong>an empty</strong> row to the <strong>second</strong> list in the tuple</li>
+  <li>is the row <strong>incomplete</strong>  we’ll append <strong>that row</strong> to the <strong>first</strong> list in the tuple</li>
+</ul>
+
+<p>This process is repeated until for each row we either ‘kept’ the row in the first list or appended an empty one in the second.</p>
+
+<p>After that we end up with two lists:</p>
+
+<ul>
+  <li>all the incomplete rows we kept, which will go on the bottom of the new board</li>
+  <li>a list of empty rows to compensate for the complete ones we want to remove</li>
+</ul>
+
+<p>Now we just have to concatenate those two lists in the right order to assemble the board in the expected state.</p>
+
+<p><img src="/assets/posts/tetris-clear-rows/fold.svg" style="width: 100%" /></p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[For my Tetris to be actually playable I’m adding in episode 10 (55min) the code to have full rows cleared. With the help of more unit tests and the infamous fold function, I’m inching my way towards a complete solution.]]></summary></entry><entry xml:lang="en"><title type="html">Episode 9: Preventing invalid movements</title><link href="https://blog.axelerator.de/elm/en/tetris-limit-movement" rel="alternate" type="text/html" title="Episode 9: Preventing invalid movements" /><published>2021-09-11T20:00:00+00:00</published><updated>2021-09-11T20:00:00+00:00</updated><id>https://blog.axelerator.de/elm/en/tetris-limit-movement-en</id><content type="html" xml:base="https://blog.axelerator.de/elm/en/tetris-limit-movement"><![CDATA[<p>In <a href="https://www.youtube.com/watch?v=ZacgfAavKzQ">episode 9 (48min)</a> I make sure the current piece can’t be moved out of the board or into other pieces. With that came the opportunity to do a little functional finger exercise and develop a function that swaps the arguments of another function.</p>
+
+<p>The state of the code can be found on the <a href="https://github.com/axelerator/elm-tetris/tree/episode9">episode9 branch</a>.
+Or you can have a look at the <a href="https://github.com/axelerator/elm-tetris/commit/c9e1d2564626e3584e96500ee210ad14a7a9b1c4">commit</a> if you just want to see what’s changed.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZacgfAavKzQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<ol>
+  <li><a href="#canmove">Movement allowed?</a></li>
+  <li><a href="#curry">Excursion <em>Currying</em></a></li>
+</ol>
+
+<h3 id="-movement-allowed"><a name="canmove"></a> Movement allowed?</h3>
+
+<p>The entry point for this week’s changes was the <a href="https://github.com/axelerator/elm-tetris/blob/episode8/src/Main.elm#L222"><code class="language-plaintext highlighter-rouge">movePiece</code> function</a>. The goal was to extend the logic in a way that would prevent invalid moves.</p>
+
+<p>With nearly 50 lines of code, the <code class="language-plaintext highlighter-rouge">movePiece</code> function was already quite long, to begin with. But with the application of a few basic syntax elements, we were able to keep the length at that despite adding the new logic.</p>
+
+<p>The definition of what I understand to constitute a valid move is as follows:</p>
+
+<blockquote>
+  <p>All fields the current piece <strong>would</strong> occupy on the board must be empty.
+If that’s not the case, don’t execute the move</p>
+</blockquote>
+
+<p>The significant change of the code looks like this:</p>
+
+<pre><code class="language-Elm">movePiece : Key -&gt; Model -&gt; Model
+movePiece key model =
+  ...
+  let
+      canMove =
+          all ((==) (Just Empty)) &lt;|
+              map (flip lookUp model.board) &lt;|
+                  occupiedPositions movedPiece
+  in
+  if canMove then
+      { model | currentPiece = Just movedPiece }
+
+  else
+      model
+</code></pre>
+
+<p>One sign of high software quality is in my opinion when the ‘natural mental model’ can be read directly from the code
+From my point of view Elm offers many ways to combine expressions in a way that brings us close to this goal.</p>
+
+<p>If we read the calculation of <code class="language-plaintext highlighter-rouge">canMove</code> from the bottom up, <code class="language-plaintext highlighter-rouge">canMove</code> is true if:</p>
+
+<ul>
+  <li>the positions the current piece would occupy (<code class="language-plaintext highlighter-rouge">occupiedPositions movedPiece</code>)</li>
+  <li>transformed into the state of the field on the board (<code class="language-plaintext highlighter-rouge">map (flip lookUp model.board)</code>)</li>
+  <li>are all empty (<code class="language-plaintext highlighter-rouge">all ((==) (Just Empty))</code>)</li>
+</ul>
+
+<h3 id="-excursion-currying"><a name="curry"></a> Excursion <em>Currying</em></h3>
+
+<p>I discovered functional programming thanks to my professor <a href="https://github.com/UweSchmidt">Uwe Schmidt</a> at university.
+But the theoretical groundwork for it only partly managed to persist in my brain. What led to me fumbling a bit for words when it came to explain what concepts I was making use of when I developed the <a href="https://github.com/axelerator/elm-tetris/blob/episode9/src/Main.elm#L250"><code class="language-plaintext highlighter-rouge">flip</code> function</a></p>
+
+<p>That’s why I’d like to spend a few lines here to make up for the lack of explanation. In the <a href="https://blog.axelerator.de/elm/en/board">previous episodes</a> I made use of partial function application quite a bit.</p>
+
+<p><em>Currying</em> describes a process to transform a function in a way that <strong>every</strong> parameter can be called/bound separately. In some languages like Elm and Haskell functions are automatically curried.</p>
+
+<p>But currying is also possible in languages that don’t have it build in, for example in JavaScript
+However, we do have to explicitly rewrite our function definition and how we call the function.</p>
+
+<pre><code class="language-Javascript">// not curried
+function addAndMultiply(a, b, times) {
+  return (a + b) * times;
+}
+
+// curried
+function addAndMultiplyCurried(a) {
+  return function(b) {
+    return function(times) {
+      return (a + b) * times;
+    }
+  }
+}
+
+// curried ES6
+const addAndMultiplyCurriedES6 = 
+  (a) =&gt; 
+    (b) =&gt; 
+      (times) =&gt; (a + b) * times;
+
+// same result
+addAndMultiply(1,2,3) == addAndMultiplyCurried(1)(2)(3)
+</code></pre>
+
+<p>Functions that are <em>curried</em> are more versatile. That is mainly for their ability to use them with partial function application, of which we made use multiple times already in our little Tetris program.</p>
+
+<p>The use of currying alone does not make a program automatically X% better. I would even argue that in languages that require an extra effort to rewrite a function it’s not worth it.
+However in languages where it comes for free out of the box, it quickly becomes a tool you don’t want to miss. And the larger a software project grows the more even those little optimization pay off.</p>
+
+<p>One ‘fun fact’ one must mention when talking about <em>currying</em> is how it’s got its name. It’s based on the work of <a href="https://en.wikipedia.org/wiki/Haskell_Curry">Haskell Curry</a>. An American logician who took great inspiration from <a href="https://en.wikipedia.org/wiki/Moses_Sch%C3%B6nfinkel">Moses Schönfinkel</a>s concept of <a href="https://en.wikipedia.org/wiki/Combinatory_logic">combinatory logic</a>. So strictly speaking it should be called <em>schönfinkeling</em> - but that just does not roll off the tongue as easily I guess.</p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[In episode 9 (48min) I make sure the current piece can’t be moved out of the board or into other pieces. With that came the opportunity to do a little functional finger exercise and develop a function that swaps the arguments of another function.]]></summary></entry><entry xml:lang="de"><title type="html">Episode 9: Eingeschränkt bewegungsfähig</title><link href="https://blog.axelerator.de/elm/de/tetris-limit-movement" rel="alternate" type="text/html" title="Episode 9: Eingeschränkt bewegungsfähig" /><published>2021-09-11T20:00:00+00:00</published><updated>2021-09-11T20:00:00+00:00</updated><id>https://blog.axelerator.de/elm/de/tetris-limit-movement-de</id><content type="html" xml:base="https://blog.axelerator.de/elm/de/tetris-limit-movement"><![CDATA[<p>In <a href="https://www.youtube.com/watch?v=ZacgfAavKzQ">Episode 9 (48min)</a> stelle ich sicher das wir das aktuelle Teil nicht außerhalb des Spielbretts oder in andere Teile hineinbewegen können. Dabei muss ich zwei Argumente einer Funktion umdrehen und nutze dies für eine funktionale Fingerübung.</p>
+
+<p>Die Code-Änderungen von dieser Woche gibt es im <a href="https://github.com/axelerator/elm-tetris/tree/episode9">episode9 Branch</a> bzw <a href="https://github.com/axelerator/elm-tetris/commit/c9e1d2564626e3584e96500ee210ad14a7a9b1c4">Commit</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZacgfAavKzQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<ol>
+  <li><a href="#canmove">Bewegung erlaubt?</a></li>
+  <li><a href="#curry">Exkurs <em>Currying</em></a></li>
+</ol>
+
+<h3 id="-bewegung-erlaubt"><a name="canmove"></a> Bewegung erlaubt?</h3>
+
+<p>Der Einstiegspunkt für diese Episode war die <a href="https://github.com/axelerator/elm-tetris/blob/episode8/src/Main.elm#L222"><code class="language-plaintext highlighter-rouge">movePiece</code> Funktion</a>. Das Ziel war es hier Logik hinzuzufügen die die Ausführung der Bewegung nur zulässt, wenn die Spielregeln es auch zulassen.</p>
+
+<p>Mit fast 50 Zeilen Code ist die <code class="language-plaintext highlighter-rouge">movePiece</code> Funktion bereits verhältnismäßig lang. Doch durch Nutzung ein paar einfacher Syntaxelemente bleibt die finale Funktion mit der zusätzlichen Funktionalität bei der gleichen Länge.</p>
+
+<p>Die Erklärung für ‘was erlaubt’ ist, habe ich in meinem Kopf wie folgt definiert:</p>
+
+<blockquote>
+  <p>Alle Plätze die der aktuelle Spielstein einnehmen <strong>würde</strong>, wenn die Bewegung ausgeführt wird müssen leer sein.
+Wenn das nicht der Fall ist, wird die Bewegung nicht ausgeführt.</p>
+</blockquote>
+
+<p>Der signifankte Teil der sich geändert hat sieht wie folgt aus:</p>
+
+<pre><code class="language-Elm">movePiece : Key -&gt; Model -&gt; Model
+movePiece key model =
+  ...
+  let
+      canMove =
+          all ((==) (Just Empty)) &lt;|
+              map (flip lookUp model.board) &lt;|
+                  occupiedPositions movedPiece
+  in
+  if canMove then
+      { model | currentPiece = Just movedPiece }
+
+  else
+      model
+</code></pre>
+
+<p>Hohe Softwarequalität drückt sich meiner Meinung nach darin aus, wenn sich das ‘mentale Modell’ möglichst direkt aus dem Code ablesen lässt.</p>
+
+<p>Die Art wie sich Ausdrücke in Elm kombinieren lassen ermöglicht dies meiner Meinung nach sehr elegant.
+Wenn wir die Berechnung von <code class="language-plaintext highlighter-rouge">canMove</code> von unten nach oben lesen, ist <code class="language-plaintext highlighter-rouge">canMove</code> wahr wenn:</p>
+
+<ul>
+  <li>die Positionen des bewegten Teils (<code class="language-plaintext highlighter-rouge">occupiedPositions movedPiece</code>)</li>
+  <li>transformiert in welchen Zustand dieses Feld auf dem aktuellen Brett hat (<code class="language-plaintext highlighter-rouge">map (flip lookUp model.board)</code>)</li>
+  <li>alle leer sind (<code class="language-plaintext highlighter-rouge">all ((==) (Just Empty))</code>)</li>
+</ul>
+
+<h3 id="-exkurs-currying"><a name="curry"></a> Exkurs <em>Currying</em></h3>
+
+<p>Das funktionalen Programmieren habe ich dank meines ehemaligen Professor <a href="https://github.com/UweSchmidt">Uwe Schmidt</a> entdeckt. Die theoretischen Hintegründe aus der Vorlesung sind jedoch nur teilweise hängengeblieben. Und so bin ich im Livestream doch etwas ins Stolpern geraten als es darum ging zu erklären was genau bei der <a href="https://github.com/axelerator/elm-tetris/blob/episode9/src/Main.elm#L250"><code class="language-plaintext highlighter-rouge">flip</code> Funktion</a> passiert.</p>
+
+<p>Deswegen gebe ich hier nun eine etwas detailierte Erklärung dazu was <code class="language-plaintext highlighter-rouge">Currying</code> bedeutet.
+In den <a href="https://blog.axelerator.de/elm/de/board">vergangenen Episoden</a> habe ich mehrfach von <em>‘partieller Anwendung’</em> Gebrauch gemacht.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Currying</code> beschreibt den Vorgang eine Funktion so aufzubrechen, dass jeder Parameterwert einzeln aufgerufen/gebunden werden kann. Bei Sprachen wie Elm und Haskell bekommen sind Funktionen ‘von Haus aus’ gecurried.</p>
+
+<p>In JavaScript is Currying auch möglich, allerdings müssen wir es hier explizit ausfomulieren.</p>
+
+<pre><code class="language-Javascript">// not curried
+function addAndMultiply(a, b, times) {
+  return (a + b) * times;
+}
+
+// curried
+function addAndMultiplyCurried(a) {
+  return function(b) {
+    return function(times) {
+      return (a + b) * times;
+    }
+  }
+}
+
+// curried ES6
+const addAndMultiplyCurriedES6 = 
+  (a) =&gt; 
+    (b) =&gt; 
+      (times) =&gt; (a + b) * times;
+
+// same result
+addAndMultiply(1,2,3) == addAndMultiplyCurried(1)(2)(3)
+</code></pre>
+
+<p>Funktionen die “gecurried” sind sind vielseitiger einsetzbar als ihre nicht-gecurrieten Gegenstücke. Bereits in unserem kleinen Tetrisprogramm machen wir davon ein paar mal gebraucht.</p>
+
+<p>Currying alleine macht ein Programm nicht autmatisch X% besser. Ich würde sogar behaupten, dass wenn man in einer Sprache wie JavaScript in der man seine Funktionnsdefinition umschreiben muss, der Aufwand es nicht wert ist.</p>
+
+<p>In Sprachen jedoch wo es currying ‘gratis’ dazu gibt, wird es zu einer Selbstverständlichkeit die man schnell nicht mehr missen möchte. Und je größer ein Softwareprojekt wird, desto größer sind die Effizienzgewinne von solch kleinen Optimierungen.</p>
+
+<p>Ein ‘Fun Fact’ den man nennen muss, wenn man über Currying spricht ist, dass es nach <a href="https://de.wikipedia.org/wiki/Haskell_Brooks_Curry">Haskell Curry</a> benannt wurde. Seine Ideen beruhen auf den Grundlagen der kobinatorischen Logik die von <a href="https://de.wikipedia.org/wiki/Moses_Sch%C3%B6nfinkel">Moses Schönfinkel</a> vor <strong>über 100 Jahren</strong> entwickelt wurden.
+Der Name ‘Currying’ hat sich mutmaßlich durchgesetzt, weil eine Funktion ‘schönfinkeln’ halt nur im deutschen Sprachraum von der Zunge rollt.</p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[In Episode 9 (48min) stelle ich sicher das wir das aktuelle Teil nicht außerhalb des Spielbretts oder in andere Teile hineinbewegen können. Dabei muss ich zwei Argumente einer Funktion umdrehen und nutze dies für eine funktionale Fingerübung.]]></summary></entry></feed>

@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 1: Project setup for the Elm Tetris clone</title>
+  </head>
+  <body class="hot-elm">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/">Home</a></div>
+  
+    <div><a href="/about">About</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇺🇸</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+          <li>
+            <a href="/elm/de/hot-elm" class="de">🇩🇪</a>
+          </li>
+        
+      
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 1: Project setup for the Elm Tetris clone</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+1 July 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p>In this episode I shared my hot code replace setup for Elm explorations with you. After struggling with the limitations of <code class="language-plaintext highlighter-rouge">elm reactor</code> I build this little boiler plate setup to shorten my feedback loop.</p>
+
+<p>Here is the link to the <a href="https://elm-lang.org/docs/from-javascript">“coming from JavaScript of the official guide”</a> showing the diffrences between Elm and JavaScript syntax.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ghOxi5Fjwac" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>If you want to use the boilerplate you can use the <a href="https://github.com/axelerator/elm-nano-examples/tree/master/hot_elm"><code class="language-plaintext highlighter-rouge">hot_elm</code></a> folder from my <a href="https://github.com/axelerator/elm-nano-examples">“Elm nano examples”</a> directory.
+Just execute the <code class="language-plaintext highlighter-rouge">./bin/build.sh</code> (or <code class="language-plaintext highlighter-rouge">./bin/build_linux</code>) in the project folder. It will listen to changes until you cancel it with <code class="language-plaintext highlighter-rouge">CTRL+C</code></p>
+
+<p>In the shell should look something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--&gt; ./bin/build.sh
+Compiling ⚔️
+Compiled without errors
+^C
+`--&gt; 
+</code></pre></div></div>
+
+<p>You should then be able to open the <code class="language-plaintext highlighter-rouge">index.html</code> in the browser directly from disk and it will reload the Elm app and display build errors if present.</p>
+
+<video loop="" autoplay="" width="600">
+    <source src="/assets/posts/hotelmprev.mp4" type="video/mp4" />
+
+    Sorry, your browser doesn't support mp4 videos.
+</video>
+
+<p>The main driver of the setup is a shell script that watches the source directory for changes and triggers a recompile if necessary.</p>
+
+<h4>build.sh</h4>
+<p><label for="mn-demo" class="margin-toggle">⊕</label>
+<input type="checkbox" id="mn-demo" class="margin-toggle" />
+<span class="marginnote">Visit <code>build.sh</code> in context with the other files for this nano example on <a href="https://github.com/axelerator/elm-nano-examples/blob/master/hot_elm/bin/build.sh">Github</a></span></p>
+<pre><code class="language-elm">#!/bin/sh
+trap ctrl_c INT
+
+function ctrl_c() {
+        exit 0
+}
+
+function append() {
+ASSETS=&quot;$ASSETS\n$1&quot;
+}
+
+function report() {
+  touch tmp/build.log
+  ERRORS=`cat tmp/build.log`
+  if [ -n &quot;$ERRORS&quot; ]; then
+    echo &quot;Comiled with errors&quot;
+    # to also print errors in console we just compile a second time
+    elm make src/Main.elm
+    VALUE=`date -r tmp/build.log`
+    printf &quot;refresh('&quot; &gt; tmp/timestamp.js
+    printf &quot;$VALUE&quot; &gt;&gt;  tmp/timestamp.js
+    printf &quot;', &quot; &gt;&gt;  tmp/timestamp.js
+    cat tmp/build.log &gt;&gt; tmp/timestamp.js
+    printf &quot;);&quot; &gt;&gt; tmp/timestamp.js
+  else
+    echo &quot;Compiled without errors&quot;
+    VALUE=`date -r elm.js`
+    TIMESTAMP_JS_TEMPLATE=&quot;refresh('${VALUE}')&quot;
+    INTERPOLATED=`echo &quot;${TIMESTAMP_JS_TEMPLATE}&quot; | sed &quot;s/VALUE/${VALUE}/&quot; | sed &quot;s/ERROR//&quot; `
+    echo &quot;$INTERPOLATED&quot; &gt; tmp/timestamp.js
+  fi
+}
+
+
+function buildCode() {
+  echo &quot;Compiling ⚔️&quot;
+  elm make src/Main.elm --output=elm.js --report=json 2&gt; tmp/build.log
+  report
+}
+
+while true; do
+  buildCode
+  fswatch  --event PlatformSpecific src/ assets/ -1
+done
+</code></pre>
+
+<p>The other part is a vanilla JavaScript file that keeps polling a file that is written on each build and contains a timestamp and potential error messages.</p>
+
+<h4>loader.js</h4>
+<p><label for="mn-demo" class="margin-toggle">⊕</label>
+<input type="checkbox" id="mn-demo" class="margin-toggle" />
+<span class="marginnote">Visit <code>loader.js</code> in context with the other files for this nano example on <a href="https://github.com/axelerator/elm-nano-examples/blob/master/hot_elm/assets/loader.js">Github</a></span></p>
+<pre><code class="language-javascript">
+function loadElm() {
+  window.Elm = undefined;
+  const scriptTag = mkScriptTag('elm-include', 'elm.js');
+  scriptTag.addEventListener('load', function() {
+    initElm();
+  });
+}
+
+function initElm() {
+  const main = document.querySelector('main')
+  while (main.firstChild) {
+    main.removeChild(main.lastChild);
+  }
+  var main_content = document.createElement(&quot;div&quot;);
+  main_content.setAttribute('id', main_content);
+  main.appendChild(main_content);
+
+  const app = Elm.Main.init({
+    node: main_content
+  });
+}
+
+const hotReloadInterval = window.setInterval(checkTimestamp, 1000)
+window.lastTimestamp = '';
+const parsedUrl = new URL(window.location.href);
+const pathPrefix = parsedUrl.pathname.replace('/index.html', '');
+
+
+function buildError(error) {
+  const outerDiv = document.createElement(&quot;div&quot;); 
+  const path = error.path.replace(pathPrefix, '');
+  const newContent = document.createTextNode(path);
+  outerDiv.appendChild(newContent);
+
+  const problems = document.createElement(&quot;ul&quot;); 
+  error.problems.forEach(function(p){
+    const li = document.createElement('li');
+    const pre = document.createElement('pre');
+    li.appendChild(pre);
+    p.message.forEach(function(message) {
+      if ((typeof message) == 'string') {
+        pre.appendChild(document.createTextNode(message));
+      } else {
+        const span = document.createElement('span');
+        span.setAttribute(&quot;style&quot;, &quot;color:&quot; + message.color);
+        span.appendChild(document.createTextNode(message.string));
+        pre.appendChild(span);
+      }
+    });
+    problems.appendChild(li);
+  });
+
+  outerDiv.appendChild(problems);
+  return outerDiv;
+}
+
+function showErrors(errors) {
+  const oldScript = document.getElementById('build-errors');
+  if (oldScript) {
+    oldScript.remove();
+  }
+  if (!errors) return;
+  const newScript = document.createElement(&quot;div&quot;); 
+  newScript.setAttribute(&quot;id&quot;, &quot;build-errors&quot;);
+
+  errors.errors.forEach(function(e){
+    newScript.appendChild(buildError(e));
+  });
+  // add the newly created element and its content into the DOM 
+  document.getElementById('build-info').appendChild(newScript);
+}
+
+function refresh(timestamp, errors) {
+  if (window.lastTimestamp == '') {
+    if (errors) { 
+      showErrors(errors);
+    }
+  } else if (window.lastTimestamp != timestamp) {
+    showErrors(errors);
+    if (!errors) {
+      loadElm();
+    }
+  }
+  window.lastTimestamp = timestamp;
+}
+
+function mkScriptTag(id, filename) {
+  const oldScript = document.getElementById(id);
+  if (oldScript) {
+    oldScript.remove();
+  }
+  const newScript = document.createElement(&quot;script&quot;); 
+
+  newScript.setAttribute(&quot;id&quot;, id);
+  newScript.setAttribute(&quot;type&quot;, &quot;text/javascript&quot;);
+  newScript.setAttribute(&quot;src&quot;, filename );
+
+  // add the newly created element and its content into the DOM 
+  document.body.appendChild(newScript);
+  return newScript;
+}
+
+function checkTimestamp () { 
+  mkScriptTag('timestampjs',&quot;tmp/timestamp.js&quot;);
+}
+  
+loadElm();
+
+</code></pre>
+
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

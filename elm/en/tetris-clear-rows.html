@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 10: Clearing lines</title>
+  </head>
+  <body class="tetris-clear-rows">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/">Home</a></div>
+  
+    <div><a href="/about">About</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇺🇸</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+          <li>
+            <a href="/elm/de/tetris-clear-rows" class="de">🇩🇪</a>
+          </li>
+        
+      
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 10: Clearing lines</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+16 September 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p><img src="/assets/posts/tetris-clear-rows/teaser.gif" style="float:left; margin: 5px 10px 10px 0" />
+For my Tetris to be actually playable I’m adding in <a href="https://www.youtube.com/watch?v=b1vnT6XTFP4">episode 10 (55min)</a> the code to have full rows cleared. With the help of more unit tests and the infamous <code class="language-plaintext highlighter-rouge">fold</code> function, I’m inching my way towards a complete solution.</p>
+
+<p>The state of the code after this episode is captured in the <a href="https://github.com/axelerator/elm-tetris/tree/episode10">episode10 Branch</a>. The changes I made can be found in the last <a href="https://github.com/axelerator/elm-tetris/commit/74ac057b1037e10cd6c47b63647952c943054718">Commit</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/b1vnT6XTFP4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>It’s always satisfying when you lay out a plan and the implementation actually adheres to it. That’s why recording this episode was extra fun. Of course, developing (at least partially) <em>test-driven</em> helped with that.</p>
+
+<p>The initial idea was to come up with an <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code> function that takes a board and returns a new one where the <em>complete</em> rows have been removed</p>
+
+<p>It was easy to start by writing a test since I had already set up unit tests in <a href="/elm/en/tetris-collision">Episode 7</a>.</p>
+
+<p>The algorithm I wanted to implement has the following steps.</p>
+
+<ol>
+  <li>Run through all rows of the board and for each:
+    <ul>
+      <li><em>1a</em> for an <strong>incomplete</strong> row: collect it as a  <em>“bottom”</em>-row for the resulting board</li>
+      <li><em>1b</em> for a <strong>complete</strong> row: add an <strong>empty</strong> row in a new list of <em>“header”</em>-rows</li>
+    </ul>
+  </li>
+  <li>Create the result by <em>appending</em> the empty “header” (1b) rows on top of the incomplete “bottom” (1a) rows</li>
+</ol>
+
+<p>For the implementation, I went with the <a href="https://package.elm-lang.org/packages/elm/core/latest/List#foldr">foldr</a> function. Since a few people seem to be a bit anxious when it comes to folding I want to use the first application of in in my Tetris as an opportunity to go a bit into detail about how it works.</p>
+
+<h3 id="what-is-foldr-good-for">What is <code class="language-plaintext highlighter-rouge">foldr</code> good for?</h3>
+
+<p><code class="language-plaintext highlighter-rouge">foldr</code> exists in many languages, but is sometimes referred to under a different name:</p>
+
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce">reduce</a> in JavaScript</li>
+  <li><a href="https://ruby-doc.org/core-3.0.2/Enumerable.html#method-i-inject">inject</a> in Ruby</li>
+</ul>
+
+<p>Similarly to <code class="language-plaintext highlighter-rouge">map</code> we pass it a function that’s executed for every element in a collection (that we also have to pass).
+Contrary to <code class="language-plaintext highlighter-rouge">map</code> though the result doesn’t <em>have</em> to be a list of the same length. It can be of an arbitrary type.
+In that sense, it’s more flexible or powerful.</p>
+
+<p>On the flip side, we’re buying this extra flexibility with a tad more complexity. That becomes obvious if we compare the signatures of <code class="language-plaintext highlighter-rouge">map</code> vs. <code class="language-plaintext highlighter-rouge">foldr</code>.</p>
+
+<pre><code class="language-Elm">map :   (a -&gt; b)             -&gt; List a -&gt; List b
+
+foldr : (a -&gt; b -&gt; b)  -&gt;  b -&gt; List a -&gt; b
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">map</code> is relatively simple: It transforms a list of items of type <code class="language-plaintext highlighter-rouge">a</code> into a list of elements of type <code class="language-plaintext highlighter-rouge">b</code>.
+Just by calling the “transformer” function <code class="language-plaintext highlighter-rouge">(a -&gt; b)</code> for each element.</p>
+
+<p>I aligned the types of the different parameters to emphasize the differences between the two.
+For <code class="language-plaintext highlighter-rouge">fold</code> the <code class="language-plaintext highlighter-rouge">b</code> type occurs a lot more often now!
+And the <em>return type</em> is now <strong>just</strong> <code class="language-plaintext highlighter-rouge">b</code> instead of <code class="language-plaintext highlighter-rouge">List b</code> as for <code class="language-plaintext highlighter-rouge">map</code>.</p>
+
+<p>What was a simple <code class="language-plaintext highlighter-rouge">(a -&gt; b)</code> transformer function for map has now become an <code class="language-plaintext highlighter-rouge">(a -&gt; b -&gt; b)</code>. That means the function that gets called <em>per Element</em> now <strong>also</strong> needs a value of the same type as the result of the whole operation.</p>
+
+<p>And then there is the new <code class="language-plaintext highlighter-rouge">b</code> parameter in the middle. The second parameter we have to pass to <code class="language-plaintext highlighter-rouge">foldr</code> before we can pass it the list.</p>
+
+<p>Let’s look at a simpler application to understand better how these parameters work together.
+Imagine we want to create a function <code class="language-plaintext highlighter-rouge">totalLength</code> that gives us the total number of characters for a given list of words.</p>
+
+<pre><code class="language-Elm">totalLength : List String -&gt; Int
+</code></pre>
+
+<p>An imperative solution in JavaScript with a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in"><code class="language-plaintext highlighter-rouge">for</code> loop</a> could look like this.</p>
+
+<pre><code class="language-JavaScript">function totalLength(words) {
+  var sum = 0;
+  for (let word of words) {
+    sum = sum + word.length
+  }
+  return sum;
+}
+
+totalLength(['x', 'yy', 'zzz']) == 6 // true
+</code></pre>
+
+<p>Such a solution is not possible in Elm. We can’t <strong>reassign</strong> variables, so the whole construct of such a <code class="language-plaintext highlighter-rouge">for</code> loop doesn’t make sense, and consequently, there is not even syntax for it in Elm.
+But we have <code class="language-plaintext highlighter-rouge">foldr</code>, that gets the job <strong>at least</strong> as well done as a <code class="language-plaintext highlighter-rouge">for</code> loop.</p>
+
+<p>To understand how to use <code class="language-plaintext highlighter-rouge">foldr</code> we will progressively <em>functionalize</em> our JavaScript solution.</p>
+
+<p>Refactoring 1:</p>
+
+<pre><code class="language-JavaScript">function totalLength2(words) {
+  var init = 0;
+  var adder = 
+    function(word, accu) { 
+      return accu + word.length; 
+    }
+
+  var sum = init;
+  for (let word of words) {
+    sum = adder(word, sum);
+  }
+  return sum;
+}
+</code></pre>
+<p>This does still the same as our initial implementation. And so will the next one.</p>
+
+<p>Refactoring 2:</p>
+
+<pre><code class="language-JavaScript">function fold(f, init, array) {
+  var sum = init;
+  for (let item of array) {
+    sum = f(item, sum);
+  }
+  return sum;
+}
+
+function totalLength3(words) {
+  var init = 0;
+  var adder = 
+    function(word, accu) { 
+      return accu + word.length; 
+    }
+  return fold(adder, init, words);
+}
+</code></pre>
+
+<p>Now we have our own ‘fold’ implementation in JavaScript. And the way we call it is exactly the same way we use the <code class="language-plaintext highlighter-rouge">foldr</code> function in Elm.</p>
+
+<pre><code class="language-Elm">totalLength : List String -&gt; Int
+totalLength words =
+  let
+    init = 0
+    adder word accu =
+      accu + (String.length word)
+  in
+    List.foldr adder init words
+</code></pre>
+
+<h2 id="application-of-foldr-in-erasecompleterows">Application of <code class="language-plaintext highlighter-rouge">foldr</code> in <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code></h2>
+
+<p>The function is called <code class="language-plaintext highlighter-rouge">fold</code> or <code class="language-plaintext highlighter-rouge">reduce</code> because its application often takes a potentially long list and transforms it into a <em>single, small</em> value.</p>
+
+<p>In the end, how small the resulting value is, depends primarly on the function we’re <em>folding with</em>.</p>
+
+<p>The <a href="https://github.com/axelerator/elm-tetris/blob/74ac057b1037e10cd6c47b63647952c943054718/src/Main.elm#L396">application of <code class="language-plaintext highlighter-rouge">foldr</code> in <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code></a> creates a <code class="language-plaintext highlighter-rouge">Tuple</code> or pair where each element is a list of rows.</p>
+
+<p>That’s the case because the function <em>we’re folding with</em> has this return type.</p>
+
+<pre><code class="language-Elm">folder : Row -&gt; ( List Row, List Row ) -&gt; ( List Row, List Row )
+folder ((Row fields) as row) ( nonEmptyRows, header ) =
+    if isFull row then
+        ( nonEmptyRows
+        , mkEmptyRow (length fields) 0 :: header
+        )
+
+    else
+        ( row :: nonEmptyRows
+        , header
+        )
+
+( allNonEmptyRows, finalHeader ) =
+    foldr folder ( [], [] ) board.rows
+</code></pre>
+
+<p>If we evaluate the type parameters of our <code class="language-plaintext highlighter-rouge">foldr</code> call we get the following picture.
+I start by defining a little type alias to keep the listing more concise</p>
+
+<pre><code class="language-Elm">type alias RowTuple = (List Row, List Row)
+
+foldr : ( a   -&gt;    b    -&gt;     b   )  -&gt;   b  -&gt; List  a  -&gt;    b
+foldr : (Row -&gt; RowTuple -&gt; RowTuple)  -&gt;  RowTuple -&gt; List Row -&gt; RowTuple
+</code></pre>
+
+<p>The <em>second</em> parameter for <code class="language-plaintext highlighter-rouge">foldr</code> is the <code class="language-plaintext highlighter-rouge">b</code> our “folder” gets passed in for the call with the first <code class="language-plaintext highlighter-rouge">Row</code>.
+Every following call to <code class="language-plaintext highlighter-rouge">folder</code> gets the <strong>return</strong> value of the previous call as its <code class="language-plaintext highlighter-rouge">b</code> parameter.</p>
+
+<p>The first time our <code class="language-plaintext highlighter-rouge">folder</code> function gets called:</p>
+
+<pre><code class="language-Elm">folder : Row -&gt; ( List Row, List Row ) -&gt; ( List Row, List Row )
+folder row ( nonEmptyRows, header ) = ..
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">row</code> will contain the first row and <code class="language-plaintext highlighter-rouge">( nonEmptyRows, header )</code> will have the value <code class="language-plaintext highlighter-rouge">([], [])</code>. Because the latter is the <strong>second parameter</strong> of our call:  <code class="language-plaintext highlighter-rouge">foldr folder ( [], [] ) board.rows</code></p>
+
+<ul>
+  <li>is the row <strong>complete</strong> we’ll append <strong>an empty</strong> row to the <strong>second</strong> list in the tuple</li>
+  <li>is the row <strong>incomplete</strong>  we’ll append <strong>that row</strong> to the <strong>first</strong> list in the tuple</li>
+</ul>
+
+<p>This process is repeated until for each row we either ‘kept’ the row in the first list or appended an empty one in the second.</p>
+
+<p>After that we end up with two lists:</p>
+
+<ul>
+  <li>all the incomplete rows we kept, which will go on the bottom of the new board</li>
+  <li>a list of empty rows to compensate for the complete ones we want to remove</li>
+</ul>
+
+<p>Now we just have to concatenate those two lists in the right order to assemble the board in the expected state.</p>
+
+<p><img src="/assets/posts/tetris-clear-rows/fold.svg" style="width: 100%" /></p>
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

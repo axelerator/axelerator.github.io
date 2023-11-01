@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 12 & 13: Fade out and clean up</title>
+  </head>
+  <body class="tetris-fade-out">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/">Home</a></div>
+  
+    <div><a href="/about">About</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇺🇸</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+          <li>
+            <a href="/elm/de/tetris-fade-out" class="de">🇩🇪</a>
+          </li>
+        
+      
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 12 & 13: Fade out and clean up</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+16 October 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p><img src="/assets/posts/tetris-fade-out/fade.gif" style="float:left; margin: 5px 10px 10px 0" />
+In <a href="https://www.youtube.com/watch?v=7HhOdCNfEj4">episode 12(1h:25m)</a> I started with building a simple score tracker. Adding gradual fading became a bit of a cliffhanger, because I introduced a gnarly bug that I was only able to resolve in <a href="https://www.youtube.com/watch?v=OfNkjrJGtyc">episode 13 (1h:20)</a>.
+I used this as motivation to clean up and reorganize the code with the help of the glorious <a href="https://github.com/neoclide/coc.nvim"><em>Conquer of Completion</em></a> Vim plugin.</p>
+
+<p>For episode 12 I created a single <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6">commit</a> as before. It’s the head of the <a href="https://github.com/axelerator/elm-tetris/tree/episode12">episode12 branch</a>.</p>
+
+<p>For the changes of episode 13, I went with a different approach. Since I reorganized the code a lot a large number of lines changed. To keep them comprehensible I separated them into multiple smaller commits. Of course, there is still also the <a href="https://github.com/axelerator/elm-tetris/tree/episode13">episode13 branch</a> that represents the state of the code after that episode. To see only the steps I did in that episode you can check out this <a href="https://github.com/axelerator/elm-tetris/pull/1/commits"><em>pull request</em></a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7HhOdCNfEj4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OfNkjrJGtyc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<hr />
+
+<p>Content:</p>
+
+<ul>
+  <li><a href="#scoring">Score tracking</a></li>
+  <li><a href="#fading">Fading cleared lines</a></li>
+  <li><a href="#cleanup">Clean up</a></li>
+</ul>
+
+<hr />
+
+<h3 id="-score-tracking"><a name="scoring"></a> Score tracking</h3>
+
+<p>To be able to keep score I added a new <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R39">type <code class="language-plaintext highlighter-rouge">Score</code></a> that I use in the <code class="language-plaintext highlighter-rouge">GameDetails</code>.
+I implemented it in the most simple way: Clearing 1 row = 1 Point. The real Tetris has a much more sophisticated scoring algorithm (Source: <a href="https://tetris.fandom.com/wiki/Scoring">Tetris Wiki</a>)</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Level</th>
+      <th style="text-align: center">Points for 1 line</th>
+      <th style="text-align: center">2 lines</th>
+      <th style="text-align: center">3 lines</th>
+      <th style="text-align: center">4 lines</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">40</td>
+      <td style="text-align: center">100</td>
+      <td style="text-align: center">300</td>
+      <td style="text-align: center">1200</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">80</td>
+      <td style="text-align: center">200</td>
+      <td style="text-align: center">600</td>
+      <td style="text-align: center">2400</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">120</td>
+      <td style="text-align: center">300</td>
+      <td style="text-align: center">900</td>
+      <td style="text-align: center">3600</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">9</td>
+      <td style="text-align: center">400</td>
+      <td style="text-align: center">1000</td>
+      <td style="text-align: center">3000</td>
+      <td style="text-align: center">12000</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">level(n) =  40 * (n + 1) 100 * (n + 1) 300 * (n + 1) 1200 * (n + 1)</code></p>
+
+<hr />
+
+<h3 id="-fading-cleared-lines"><a name="fading"></a> Fading cleared lines</h3>
+
+<p>To be able to fade a row I <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R82">added a new variant <code class="language-plaintext highlighter-rouge">FadingRow</code></a> to the <code class="language-plaintext highlighter-rouge">Row</code> type.</p>
+
+<pre><code class="language-Elm">type Row
+    = Row (List Field)
+    | FadingRow (List Field) Opacity
+</code></pre>
+<p>A fading row represents a row that was logically removed but is visually still present.
+Next to the tile information it also contains a value for the opacity.</p>
+
+<p>To be able to progress the fading out in the speed I desire I need to update our model more often. To achieve that we’re now firing the <code class="language-plaintext highlighter-rouge">GravityTick</code> every <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R548"><em>30</em> instead of every <em>100</em></a> milliseconds.
+For every tick we decrease the opacity of all fading rows a bit with the <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R462"><code class="language-plaintext highlighter-rouge">progressFading</code> function</a> until they’ve completely vanished.</p>
+
+<p>It was when I tried to integrate <code class="language-plaintext highlighter-rouge">progressFading</code> in all the right places that I introduced the error that eventually made me give up that day. As part of updating the <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R531"><code class="language-plaintext highlighter-rouge">eraseCompleteRows</code> function</a> I reset the <code class="language-plaintext highlighter-rouge">currentPiece</code>.
+The <a href="https://github.com/axelerator/elm-tetris/commit/4bac5a1f167b593b9f949ff66a8868b8f7c5e5b2">first change in episode 13</a> resolves the error and finally the fading works as expected.</p>
+
+<hr />
+
+<h3 id="-clean-up"><a name="cleanup"></a> Clean up</h3>
+
+<p>The rest of that episode I spend separating the general application from the ‘pure’ game logic. Though I wouldn’t go as far as calling it a <em>refactoring</em> since I’ve been mainly moving functions from one module to another.</p>
+
+<p>For that task, I put a new tool of my development environment to use. <a href="https://github.com/neoclide/coc.nvim">Conquer of Completion</a> (short <em>CoC</em>) is a Vim plugin that uses the <a href="https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/">Language Server Protocol</a> to support the developer with language-specific hints. The same protocol is used in Visual Studio Code for many languages for autocompletion and other features like organizing inputs.</p>
+
+<p>With the help of <em>CoC</em> execution operations like moving functions to a different module can be executed much more efficiently. Tedious subtasks like updating imports and removing unused code are reduced to executing the actions proposed by the plugin inline.</p>
+
+<p>Most of the significant steps to set up <em>CoC</em> with Elm for Vim are outlined in the  <a href="https://github.com/elm-tooling/elm-language-server">Elm Language Server project</a>.</p>
+
+<p>I think I’ll do a special episode soon showing how to set up a complete Elm development environment with Vim from scratch.</p>
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

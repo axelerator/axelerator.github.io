@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 8: Rotation und zufällige Teile</title>
+  </head>
+  <body class="tetris-rotation">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/elm/en/tetris-rotation" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 8: Rotation und zufällige Teile</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+4 September 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p><img src="/assets/posts/tetris-rotation/rotation.gif" alt="Rotation" style="float: right; padding-right: 5px" />
+In <a href="https://youtu.be/Mv6FOrcLXFs">Episode 8 (60min)</a> implementiere ich die Rotation des aktuellen Teils. Das geht so flott, dass ich auch noch hinzufüge das anstelle des gleichen Steins zufällige neue Steine generiert werden.</p>
+
+<p>Die Code-Änderungen von dieser Woche gibt es im <a href="https://github.com/axelerator/elm-tetris/tree/episode8">episode8 Branch</a> bzw <a href="https://github.com/axelerator/elm-tetris/commit/4699a918aea8eb7c9de7d3bb03aa3a0350f8a681">Commit</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Mv6FOrcLXFs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<ol>
+  <li><a href="#debug">Konsolen-Logging mit Elm</a></li>
+  <li><a href="#elm-test">Installation und Verwendung von <code class="language-plaintext highlighter-rouge">elm-test</code></a></li>
+  <li><a href="#tdd">Test Driven Development</a></li>
+  <li><a href="#fail">Wo war der Fehler in Episode 6?</a></li>
+</ol>
+
+<h3 id="-rotation"><a name="rotation"></a> Rotation</h3>
+
+<p>Die Kernfunktion um einen Stein rotieren zu können war schneller hinzugefügt als ich es erwartet hattet. Dank <a href="https://shaunlebron.github.io/t3tr0s-slides/#4">Shauns Implementierung</a> brauchte ich die nötigen Berchnungen nicht selber herausfinden.</p>
+
+<p>Die Umsetzung verlief ohne große Überraschungen oder Herausforderungen.</p>
+
+<h3 id="-zufällige-teile-mit-kommandos"><a name="random"></a> Zufällige Teile mit Kommandos</h3>
+
+<p>Die zweite Erweiterung die ich eingebaut habe sorgt dafür, dass neue Teile zufällig gewählt werden wenn ein neues Teil erzeugt werden muss.
+Dafür musste ich auf ein Konzept zurückgreifen, dass ich bisher umgangen habe: <strong>Commands</strong>.</p>
+
+<p>Da sie eine zentrale Rolle in Elm-Anwendungen spielen möchte ich hier gern nochmal zusammenfassen wozu sie gut sind.</p>
+
+<p><strong>Commands</strong> sind das logische Gegenstück zu <strong>Subscriptions</strong> die wir uns in <a href="https://blog.axelerator.de/elm/de/tetris-gravity">Episode 4</a> angeschaut haben.
+Mit den <strong>Subcriptions</strong> konnten wir <strong>unsere</strong> Nachrichten mit Ereignissen verknüpfen die ‘außerhalb’ unserer Anwendung generiert werden (Timer, globaler Tastendruck).
+Mit <strong>Commands</strong> lösen wir selber Ereignisse außerhalb unserer Anwendung aus. Da unsere Anwendung rein funtional ist, benötigen wir ein Vehikel um mit der realen, nicht funktionalen Welt interagieren zu können.</p>
+
+<p>In unserem Tetris ist die Generierung von Zufallszahlen ein solch ‘nicht funktionaler’ Teil. Eine Funktion die bei jedem Aufruf ein anderes Ergebnis erzeugt ist nicht ‘rein’ und kann daher nicht direkt in unserem Elm-Programm aufgerufen werden.</p>
+
+<p>Ein weiteres prominentes Beispiel für die Verwendung von Commands sind <a href="https://guide.elm-lang.org/effects/http.html">HTTP Requests</a>. Das Aufbauen einer TCP Verbindung und Warten auf ein Ergebnis kann nicht als ‘reine’ Funktion abgebildet werden:</p>
+
+<ul>
+  <li>Elm kann nicht garantieren, dass der Aufruf immer das gleiche Ergebnis erzeugt</li>
+  <li>HTTP requests dauern verhältnismäßig lang - was wenn der Benutzer zwischendurch auf einen Button klicken will</li>
+</ul>
+
+<p>Mit den Commands ersetzen wir das, was in anderen Sprachen ein normaler Funktionsaufruf ist durch zwei <strong>entkoppelte</strong> Schritte:</p>
+
+<ol>
+  <li>Erzeugen des <strong>Commands</strong></li>
+  <li>Verarbeiten des Ergebnisses</li>
+</ol>
+
+<p>Dadurch verhindern wir, dass sich unsere Anwendung auf Zusagen verlässt die Elm nicht halten kann.</p>
+
+<p>Für das Erzeugen von <strong>Commands</strong> bietet uns Elm konkrete Stellen in der Anwendung an.
+Die wichtigste ist in dem Rückgabetyp der <code class="language-plaintext highlighter-rouge">update</code> Funktion.</p>
+
+<pre><code class="language-Elm">update : Msg -&gt; Model -&gt; (Model, Cmd Msg)
+</code></pre>
+
+<p>Wenn wir eine Nachricht verarbeiten können wir nicht nur ein Model, sondern auch ein Kommando zurückgeben.
+Diese Kommandos können wir mit Hilfe von Funktionen wie <a href="https://package.elm-lang.org/packages/elm/random/latest/Random#generate"><code class="language-plaintext highlighter-rouge">generate</code> zur Generierung von Zufallszahlen</a> oder <a href="https://package.elm-lang.org/packages/elm/http/latest/Http#get"><code class="language-plaintext highlighter-rouge">get</code> für Http Requests</a> erzeugen.</p>
+
+<p>Die meisten Kommandos erzeugen irgendeine Art von Ereignis bezieheungsweise Ergebnis das wir weiterverabeiten wollen.
+Im <code class="language-plaintext highlighter-rouge">Random#generate</code> Fall wollen wir die generierte Zufallszahl verwenden um ein neues Tetristeil zu generieren.
+Für das Verarbeiten von Ereignissen haben wir bereits die <code class="language-plaintext highlighter-rouge">update</code> Funktion. <strong>Unser</strong> <code class="language-plaintext highlighter-rouge">Msg</code> Typ definiert die verschiedenen Varianten von Ereignissen auf die <strong>unsere</strong> Anwendung reagieren kann.</p>
+
+<p>Die Funktionen die Kommandos generiern wissen zwar was für Werte sie generieren aber sie kennen natürlich nicht die Nachrichten die <strong>unsere</strong> Anwensung definiert.
+Deswegen hat der <code class="language-plaintext highlighter-rouge">Cmd</code> Typ einen Typparameter <code class="language-plaintext highlighter-rouge">msg</code>. Um die <a href="https://package.elm-lang.org/packages/elm/random/latest/Random#generate"><code class="language-plaintext highlighter-rouge">generate</code></a> nutzen zu können müssen wir ihr eine Funktion <code class="language-plaintext highlighter-rouge">(a -&gt; msg)</code> übergeben, die aus dem Zufallswert <code class="language-plaintext highlighter-rouge">a</code> (in unserem Fall <code class="language-plaintext highlighter-rouge">Int</code>) eine Nachricht <strong>unserer</strong> Anwedung erzeugt.</p>
+
+<p>In <a href="https://github.com/axelerator/elm-tetris/blob/episode8/src/Main.elm#L335">unserem Code</a> rufen wir <code class="language-plaintext highlighter-rouge">generate</code> wie folgt auf:</p>
+
+<pre><code class="language-Elm">Random.generate NewCurrentPiece (Random.int 0 &lt;| (length pieceDefinitions - 1))
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">NewCurrentPiece</code> hat folgende Signatur:</p>
+
+<pre><code class="language-Elm">NewCurrentPiece : Int -&gt; Msg
+</code></pre>
+
+<p>Die Signatur von <code class="language-plaintext highlighter-rouge">generate</code> in der Dokumentation lautet:</p>
+
+<pre><code class="language-Elm">generate : (a -&gt; msg) -&gt; Generator a -&gt; Cmd msg
+</code></pre>
+
+<p>Die kleinen Buchstaben sind Typparameter. Der gleiche Bezeichner (<code class="language-plaintext highlighter-rouge">a</code> oder <code class="language-plaintext highlighter-rouge">msg</code>) muss beim Aufruf auch für den gleichen tatsächlichen Typen stehen. Das heißt wenn wir die Typen unseres <code class="language-plaintext highlighter-rouge">generate</code> Aufrufs auswerten kommen wir zu folgender Situation:</p>
+
+<pre><code class="language-Elm">generate : (Int -&gt; Msg) -&gt; Generator Int -&gt; Cmd Msg
+</code></pre>
+<p>Das schreiben wir nirgendswohin. Es dient lediglich zur Veranschaulichung, dass der finale Ausdruck den Typ <code class="language-plaintext highlighter-rouge">Cmd Msg</code> hat.
+Das großgeschriebene <code class="language-plaintext highlighter-rouge">Msg</code> ist hier wichtig, denn es ist genau das was der Compiler verlangt, damit wir dieses Kommando von unsere <code class="language-plaintext highlighter-rouge">update</code> Funktion zurückgeben dürfen.</p>
+
+<p>Die Verarbeitung der Zufallszahl erfolgt dann über den ‘normalen’ Weg mit dem <code class="language-plaintext highlighter-rouge">NewCurrentPiece</code> Zweig der <a href="https://github.com/axelerator/elm-tetris/blob/episode8/src/Main.elm#L194"><code class="language-plaintext highlighter-rouge">update</code> Funktion</a>.</p>
+
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

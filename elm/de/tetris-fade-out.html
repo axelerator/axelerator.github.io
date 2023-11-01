@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 12 & 13: Ausblenden und Aufräumen</title>
+  </head>
+  <body class="tetris-fade-out">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/elm/en/tetris-fade-out" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 12 & 13: Ausblenden und Aufräumen</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+16 October 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p><img src="/assets/posts/tetris-fade-out/fade.gif" style="float:left; margin: 5px 10px 10px 0" />
+In <a href="https://www.youtube.com/watch?v=7HhOdCNfEj4">Episode 12(1h:25m)</a> habe ich zunächst einen einfachen Zähler für die entfernten Reihen gebaut. Das graduelle Ausblenden ist zu einen Cliffhanger geworden, da ich dort einen Fehler eingebaut hab, den ich erst in <a href="https://www.youtube.com/watch?v=OfNkjrJGtyc">Episode 13 (1h:20)</a> auflöse. Das nehme ich zum Anlass den Code mit Hilfe des großartigen <a href="https://github.com/neoclide/coc.nvim"><em>Conquer of Completion</em></a> etwas aufzuräumen.</p>
+
+<p>Für Episode 12 habe ich wie bisher einen einzelnen <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6">Commit</a> erzeugt und einen <a href="https://github.com/axelerator/elm-tetris/tree/episode12">Branch</a> der den Code am Ende der Episode enthält.</p>
+
+<p>Die Codeänderungen für Episode 13 habe ich etwas anders organisiert. Da ich den Code großzügig umorganisiert habe betreffen die Änderungen viele Zeilen.
+Damit die Git Historie trotzdem übersichtlich bleibt habe ich mehrere kleine Commits erzeugt.
+Es gibt natürlich trotzdem einen <a href="https://github.com/axelerator/elm-tetris/tree/episode13"><code class="language-plaintext highlighter-rouge">episode13</code> Branch</a> der den Endzustand enthält. Die Entwicklung zwischen den Episoden 12 und 13 habe ich aber diesmal in einem <a href="https://github.com/axelerator/elm-tetris/pull/1/commits"><strong>Pull-Request</strong></a> zusammengefasst.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7HhOdCNfEj4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OfNkjrJGtyc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<hr />
+
+<p>Inhalt:</p>
+
+<ul>
+  <li><a href="#scoring">Punktestand</a></li>
+  <li><a href="#fading">Ausblenden</a></li>
+  <li><a href="#cleanup">Aufräumen</a></li>
+</ul>
+
+<hr />
+
+<h3 id="-punktestand"><a name="scoring"></a> Punktestand</h3>
+
+<p>Um sich vergleichen zu können habe ich dem Spiel einen <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R39">Typen <code class="language-plaintext highlighter-rouge">Score</code> für den Punktestand</a> hinzugefügt.
+Ich habe die einfachst mögliche Implementierung gewählt: 1 Zeile = 1 Punkt. Das echte Punktesystem von Tetris is um einiges komplizierter (Quelle: <a href="https://tetris.fandom.com/wiki/Scoring">Tetris Wiki</a>)</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Level</th>
+      <th style="text-align: center">Points for 1 line</th>
+      <th style="text-align: center">2 lines</th>
+      <th style="text-align: center">3 lines</th>
+      <th style="text-align: center">4 lines</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">40</td>
+      <td style="text-align: center">100</td>
+      <td style="text-align: center">300</td>
+      <td style="text-align: center">1200</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">80</td>
+      <td style="text-align: center">200</td>
+      <td style="text-align: center">600</td>
+      <td style="text-align: center">2400</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">120</td>
+      <td style="text-align: center">300</td>
+      <td style="text-align: center">900</td>
+      <td style="text-align: center">3600</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">9</td>
+      <td style="text-align: center">400</td>
+      <td style="text-align: center">1000</td>
+      <td style="text-align: center">3000</td>
+      <td style="text-align: center">12000</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">level(n) =  40 * (n + 1) 100 * (n + 1) 300 * (n + 1) 1200 * (n + 1)</code></p>
+
+<hr />
+
+<h3 id="-ausblenden"><a name="fading"></a> Ausblenden</h3>
+
+<p>Für das Ausblenden habe ich eine <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R82">neue ‘Zeilenvariante’ hinzugefügt</a>:</p>
+
+<pre><code class="language-Elm">type Row
+    = Row (List Field)
+    | FadingRow (List Field) Opacity
+</code></pre>
+
+<p>Die <code class="language-plaintext highlighter-rouge">FadingRow</code> stellt eine Zeile dar die logisch entfernt wurde aber visuell noch teilweise sichtbar ist.
+Neben den einzelnen Spalten enthält sie auch einen Transparenzwert.
+Um das Ausblenden in einer optisch ansprechenden Geschwindigkeit zu erreichen feuern wir jetzt unseren <code class="language-plaintext highlighter-rouge">GravityTick</code> alle <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R548"><em>30</em> anstatt <em>100</em> Millisekunden</a> und erhöhen die Transparenz der ‘ausblendenden’ Reihen bei jedem Tick mit der <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R462"><code class="language-plaintext highlighter-rouge">progressFading</code> Funktion</a>.</p>
+
+<p>Bei dem Versuch <code class="language-plaintext highlighter-rouge">progressFading</code> an all den richtigen Stellen aufzurufen habe ich dann auch den Fehler eingebaut. Als Teil von <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code> habe ich <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R531">das aktuelle Teil zurückgesetzt</a>.
+Der <a href="https://github.com/axelerator/elm-tetris/commit/4bac5a1f167b593b9f949ff66a8868b8f7c5e5b2">erste Commit</a> von Episode 13 behebt diesen Fehler und alles funktioniert wie erwartet.</p>
+
+<hr />
+
+<h3 id="-aufräumen"><a name="cleanup"></a> Aufräumen</h3>
+
+<p>Den Rest dieser Episode verbringe ich damit die allgemeine Anwendungslogik von der ‘reinen’ Spiellogik zu trennen. Ich würde es allerdings noch nicht als eine Rafaktorisierung bezeichnen denn die Änderungen sind alle recht ‘mechanisch’. Damit meine ich, dass die Funktionen sich fast nicht geändert haben sondern lediglich den Ort gewechselt haben wo sie gespeichert sind.</p>
+
+<p>Dabei habe ich mir ein neues Werkzeug in meiner Entwicklungsumgebung zu Nutze gemacht. <a href="https://github.com/neoclide/coc.nvim">Conquer of Completion</a> kur <em>CoC</em> ist ein Vim Plugin, dass das <a href="https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/">Language Server Protocol</a> nutzt um den Entwickler mit Sprachspezifischen Hinweisen zu unterstützen. Es ist das gleiche Protokoll das auch in VS Code für viele Sprachen verwendet wird um Autovervollständigung und andere Funktionen wie das Organisieren von Imports zu unterstützen.</p>
+
+<p>Mit Hilfe des <em>CoC</em> lassen sich Operationen wie das Verschieben von Funktionen deutlich effizienter ausführen, da das Plugin lästige Tätigkeiten, wie das importieren von Modulen und entfernen von ungenutztem Code automatisiert.</p>
+
+<p>Ein paar entscheidende Hinweise wie dieses Setup einzurichten ist habe ich in dem Projekt für den <a href="https://github.com/elm-tooling/elm-language-server">Elm Language Server</a> gefunden.</p>
+
+<p>Ich denke ich werde in naher Zukunft nochmal eine dedizierte Episode zur Einrichtung eine Elm Entwicklungsumgebung machen.</p>
+
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

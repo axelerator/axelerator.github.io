@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 5: Registrierung von Tastendruck</title>
+  </head>
+  <body class="tetris-key-strokes">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/elm/en/tetris-key-strokes" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 5: Registrierung von Tastendruck</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+13 August 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p>In <a href="https://www.youtube.com/watch?v=JG3zzF_jRVc&amp;t=1013s">dieser Episode (40min)</a> schauen wir uns an wie wir auf globale Tastaturereignisse reagieren. Wir bemühen ein weiteres mal das <em>Subscription-System</em> welches wir <a href="/elm/en/tetris-gravity">letztes mal</a> kennengelernt haben.</p>
+
+<p>In dieser Nachbereitung gehe ich nocheinmal auf die folgenden Themen ein:</p>
+
+<ol>
+  <li><a href="#subs">Stapeln von mehreren Subscriptions</a></li>
+  <li><a href="#parsing">Warum ist JSON Parsen/Dekodieren in Elm so kompliziert?</a></li>
+  <li><a href="#decoder">Wie funktioniert unser <code class="language-plaintext highlighter-rouge">keyDecoder</code>?</a></li>
+</ol>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JG3zzF_jRVc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>Den Code von dieser Episode gibt es auf Github: <a href="https://github.com/axelerator/elm-tetris/tree/episode5">Branch Episode5</a> <a href="https://github.com/axelerator/elm-tetris/commit/ff76dcab313f67bd8e878857dfa8cd0af18e2c53">Commit</a></p>
+
+<h3 id="stapeln-von-subscriptions"><a name="subs"></a>Stapeln von Subscriptions</h3>
+
+<p>Wie wir bereits letzte Episode gesehen haben gehören die <code class="language-plaintext highlighter-rouge">subscriptions</code> zu den Ausdrücken die wir als Teil unserer ‘Anwendungswurzel’ deklarieren</p>
+
+<pre><code class="language-Elm">main =
+    Browser.element
+        { init = init
+        , update = update
+        , subscriptions = subscriptions
+        , view = view
+        }
+
+subscriptions : Model -&gt; Sub Msg
+subscriptions model = ..
+</code></pre>
+
+<p>Die erwartete Signatur ist sehr explizit darüber, dass sie genau <strong>eine</strong> <code class="language-plaintext highlighter-rouge">Sub Msg</code> erwartet. Wir haben aber bereits in der letzten Episode eine Subscription für die Gravitation registriert:</p>
+
+<pre><code class="language-Elm">subscriptions : Model -&gt; Sub Msg
+subscriptions model =
+    Time.every 1000 GravityTick
+</code></pre>
+
+<p>Wie ich im Video zeige können wir den Ausdruck nicht einfach in eine Liste umwandeln. Der Ausdruck <code class="language-plaintext highlighter-rouge">[Time.every 1000 GravityTick, onKeyDown keyDecoder]</code> hat den Typ <code class="language-plaintext highlighter-rouge">List (Sub Msg)</code>. Das ist nicht kompatibel mit dem erwarteten <code class="language-plaintext highlighter-rouge">Sub Msg</code>.</p>
+
+<p>Um dies zu umgehen nutzen wir die <a href="https://package.elm-lang.org/packages/elm/core/latest/Platform-Sub#batch"><code class="language-plaintext highlighter-rouge">batch</code></a> Funktion. Mit dieser können wir mehrere Subscriptions in eine einzelne “einwickeln”. Dies Funktioniert auch mehrfach. Das heißt ein “batch” kann wiederum mehrere “batches” enthalten. Hauptsache wir haben am Ende eine <strong>einzelne</strong> Subscription die wir “anmelden” können.</p>
+
+<p>Die finale Lösung sieht in unserem Fall so aus:</p>
+
+<pre><code class="language-Elm">subscriptions : Model -&gt; Sub Msg
+subscriptions model =
+    Sub.batch
+        [ Time.every 1000 GravityTick
+        , onKeyDown keyDecoder
+        ]
+</code></pre>
+
+<h3 id="warum-ist-json-parsendekodieren-in-elm-so-kompliziert"><a name="parsing"></a>Warum ist JSON Parsen/Dekodieren in Elm so kompliziert?</h3>
+
+<p>Wie bereits im Video erwähnt werde ich hier nicht versuchen eine vollständige Einführung in JSON-Verarbeitung zu geben.
+Im offiziellen Elm Guide gibt es eine <a href="https://guide.elm-lang.org/effects/json.html">kurze Einführung</a> die jedoch kompliziertere Fälle offen lässt.
+Für weiterführende Anleitungen gibt es bereits zahlreiche Artikel online wie zum Beispiel auf <a href="https://elmprogramming.com/decoding-json-part-1.html#decoding-json">elmprogramming.com</a></p>
+
+<p>Verglichen zu Sprachen mit weniger eingebauten Garantien erscheint der Ansatz von Elm zunächst unnötig kompliziert und unintuitiv.</p>
+
+<p>Ich habe am Anfang ziemlich damit gekämpft und hoffe das ich mit der kleinen Zusammenfassung hier zeigen kann, dass sich der Aufwand lohnt.</p>
+
+<p>Am Ende dieser Episode haben wir einen JSON Decoder der wie folgt definiert ist:</p>
+
+<pre><code class="language-Elm">keyDecoder : Decode.Decoder Msg
+keyDecoder =
+    Decode.map toKey (Decode.field "key" Decode.string)
+
+toKey : String -&gt; Msg
+toKey string =
+    case string of
+        "ArrowLeft" -&gt;
+            KeyDown LeftArrow
+
+        ... -&gt; ...
+</code></pre>
+
+<p>Die <a href="https://github.com/axelerator/elm-tetris/blob/ff76dcab313f67bd8e878857dfa8cd0af18e2c53/src/Main.elm#L246"><code class="language-plaintext highlighter-rouge">toKey</code></a> ist trivial, denn sie wandelt lediglich eine Zeichenkette in eine <code class="language-plaintext highlighter-rouge">Msg</code> um.
+Aber der <code class="language-plaintext highlighter-rouge">keyDecoder</code> hat es in sich! Um ihn besser zu Verstehen schauen wir erstmal was ein <strong>Decoder</strong> ist.
+Die Elm Dokumentation sagt dazu:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">type Decoder a</code><br />
+A value that knows how to decode JSON values.</p>
+</blockquote>
+
+<p>Und schickt uns in den <a href="https://guide.elm-lang.org/effects/json.html">offiziellen Guide</a> für mehr Details.
+Ich versuche eine alternative Erklärung zu geben die hoffentlich ein paar Fragen beantwortet die Entwickler haben die aus weniger ‘funktionalen Umgebungen’ kommen.</p>
+
+<p>Ein <code class="language-plaintext highlighter-rouge">Decoder</code> ist also “Ein Wert der weiß wie JSON Werte zu dekodieren sind”. Das erste was auffällt ist, dass unser <code class="language-plaintext highlighter-rouge">keyDecoder</code> keinen Parameter animmt. Das ist im Sinne der Definition, denn wir berechnen nicht einen Wert aus gegebenen Parametern sondern geben einen konstanten Ausdruck zurück.</p>
+
+<p>Das bringt die Frage auf: “Wie kann ein <strong>konstanter Wert</strong> etwas dekodieren?”
+Das bringt uns zu den Grundprinzipien der funktionalen Programmierung zurück: Funktionen <strong>sind</strong> Werte.
+In der Dokumentation sehen wir lediglich die ‘linke Seite’ der Typdefintion. 
+Es kann also durchaus sein, dass dieser Typ aus Varianten gebildet die eine Funktion enthalten.</p>
+
+<p>Die <a href="https://package.elm-lang.org/packages/elm/json/latest/Json-Decode">Decoder-Bibliothek</a> enthält eine handvoll vordefinierter <code class="language-plaintext highlighter-rouge">Decoder</code> und Funktionen mit denen wir diese zu komplexeren Dekodierern zusammensetzen können.</p>
+
+<p>Ein Typ dessen “rechte” Seite der Definition <code class="language-plaintext highlighter-rouge">type Decoder a = ???</code> wir nicht kennen wird auch ein <strong>opaquer Typ</strong> genannt.
+Das heißt der Entwickler dieses Typs möchte nicht, dass wir die Implementierungsdetails kennen. Auf den ersten Blick mag das unnötig einschränkend wirken.
+Richtig eingesetzt sind opaque Typen aber extrem <strong>befreiend</strong>. Es bedeutet, dass ich als Anwedungsentwickler mich nicht unnötig mit Implementierungsdetails auseinanderzusetzen brauch. Und da ich mit diesem Teil des Systems nicht interagieren kann, kann ich es auch nicht ‘falsch bedienen’ oder kaputt machen.</p>
+
+<p>Anhand unseres <code class="language-plaintext highlighter-rouge">keyDecoder</code> werden wir sehen wir ein solcher Typ, obwohl wir nichts über seine Interna wissen, dennoch sehr nützlich sein kann.</p>
+
+<p>Um <code class="language-plaintext highlighter-rouge">Decoder</code> besser zu verstehen schauen wir uns zunächst einmal an wie er unabhängig von der Tastaturerignisverwaltung eingesetzt werden kann. 
+Zur Erinnerung nocheinmal die Definition:</p>
+
+<pre><code class="language-Elm">keyDecoder : Decode.Decoder Msg
+keyDecoder =
+    Decode.map toKey (Decode.field "key" Decode.string)
+</code></pre>
+
+<p>Das folgende ist ein komplettes Beispiel um eine JSON Zeichenkette mit Hilfe unseres <code class="language-plaintext highlighter-rouge">keyDecoder</code> in eine Msg umzuwandeln.
+Der zentrale Aufruf ist die Funktion <a href="https://package.elm-lang.org/packages/elm/json/latest/Json-Decode#decodeString"><code class="language-plaintext highlighter-rouge">Decode.decodeString</code></a> die einen <code class="language-plaintext highlighter-rouge">Decoder</code> und einen <code class="language-plaintext highlighter-rouge">String</code> erwartet und versucht einen Wert des Zieldatentypen (<code class="language-plaintext highlighter-rouge">Msg</code>) zu erzeugen.</p>
+
+<pre><code class="language-Elm">eventJsonToKeyMsg : Msg
+eventJsonToKeyMsg jsonString =
+    let
+        jsonString =
+            "{ \"key\" : \"ArrowLeft\"}"
+        
+        parseResult =
+            Decode.decodeString keyDecoder jsonString
+    in
+    case parseResult of
+        Ok msg -&gt;
+            msg
+        Err e -&gt; 
+          let
+            _ = Debug.log "invalid" (Decode.errorToString e)
+          in
+            Noop
+</code></pre>
+
+<p>Die JSON Bibliothek ist ein gutes Beispiel für das <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">“Separation of concerns” Prinzip</a>.
+Die Funktionen die wissen wie man ein <code class="language-plaintext highlighter-rouge">String</code>-Wert aus eine JSON-Objekt extrahiert sind in dem opaquen <code class="language-plaintext highlighter-rouge">Decoder</code> Typ weggekapselt.
+Unsere Definition welche <strong>Struktur</strong> wir uns von dem JSON ‘wünschen’ kommt ohne jegliches Wissen aus wie JSON das JSON Verarbeitet wird. Diese Definition ist desweiteren komplett getrennt von der tatsächlichen <strong>Ausführung</strong>.</p>
+
+<p>Der Hauptvorteil dieser strikten Trennung kommt zum Vorschein wenn wir versuchen ein unvollständiges JSON zu parsen.
+<code class="language-plaintext highlighter-rouge">decodeString</code> kann nicht garantieren das wir ein <code class="language-plaintext highlighter-rouge">Msg</code> Wert aus der Zeichenkette erzeugen können.</p>
+
+<p>Wenn wir einen Tipfehler in unser JSON einbauen (<code class="language-plaintext highlighter-rouge">key -&gt; keX</code>):</p>
+
+<pre><code class="language-Elm">  jsonString =
+      "{ \"keX\" : \"ArrowLeft\"}"
+</code></pre>
+
+<p>Laufen wir in den <code class="language-plaintext highlighter-rouge">Err e -&gt; ...</code> Fall und bekommen wir folgende Ausgabe in der JavaScript Konsole folgende Ausgabe:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>invalid: "Problem with the given value:
+  { \"keX\": \"ArrowLeft\" }
+Expecting an OBJECT with a field named `key`"
+</code></pre></div></div>
+<p>Das heißt sobald wir unseren <code class="language-plaintext highlighter-rouge">Decoder</code> spezifiziert haben</p>
+
+<ul>
+  <li>zwingt uns das Typsystem Parserfehler explizit zu behandeln</li>
+  <li>gibt uns im Fehlerfall sehr genaue Beschreibung wo das Problem liegt</li>
+</ul>
+
+<p>Bei so einfachem JSON wie in unserem Beispiel ist dies offensichtlich nicht nötig. Bei Realwelt-APIs die kontinuierlichen Änderungen unterliegen ist dieses Verhalten jedoch sehr wertvoll.</p>
+
+<h3 id="wie-funktioniert-unser-keydecoder"><a name="decoder"></a>Wie funktioniert unser <code class="language-plaintext highlighter-rouge">keyDecoder</code>?</h3>
+
+<p>Im Video habe ich die Definition von <code class="language-plaintext highlighter-rouge">keyDecoder</code> fast 1:1 aus dem <a href="https://github.com/elm/browser/blob/1.0.2/notes/keyboard.md">Beispiel</a> kopiert.
+Um ihn besser zu Verstehen können wir unsere Definition wie folg aufbrechen ohne die Funktion zu verändern:</p>
+
+<pre><code class="language-Elm">keyDecoder : Decode.Decoder Msg
+keyDecoder = Decode.map toKey keyNameDecoder
+
+keyNameDecoder : Decode.Decoder String
+keyNameDecoder = Decode.field "key" Decode.string
+</code></pre>
+
+<p>Die ausgeglierderte <code class="language-plaintext highlighter-rouge">keyNameDecoder</code> Hilfsfunktion ist jetzt ein Dekodierer der aus einem JSON Objekt ein String auslesen möchte.
+Wenn er ausgeführt wird sucht er nach dem Wert der unter dem Schlüssel <code class="language-plaintext highlighter-rouge">key</code> hinterlegt ist.
+Ist dieser nicht vorhanden oder nicht vom Typ <code class="language-plaintext highlighter-rouge">String</code> wird die Dekodierung fehlschlagen.</p>
+
+<p>Der magische Kleber hier ist allerdings die <a href="https://package.elm-lang.org/packages/elm/json/latest/Json-Decode#map"><code class="language-plaintext highlighter-rouge">Decode.map</code> Funktion</a></p>
+
+<pre><code class="language-Elm">map : (a -&gt; value) -&gt; Decoder a -&gt; Decoder value`
+</code></pre>
+
+<p>Zum besseren Verständnis setzen wir die Typen aus unserem <code class="language-plaintext highlighter-rouge">keyDecoder</code> als Typparameter (<code class="language-plaintext highlighter-rouge">a</code> und <code class="language-plaintext highlighter-rouge">value</code>) ein.</p>
+
+<pre><code class="language-Elm">map : (String -&gt; Msg) -&gt; Decoder String  -&gt; Decoder Msg`
+</code></pre>
+
+<p>So liest sich der Aufruf nun:</p>
+
+<p><code class="language-plaintext highlighter-rouge">map</code> erwartet zwei Parameter:</p>
+<ol>
+  <li>Eine Funktion die aus einem <code class="language-plaintext highlighter-rouge">String</code> eine <code class="language-plaintext highlighter-rouge">Msg</code> erzeugt (<code class="language-plaintext highlighter-rouge">toKey</code>)</li>
+  <li>Ein Dekodierer der aus einem JSON Objekt einen <code class="language-plaintext highlighter-rouge">String</code> ausliest (<code class="language-plaintext highlighter-rouge">keyNameDecoder</code>)
+Das Ergebnis ist ein <code class="language-plaintext highlighter-rouge">Decoder Msg</code> der aus einem JSON Objekt ein <code class="language-plaintext highlighter-rouge">Msg</code> Wert erzeugen kann.</li>
+</ol>
+
+<p>Das wirft natürlich direkt die Frage auf wie wir Werte für Typen erzeugen die <strong>mehr</strong> als einen Parameter erwarten.
+Dafür gibt es die Funktionen <code class="language-plaintext highlighter-rouge">map2</code> bis <code class="language-plaintext highlighter-rouge">map8</code>. Das Beispiel in der <a href="https://package.elm-lang.org/packages/elm/json/latest/Json-Decode#map2">Dokumentation</a> für <code class="language-plaintext highlighter-rouge">map2</code> dekodiert einen <code class="language-plaintext highlighter-rouge">Point</code>-Wert der ein <code class="language-plaintext highlighter-rouge">x</code> und ein <code class="language-plaintext highlighter-rouge">y</code> erwartet.</p>
+
+<pre><code class="language-Elm">type alias Point = { x : Float, y : Float }
+
+point : Decoder Point
+point =
+  map2 Point
+    (field "x" float)
+    (field "y" float)
+</code></pre>
+
+<p>Für komplexere Strukturen lohnt sich jedoch der Einsatz der <a href="https://package.elm-lang.org/packages/NoRedInk/elm-json-decode-pipeline/latest">externen Bibliothek <code class="language-plaintext highlighter-rouge">elm-json-decode-pipeline</code></a>. Sie stellt alternative Kombinationsfunktionen zur Verfügung die die <code class="language-plaintext highlighter-rouge">mapN</code> Funktionen etwas eleganter ersetzen.</p>
+
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

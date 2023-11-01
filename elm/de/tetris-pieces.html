@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 3: Definition und Darstellung der Tetristeile und statische Typisierung</title>
+  </head>
+  <body class="tetris-pieces">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/elm/en/tetris-pieces" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 3: Definition und Darstellung der Tetristeile und statische Typisierung</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+16 July 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p>Diese Woche habe ich die Datenstrukturen entwickelt die notwendig sind um die charakteristischen Tetristeile zu definieren und auf unserem Board darzustellen.
+Es hat mich auch etwas überrascht, dass es über 1.5 Stunden gedauert hat die ~150 Zeilen zu schreiben, aber ich war schon immer etwas langsamer 😅.</p>
+
+<p>Den Code von dieser Episode gibt es auf Github: <a href="https://github.com/axelerator/elm-tetris/tree/episode3">Branch</a> <a href="https://github.com/axelerator/elm-tetris/commit/89196d6adb25f4edadea7aac9af5b865094ea256">Commit</a></p>
+
+<p>In diesem Artikel:</p>
+
+<ul>
+  <li><a href="#adt">Was ist ein algebraischer Datentyp?</a></li>
+  <li><a href="#statictyping">Was ist so toll an diesen Datentypen?</a></li>
+  <li><a href="#exhaustiveness_check">Automatische Vollständigkeitsprüfung</a></li>
+  <li><a href="#patternmatching">Pattern matching</a></li>
+</ul>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JhIVeAYEXZU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>Als Spotlight für heute möchte ich ein wenig näher auf <a href="https://de.wikipedia.org/wiki/Algebraischer_Datentyp">algebraische Datentypen</a> und die Stärken statische Typisierung eingehen.</p>
+
+<h2 id="was-ist-ein-algebraischer-datentyp"><a name="adt">Was ist ein algebraischer Datentyp?</a></h2>
+
+<p>Diese Begriffe klingen sehr kompliziert stehen aber für sehr praktische Werkzeuge die mir in anderen Programmiersprachen oft fehlen. Und ich hoffe, dass ich anhand ein paar konkreter Beispiele aus dem Tetrisprojekt zeigen kann, dass sie am Ende auch gar nicht schwer zu verstehen sind.</p>
+
+<p>Algebraische Datentypen (ADT) werden auch manchmal <em>Summentyp</em> genannt. Das Verständnis ist das ein solcher Typ die Summe aller deklarierten Varianten bildet. Ein einfaches Beispiel ist unser Typ <code class="language-plaintext highlighter-rouge">FieldColor</code>:</p>
+
+<pre><code class="language-Elm">type FieldColor = Blue | Red
+</code></pre>
+
+<p>Wir definieren einen neuen <em>Typ</em> mit dem Namen <code class="language-plaintext highlighter-rouge">FieldColor</code>. Ein Wert von diesem Typ kann entweder ein <code class="language-plaintext highlighter-rouge">Blue</code> <strong>oder</strong> ein <code class="language-plaintext highlighter-rouge">Red</code> sein.</p>
+
+<p>Hier sind zwei Ausdrücke vom Typ <code class="language-plaintext highlighter-rouge">FieldColor</code></p>
+
+<pre><code class="language-Elm">
+iAmRed : FieldColor
+iAmRed = Red
+
+iAmNotRed : FieldColor
+iAmNotRed = Blue
+</code></pre>
+
+<p>Anzumerken ist hier, dass lediglich <code class="language-plaintext highlighter-rouge">FieldColor</code> ein neuer Typ ist. <code class="language-plaintext highlighter-rouge">Blue</code> und <code class="language-plaintext highlighter-rouge">Red</code> sind Werte oder Varianten und können <em>nicht</em> als Typ verwendet werden.</p>
+
+<pre><code class="language-Elm">iDontCompile : Blue
+iDontCompile =
+    Blue
+
+Detected problems in 1 module.
+-- NAMING ERROR --------------------------------------------------- src/Main.elm
+
+I cannot find a `Blue` type:
+
+1| iDontCompile : Blue
+
+</code></pre>
+
+<p>Eine andere Art über ADTs zu denken ist die Beziehung zwischen einer abstrakten Oberklasse und seinen Unterklassen in objektorientierten Modellen( wenn man die Tatsache das eine Unterklasse ein Typ is mal ingnoriert).</p>
+
+<p>Dies hilft auch das Verständnis von ADT mit Daten zu fördern. Als Beispiel können wir uns den in dieser Episode eingeführten Datentypen <code class="language-plaintext highlighter-rouge">Field</code> anschauen.</p>
+
+<pre><code class="language-Elm">type Field = Empty | Field FieldColor
+
+iAmARedField : Field
+iAmARedField = Field Red
+</code></pre>
+
+<p>In Java übersetzt könnte man das Konstrukt wie folgt ausdrücken:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AField</span> <span class="o">{}</span>
+
+<span class="kd">class</span> <span class="nc">Empty</span> <span class="kd">extends</span> <span class="nc">AField</span> <span class="o">{}</span>
+
+<span class="kd">class</span> <span class="nc">Field</span> <span class="kd">extends</span> <span class="nc">AField</span> <span class="o">{</span>
+
+  <span class="nc">FieldColor</span> <span class="n">fieldColor</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">Field</span><span class="o">(</span><span class="nc">FieldColor</span> <span class="n">fieldColor</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">fieldColor</span> <span class="o">=</span> <span class="n">fieldColor</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">AField</span> <span class="n">iAmARedField</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Field</span><span class="o">(</span><span class="k">new</span> <span class="nc">Red</span><span class="o">());</span>
+</code></pre></div></div>
+
+<p>Die Namen die auf der Rechten Seite des <code class="language-plaintext highlighter-rouge">=</code> unserer Typdefinition stehen werden deswegen auch <em>Konstruktorfunktionen</em> genannt.</p>
+
+<p>Dieses Beispiel zeigt recht anschaulich wieviel <em>ausdrucksstärker</em> Elm ist. Die Bedeutung der Elm beziehungsweise Java-Varianten ist nahezu gleich, aber die Elm-Variante ist deutlich kürzer.</p>
+
+<p>Natürlich ist kürzer nicht automatisch besser. Aber in diesem Fall stammt die zusätzliche Länge ausschließlich von formalen Aspekten wie langen Schlüsselwörtern und Klammerstrukturen.</p>
+
+<h2 id="was-ist-so-toll-an-diesen-datentypen"><a name="statictyping">Was ist so toll an diesen Datentypen?</a></h2>
+
+<p>Generell dienen Typen dazu um <em>Bedeutung</em> auszudrücken. Sie helfen primär dem Entwickler zu verstehen welche Bedeutung ein Codeabschnitt hat.</p>
+
+<p>Bereits die Signatur einer Funktion hilft dem Leser die <em>Intention</em> einer Funktion zu verstehen.</p>
+
+<pre><code class="language-Elm">setField : Position -&gt; FieldColor -&gt; Board -&gt; Board
+</code></pre>
+
+<p>Dies ist eine häufig unterschätze Softwarequalität. Code wird nur einmal geschrieben.</p>
+
+<blockquote>
+  <p>Aber Software wird ständig erweitert und muss dafür X mal gelesen und verstanden werden.</p>
+</blockquote>
+
+<p>Nun kann man argumentieren, dass gut gewählte Parameternamen ähnlich effektiv sind, z.B. könnte eine Rubymethode wie folgt aussehen:</p>
+
+<pre><code class="language-Ruby">class Board
+  def set_field(position, fieldColor)
+    ...
+  end
+end
+</code></pre>
+<p>Und es stimmt, dass wir die <em>Bedeutung</em> hier fast (was wird zurückgegeben?) genauso gut ablesen können.
+Durch die Definition eines Typen in Verbindung mit einem Compiler bekommen wird aber einen zusätzlichen Vorteil.
+Falls wir versuchen die Funktion mit falschen Parametern aufzurufen kann uns der Compiler sehr konkretes Feedback geben.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The 2nd argument to `setField` is not what I expect:
+1|  board = setField ( 5, 3 ) "red"  Blue emptyBoard }
+                              ^^^^^
+This argument is a string of type:
+    String.String
+
+But `setField` needs the 2nd argument to be:
+    FieldColor
+</code></pre></div></div>
+
+<p>Dieses Feature ist in dynamisch getypten Sprachen völlig abwesend. Niemand hält uns auf diese Funktionen mit Werten aufzurufen die vom falschen Typ sind. Wir versuchen dies mit möglichst hoher Testabdeckung zu verhindern. In kleinen Projekten ist dies kein Problem. In großen Projekten führt es jedoch häufig dazu, dass es sehr lange dauert die Tests auszuführen.
+Ein weiterer negativer Seiteneffekt von großen Testsuites ist es, dass bei größeren Refactorings auch große Mengen Tests angepasst werden müssen. Tests die wir in einer statisch getypten Sprache gar nicht erst schreiben müssen.</p>
+
+<h2 id="automatische-vollständigkeitsprüfung"><a name="exhaustiveness_check">Automatische Vollständigkeitsprüfung</a></h2>
+
+<p>Im Gegensatz zu dem Klassenbeispiel in Java kann unser Summendatentyp nicht nachträglich erweitert werden. Diese Begrenzung hat einen großen Vorteil: Der Compiler kann für alle Funktionen, die mit Werten dieses Typs umgehen beurteilen ob alle Fälle behandelt wurden.</p>
+
+<p>Nehmen wir zum Beispiel die Funktion die den Farbnamen für ein Feld in unserem Board berechnet:</p>
+
+<pre><code class="language-Elm">ffToColor : Field -&gt; String
+ffToColor field =
+    case field of
+        Empty -&gt;
+            "gray"
+
+        Field Blue -&gt;
+            "blue"
+
+        Field Red -&gt;
+            "red"
+</code></pre>
+
+<p>Falls wir unsere Farbdeklaration wie folgt erweitern:</p>
+
+<pre><code class="language-Elm">type FieldColor = Blue | Red | Green
+</code></pre>
+
+<p>Wird der Compiler uns auf die fehlende Behandlung der <code class="language-plaintext highlighter-rouge">Green</code> Variante hinweisen:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>This `case` does not have branches for all possibilities:
+269|&gt;    case field of
+270|&gt;        Empty -&gt;
+271|&gt;            "gray"
+272|&gt;
+273|&gt;        Field Blue -&gt;
+274|&gt;            "blue"
+275|&gt;
+276|&gt;        Field Red -&gt;
+277|&gt;            "red"
+
+Missing possibilities include:
+    Field Green
+</code></pre></div></div>
+
+<p>Wir müssen dafür weder Tests schreiben noch externe Tools wie einen <a href="https://en.wikipedia.org/wiki/Lint_(software)">Linter</a> bemühen.</p>
+
+<h2 id="pattern-matching"><a name="patternmatching">Pattern Matching</a></h2>
+
+<p>In diesem Beispiel haben wir auch bereits <em>Pattern Matching</em> betrieben.
+Obwohl unser <code class="language-plaintext highlighter-rouge">Field</code> Typ lediglich zwei Varianten hat, lässt uns Elm auch auf den <em>“Datenwert”</em> der <code class="language-plaintext highlighter-rouge">Field</code>-Variant “matchen”.</p>
+
+<p>Eine Variante mit einem Level weniger pattern matching ist deutlich verboser:</p>
+
+<pre><code class="language-Elm">ffToColor : Field -&gt; String
+ffToColor field =
+    case field of
+        Empty -&gt;
+            "gray"
+
+        Field color -&gt;
+            colorToString color
+
+colorToString : FieldColor -&gt; String
+colorToString field =
+    case field of
+        Red -&gt;
+            "red"
+
+        Blue -&gt;
+            "blue"
+</code></pre>
+
+<p>Das heißt nicht, dass diese Lösung nicht auch Sinn machen kann. Letztendlich ist es eine Abwägung zwischen <em>Coupling</em> oder <em>Cohesion</em> - also was ist mir wichtiger: “Alles an einem Ort” oder “Ein Ding macht nur eine Sache”.
+Mit der Flexibilität die Elm uns durch pattern matching gibt kann der Entwickler entscheiden wo Zusammenhänge komprimiert oder getrennt werden.</p>
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

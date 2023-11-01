@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Building in the open</title>
+  </head>
+  <body class="building-in-the-open">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/">Home</a></div>
+  
+    <div><a href="/about">About</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇺🇸</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+          <li>
+            <a href="/business/de/building-in-the-open" class="de">🇩🇪</a>
+          </li>
+        
+      
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Building in the open</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+19 October 2022
+<br/>
+
+  
+  <a href="/tags#solopreneur">solopreneur</a>
+
+  
+  <a href="/tags#business">business</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p><img src="/assets/posts/building-in-the-open/features.svg" width="130" height="130" style="float:right; margin: 5px 10px 10px 0" />
+Join me as I embark on a transparent journey to develop a digital filing cabinet that prioritizes your privacy.
+Using my years of experience in web development, I aim to craft a solution that bridges the gap between convenience and data security, 
+all while sharing each step of the process with you. 
+Follow along for live coding sessions, insights, and the chance to shape a product designed for individuals, families, and SMEs alike.</p>
+
+<hr />
+
+<p>Content:</p>
+
+<ul>
+  <li><a href="#intro">Intro</a></li>
+  <li><a href="#who">Who is this for?</a></li>
+  <li><a href="#usp">This is what I’m building</a></li>
+  <li><a href="#building">If you build it, <del>they will come</del> nobody cares</a></li>
+</ul>
+
+<hr />
+
+<p><a name="intro"></a></p>
+
+<p>I started web development in the last millennium with the help of a website called 
+<label for="selfhtml" class="margin-toggle">⊕</label>
+<input type="checkbox" id="selfhtml" class="margin-toggle" />
+<span class="marginnote">
+    <img src="/assets/posts/building-in-the-open/selfhtml.jpg" alt="Selfhtml.de in 1998" /><br />
+    Screenshot of SelfHtml.de from 1998 taken with the 
+    <a href="https://web.archive.org/web/20000915151937/http://www.netzwelt.com/selfhtml/tcab.htm">WaybackMachine</a>
+</span>
+ <a href="https://wiki.selfhtml.org/">SELFHTML</a></p>
+
+<p>I ran my own <a href="https://www.fortytools.com/">software company</a> with two friends in Germany for nearly a decade. 
+And then, five years ago, after I moved to Canada to work for Shopify.
+I’m currently enjoying some free time between jobs and want to use these months to 
+spin up a product/business as a solo entrepreneur with an idea I’ve been thinking about for nearly ten years.</p>
+
+<p>Here is the problem I want to solve with my software:</p>
+
+<p><label for="unread" class="margin-toggle">⊕</label>
+<input type="checkbox" id="unread" class="margin-toggle" />
+<span class="marginnote">
+    <img src="/assets/posts/building-in-the-open/unread.svg" style="width: 5em" alt="Mail logo indicating a lot of unreal e-mails" />
+</span></p>
+
+<blockquote>
+  <p>You get a notification about an new e-mail. You open it and at a glance you can tell it’s important and have to <strong>act</strong> on it.</p>
+
+  <p>But you don’t have the time to do it <strong>right now</strong>.</p>
+
+  <p>So you leave it marked as <em>unread</em>.</p>
+</blockquote>
+
+<p>I do this with physical mail too – And it is a nightmare. I end up with stacks of unopened letters scattered through my apartment. Some of them urgent, some of them
+important, some of them both, some of them none of it.</p>
+
+<p>And then comes the dreaded moment where I have to find that <strong>one letter</strong>.</p>
+
+<p>I never committed to an existing software because these days this most likely means I have to give a very complete 
+picture of my personal life. Additionally</p>
+
+<ul>
+  <li>I can only maintain access to my data as long as I pay them a monthly fee</li>
+  <li>They will potentially use/sell my data</li>
+  <li>They might give generous access to government(s) agencies</li>
+  <li>Might be accessed by third parties through a data leak</li>
+</ul>
+
+<p>While there are alternatives like <em>Paperless</em> <label for="paperless" class="margin-toggle">⊕</label>
+<input type="checkbox" id="paperless" class="margin-toggle" />
+<span class="marginnote">
+    <img src="/assets/posts/building-in-the-open/paperless.png" style="width: 5em" alt="Mail logo indicating a lot of unreal e-mails" /><br />
+    <a href="https://github.com/paperless-ngx/paperless-ngx">Paperless</a> is a self hosted open-source document management system.
+</span>
+ it is only accessible to people who are already well versed in
+hosting their own servers.</p>
+
+<p>I want to solve this problem for myself as well as non-technical people. Hitting the right spot between ease-of-use, level of privacy and cost to operate is 
+always an trade off based on ones current situation. Knowing this I will be building a software that allows users to choose a compromise that suits <em>their</em> needs
+and change their mind over time.</p>
+
+<h3 id="-who-is-this-for"><a name="who"></a> Who is this for?</h3>
+
+<p>I’ve talked to a lot of friends and family and a lot of people struggle with <em>document management</em> in similar ways. Not surprisingly the amount of important 
+mail multiplies once you start a family and you receive documents that you have to manage on behalf of your children.</p>
+
+<p>So while the <em>MVP</em> <label for="mvp-def" class="margin-toggle">⊕</label>
+<input type="checkbox" id="mvp-def" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://en.wikipedia.org/wiki/Minimum_viable_product" title="Check out the definition on Wikipedia">MVP</a> stands for <em>“Minimum Viable Product”</em>
+</span>
+ that I will build in the beginning
+will focus on individuals a <strong>multiuser</strong> concept will be part of the foundations software design.</p>
+
+<p>To some degree a solution of this problem could be even applied to SMEs <label for="sme-def" class="margin-toggle">⊕</label>
+<input type="checkbox" id="sme-def" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://en.wikipedia.org/wiki/Small_and_medium-sized_enterprises" title="Check out the definition on Wikipedia">SME</a> stands for <em>“Small and medium-sized enterprises”</em>
+</span>
+.
+For example at Fortytools we were between 15-20 people and had a lot going on between our own SaaS and our contracting business. We had enough <em>paperwork</em> to deal
+with to employ someone. And documents often had to retrieved, processed and shared with other users.</p>
+
+<h3 id="-this-is-what-im-building"><a name="usp"></a> This is what I’m building</h3>
+
+<p>The core of the software I am going to build can best be described as a digital filing cabinet. That in itself is not especially novel, but I was surprised at
+how few solutions there are that do not satisfy my personal requirements for such a solution.</p>
+
+<p><em>“Data privacy”</em> is the least interesting feature in any software until someone 
+gets access to you data who is not supposed to. Which happens a lot more often than you think!</p>
+
+<p><img src="/assets/posts/building-in-the-open/breaches23.svg" alt="data breaches" /></p>
+
+<p>Giving your data to a <em>SaaS</em> <label for="saas-def" class="margin-toggle">⊕</label>
+<input type="checkbox" id="saas-def" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://en.wikipedia.org/wiki/Software_as_a_service">SaaS</a> Software as a service is a software licensing and delivery model in which software is licensed on a subscription basis and is centrally hosted.
+</span>
+ provider is certainly the most convenient. It’s also arguably likely to loose your data when you rely
+on the backup tools of a cloud provider than managing external disks and thumb drives.</p>
+
+<p>However not all SaaS providers are set up equally and there are a lot of data breaches each year. Larger companies are usually good
+at protecting your data against unauthorized access. However if your are <em>not</em> paying a significant price tag, for example for Google Drive,
+the provider will use your data in one way or another to monetize their project. Yes they will look <strong>into</strong> files. If you create
+a comparison Google Sheet for Baby strollers, you <strong>will</strong> get ads of baby products.</p>
+
+<p>So I want to make <strong>privacy</strong> a major concern and allow you to run the software without any connection to the internet.
+<strong>But</strong> I also want to make the software as easily accessible as possible.
+So I will launch the software in different <em>variants</em> that allows you to pick your sweet sweet spot between <em>privacy</em> and <em>comfort</em>.</p>
+<div id="variants"></div>
+
+<p>And most importantly I will make it <strong>easy to switch</strong> between these. One of the main technical ingredients to achieve this is to store
+everything in <em>files</em>. Documents will be stored <em>by year</em> and <em>by month</em>. An extremely simple scheme that will be manageable even if you
+stop using the software altogether.</p>
+
+<div id="features"></div>
+
+<h3 id="-if-you-build-it-they-will-come-nobody-cares"><a name="building"></a> If you build it, <del>they will come</del> nobody cares</h3>
+
+<p>There is this platitude about how it’s not enough to just build a good product.
+The gist is that you should start starting marketing &amp; sales activities as soon as you start building.</p>
+
+<p>And the reason this is still being told is that especially solo developers are likely to fall into this trap.
+There is a high temptation wanting the first release to be perfect, wanting to add just one more feature..
+Another catalyst for this line of thinking/feeling is that it’s better to start with a “big bang”.</p>
+
+<p>It’s been proven over and over again that this is <strong>not</strong> the case.
+So to avoid falling into this trap I decided to <strong>“build in the open”</strong> from the start.</p>
+
+<p>Practically that means I’m going to stream live on Twitch as I write the first lines of code.
+I’ll be happy to answer questions and will be talking in more detail about some of technical
+decisions for this project.</p>
+
+<p>Watching live coding sessions is not always most captivating and I also want to share non-technical challenges
+along the way. So I will also build other channels (more blog posts Instagram, Youtube, Podcast, Newsletter). I’m also 
+interested in learning from other peoples journey.</p>
+
+<p>So if you’re interested in following my journey I’d love to send you my weekly newsletter where I share recent progress.</p>
+
+<div id="subscribe"></div>
+
+<link rel="stylesheet" href="/assets/interactive/styles.css" />
+
+<script src="/assets/interactive/interactive.js"></script>
+
+<script>
+  var variants = Elm.Interactive.init({
+    node: document.getElementById('variants'),
+    flags: { kind: "Variants", lang: "en" }
+  });
+
+  var features = Elm.Interactive.init({
+    node: document.getElementById('features'),
+    flags: { kind: "Features" , lang: "en" }
+  });
+
+  var subscribe = Elm.Interactive.init({
+    node: document.getElementById('subscribe'),
+    flags: { kind: "Subscribe" }
+  });
+</script>
+
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

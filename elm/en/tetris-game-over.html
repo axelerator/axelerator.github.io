@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 11: Game Over</title>
+  </head>
+  <body class="tetris-game-over">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/">Home</a></div>
+  
+    <div><a href="/about">About</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇺🇸</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+          <li>
+            <a href="/elm/de/tetris-game-over" class="de">🇩🇪</a>
+          </li>
+        
+      
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 11: Game Over</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+23 September 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p><img src="/assets/posts/tetris-game-over/game-over.gif" style="float:right; margin: 5px 10px 10px 0" />
+There are still a few elements missing to be able to call our Tetris complete. However, with the changes from <a href="https://youtu.be/To2MtBs3w6A">episode 11 (40min)</a> we’re at least able to tell the player <em>“Game Over”</em>.</p>
+
+<p>The last <a href="https://github.com/axelerator/elm-tetris/commit/8838b88b82af29c95ac3a0bfafe17eba27b254b9">commit</a> on the <a href="https://github.com/axelerator/elm-tetris/tree/episode11">episode11 branch</a> reflects the changes I made during the recording.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/To2MtBs3w6A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>This time I didn’t really use any new, fancy concepts. But this is another feature that differentiates <em>Elm</em> from many other programming languages. The Syntax is comparatively simple. In other languages, like <em>Ruby</em> or <em>Python</em> for example, we find syntax elements for many dogmas (object oriented <em>and</em> functional).
+As a result, there are naturally multiple ways to approach a problem, none of which is necessarily more dogmatic to the language than the other.
+The fact that Elm is dedicated to the <em>functional</em> approach <strong>only</strong> leads to fewer diverging ways to solve a particular problem. This leads to more unified code which helps to understand code that I’ve not written myself faster. And conversely also to write code that <strong>other people</strong> understand faster.</p>
+
+<p>Of course, there is still enough room to express things a bit differently, even in Elm. A tool that I often only think of on the second attempt is <strong>pattern matching</strong>. But I did manage to think of it for this week’s changes eventually.</p>
+
+<p>The most important change however was the <em>‘upgrade’</em> of our central <code class="language-plaintext highlighter-rouge">Model</code> type from an <em>alias</em> to an <em>algebraic data type</em>.</p>
+
+<p><em>before</em>:</p>
+<pre><code class="language-Elm">type alias Model =
+  { board : Board
+  , currentPiece : Maybe CurrentPiece
+  }
+</code></pre>
+
+<p><em>after</em>:</p>
+<pre><code class="language-Elm">type Model =
+    = RunningGame GameDetails
+    | GameOver Board
+</code></pre>
+
+<p>Even though the <em>“content”</em> of the two variants is nearly the same it pays off to introduce a clear distinction between the two game states <strong>now</strong>. A variety of operations doesn’t make sense to apply when the game has ended.
+By expressing that state in its own proper variant we can let the compiler direct us to the places in the code where we should check if the logic still adds up for our new case.</p>
+
+<p>One central place for that is the <code class="language-plaintext highlighter-rouge">update</code> function. As mentioned in the stream I learned the following trick from <a href="https://twitter.com/rtfeldman">Richard Feldman</a>. He maintains the <a href="https://github.com/rtfeldman/elm-spa-example"><em>Elm SPA example</em></a>, a fully-fledged fullstack application built with Elm, which contains lots of useful patterns on how to deal with real-world problems.</p>
+
+<p>I changed our <code class="language-plaintext highlighter-rouge">update</code> function from</p>
+
+<pre><code class="language-Elm">update : Msg -&gt; Model -&gt; ( Model, Cmd Msg )
+update msg model =
+  case msg of
+    GravityTick _ -&gt;
+      dropCurrentPiece model
+</code></pre>
+
+<p>to look like this (abbreviated):</p>
+<pre><code class="language-Elm">update : Msg -&gt; Model -&gt; ( Model, Cmd Msg )
+update msg model =
+  case ( msg, model ) of
+    ( GravityTick _, RunningGame gameDetails ) -&gt;
+      dropCurrentPiece gameDetails
+</code></pre>
+
+<p>By extending the expression between <code class="language-plaintext highlighter-rouge">case ... of</code> to a <strong>tuple</strong> of <code class="language-plaintext highlighter-rouge">msg</code> <strong>and</strong> <code class="language-plaintext highlighter-rouge">model</code> we can now also match on the state of our model.
+We also add a “fallthrough” branch that gets matched for all the combinations we didn’t explicitly name.
+That has the pleasant effect that we <strong>don’t</strong> need to specify the combinations that don’t make sense, for example <code class="language-plaintext highlighter-rouge">(KeyDown key, GameOver)</code></p>
+
+<p>That means in the end we need <em>less code</em>, which is usually desirable. But it also comes with one drawback. We lose the luxury of the compiler being able to point us to the <code class="language-plaintext highlighter-rouge">update</code> function whenever we add a new variant to our <code class="language-plaintext highlighter-rouge">Msg</code> type. In the edited version of our <code class="language-plaintext highlighter-rouge">update</code> function we now have the <code class="language-plaintext highlighter-rouge">_ -&gt; ...</code> branch that will also match any new variant we match.
+So in the end one has to balance what’s more important on a case-by-case basis.</p>
+
+<ul>
+  <li>How many cases do I have to be explicit if I don’t want to add the fall through?</li>
+  <li>How easy is it to find out where I need to extend case expressions if I add a new variant?</li>
+</ul>
+
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 8: Rotation and random new pieces</title>
+  </head>
+  <body class="tetris-rotation">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/">Home</a></div>
+  
+    <div><a href="/about">About</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇺🇸</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+          <li>
+            <a href="/elm/de/tetris-rotation" class="de">🇩🇪</a>
+          </li>
+        
+      
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 8: Rotation and random new pieces</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+4 September 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p><img src="/assets/posts/tetris-rotation/rotation.gif" alt="Rotation" style="float: right; padding-right: 5px" />
+In <a href="https://youtu.be/Mv6FOrcLXFs">Episode 8 (60min)</a> I implement the rotation of the current piece. That worked out so fast that I also looked at generating random pieces instead of the hardcoded one when a new piece has to be created.</p>
+
+<p>Check out the <a href="https://github.com/axelerator/elm-tetris/tree/episode8">episode8 branch</a> or the <a href="https://github.com/axelerator/elm-tetris/commit/4699a918aea8eb7c9de7d3bb03aa3a0350f8a681">commit</a> to see the changes I made during that episode.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Mv6FOrcLXFs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<h3 id="-rotation"><a name="rotation"></a> Rotation</h3>
+
+<p>Adding the functionality to rotate the current piece on keypress was done much quicker than I anticipated. Thanks to
+<a href="https://shaunlebron.github.io/t3tr0s-slides/#4">Shauns implementation</a> I didn’t need to figure out the actual calculations.</p>
+
+<h3 id="-random-pieces-with-commands"><a name="random"></a> Random pieces with Commands</h3>
+
+<p>The second addition randomizes the selection of the next piece when the current piece can’t be dropped any further.
+For that, I had to make use of a concept that I had previously avoided: <strong>Commands</strong>.</p>
+
+<p>They play a significant role in any real-life Elm application, so I want to summarize again what they are good for.</p>
+
+<p><strong>Commands</strong> are kind of a logical counterpart to <strong>subscriptions</strong>, which we looked at in <a href="https://blog.axelerator.de/elm/de/tetris-gravity">episode 4</a>.
+With <strong>subscriptions</strong> we could register <strong>our messages</strong> with events created <strong>outside</strong> of our application (timer, global keypress).
+With <strong>commands</strong> we <strong>trigger</strong> events outside of our application. Since our application code needs to be purely functional we need this construct to be able to interact with the outside, non-functional world.</p>
+
+<p>In our Tetris case that’s the generation of random numbers. A function that returns a different result can, by definition not be <em>pure</em>, and consequently not exist/be called in Elm.</p>
+
+<p>Another prime example of commands are <a href="https://guide.elm-lang.org/effects/http.html">HTTP requests</a>. Establishing a TCP connection and waiting for a response cannot be modeled as a pure function.</p>
+
+<ul>
+  <li>Elm can’t guarantee a call of such a function always returns the same result</li>
+  <li>The call can take a long time, we don’t want to block the execution (what regular functions will do)</li>
+</ul>
+
+<p>With commands we decouple what would otherwise be one function call into multiple steps:</p>
+
+<ol>
+  <li>Creation of the <em>command</em></li>
+  <li>Reaction to the outcome/result of the execution of the command</li>
+</ol>
+
+<p>With this approach, we avoid our application relying on commitments that Elm cannot guarantee.</p>
+
+<p>To hand over <strong>commands</strong> that our application creates to the ‘outside world’ Elm offers multiple places.
+The most important one is in the return value of the <code class="language-plaintext highlighter-rouge">update</code> function.</p>
+
+<pre><code class="language-Elm">update : Msg -&gt; Model -&gt; (Model, Cmd Msg)
+</code></pre>
+
+<p>When we processing a message we don’t just return a new model but possibly also a command.
+These commands can be created with functions like <a href="https://package.elm-lang.org/packages/elm/random/latest/Random#generate"><code class="language-plaintext highlighter-rouge">generate</code> zur Generierung von Zufallszahlen</a> or <a href="https://package.elm-lang.org/packages/elm/http/latest/Http#get"><code class="language-plaintext highlighter-rouge">get</code> für Http Requests</a>.</p>
+
+<p>Most commands will create some form of event or result we want to process. With <code class="language-plaintext highlighter-rouge">Random.generate</code> we ultimately want to react to the creation of a new random number to use to select the next piece.
+For the processing of events we already have the <code class="language-plaintext highlighter-rouge">update</code> function as the established pattern.
+<strong>Our</strong> type <code class="language-plaintext highlighter-rouge">Msg</code> defines the different variants of events that our application can process.</p>
+
+<p>The functions that generate commands know what kind of data they generate. However, they don’t know what kind of messages our application can process. That’s why the <code class="language-plaintext highlighter-rouge">Cmd</code> type has a variable type parameter.
+When calling the <a href="https://package.elm-lang.org/packages/elm/random/latest/Random#generate"><code class="language-plaintext highlighter-rouge">generate</code></a> function we have to pass in a function that turns the data (an <code class="language-plaintext highlighter-rouge">Int</code>) generated by the command into a variant of <strong>our</strong> <code class="language-plaintext highlighter-rouge">Msg</code> type.</p>
+
+<p>In <a href="https://github.com/axelerator/elm-tetris/blob/episode8/src/Main.elm#L335">our Tetris code</a> we call <code class="language-plaintext highlighter-rouge">generate</code> like so:</p>
+
+<pre><code class="language-Elm">Random.generate NewCurrentPiece (Random.int 0 &lt;| (length pieceDefinitions - 1))
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">NewCurrentPiece</code> has the following singature:</p>
+
+<pre><code class="language-Elm">NewCurrentPiece : Int -&gt; Msg
+</code></pre>
+
+<p>The signature of <code class="language-plaintext highlighter-rouge">generate</code> as indicated in the package docs is the following:</p>
+
+<pre><code class="language-Elm">generate : (a -&gt; msg) -&gt; Generator a -&gt; Cmd msg
+</code></pre>
+
+<p>The lower case identifiers indicate type parameters. That means at the time of writing that function the library author does not know the type this stands for when it is going to be called. But when it is called all instances of one specific type parameter have to refer to the same type.</p>
+
+<p>When we apply the types of our actual function call, we can evaluate to type parameters (<code class="language-plaintext highlighter-rouge">a</code> and <code class="language-plaintext highlighter-rouge">msg</code>) to the following:</p>
+
+<pre><code class="language-Elm">generate : (Int -&gt; Msg) -&gt; Generator Int -&gt; Cmd Msg
+</code></pre>
+<p>We won’t write that anywhere in our code, it’s just to demonstrate what the compiler does when we call that function the way we do. It is important to realize that the <strong>actual</strong> type of that expression resolves to <code class="language-plaintext highlighter-rouge">Cmd Msg</code> (uppercase) because that’s exactly what the <code class="language-plaintext highlighter-rouge">update</code> signature allows/requires.</p>
+
+<p>The processing of the new random number takes place the ‘normal’ way with the <code class="language-plaintext highlighter-rouge">NewCurrentPiece</code> branch of the <a href="https://github.com/axelerator/elm-tetris/blob/episode8/src/Main.elm#L194"><code class="language-plaintext highlighter-rouge">update</code> function</a></p>
+
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

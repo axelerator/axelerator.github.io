@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 4: Gravitation des aktuellen Steins mit Subscriptions</title>
+  </head>
+  <body class="tetris-gravity">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/elm/en/tetris-gravity" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 4: Gravitation des aktuellen Steins mit Subscriptions</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+24 July 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p>Nach der Mammutepisode letzte Woche habe ich es diese Woche bei verdaulichen 30 Minuten belassen.</p>
+
+<p>Das Ziel war es den aktuellen Stein ‘fallen zu lassen’. Dafür habe ich eine neue Eigenschaft dem <code class="language-plaintext highlighter-rouge">Model</code> unserer Anwendung hinzugefügt die unter anderem die Position des Steins vorhält.</p>
+
+<p>Aber der interessantere Teil ist, dass wir das <a href="https://guide.elm-lang.org/effects/">‘Subscription’</a> System von Elm nutzen um diese Position im Sekundenintervall zu aktualisieren.</p>
+
+<p>Den Code von dieser Episode gibt es auf Github: <a href="https://github.com/axelerator/elm-tetris/tree/episode4">Branch Episode4</a> <a href="https://github.com/axelerator/elm-tetris/commit/d1b908b4f0dee9e4b58b1e3e4c48c6bdc2b45465">Commit</a></p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZzvUUi4Hv04" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>Um ein Ereignis jede Sekunde automatisch auslösen zu können müssen wir verstehen was <strong>Subscriptions</strong> in Elm bedeuten. Sie sind Teil der Definition unserer Andwendungsdefintion. Bisher waren sie leer (<code class="language-plaintext highlighter-rouge">Sub.none</code>) und wir brauchten uns nicht um sie zu kümmern.</p>
+
+<pre><code class="language-Elm">main =
+    Browser.element
+        { init = init
+        , update = update
+        , subscriptions = subscriptions
+        , view = view
+        }
+
+subscriptions : Model -&gt; Sub Msg
+subscriptions model =
+    Sub.none
+</code></pre>
+
+<p>Um zu verstehen warum wir <em>Subscriptions</em> brauchen und wie sie mit den uns bekannten Elementen zusammenspielen schauen wir uns zunächst noch einmal die  Hauptschleife an.</p>
+
+<p><img src="/assets/posts/tetris-gravity/elmloop.svg" alt="Elm application loop" /></p>
+
+<ol>
+  <li>Die Anwendung started mit dem <code class="language-plaintext highlighter-rouge">Model</code> Zustand den wir ihr mit der <code class="language-plaintext highlighter-rouge">init</code> Funktion übergeben.</li>
+  <li>Die <code class="language-plaintext highlighter-rouge">view</code> Funktion wird aufgerufen um den initialen Html Baum zu erzeugen.</li>
+  <li>Interaktive Elemente können Nachrichten vom Typ <code class="language-plaintext highlighter-rouge">Msg</code> generieren</li>
+  <li>Wenn ein <code class="language-plaintext highlighter-rouge">Msg</code> generiert wird, wird die von uns definierte <code class="language-plaintext highlighter-rouge">update</code> Funktion verwendet um den neuen <code class="language-plaintext highlighter-rouge">Model</code> Zustand zu berechnen.</li>
+  <li><code class="language-plaintext highlighter-rouge">GOTO 2.</code></li>
+</ol>
+
+<p>Das schöne an diesem Modell ist, dass es genau einen Ort gibt an dem wir den Anwendungszustand verändern/berechnen.
+Diese Tatsache macht es sehr einfach verschiedene Elm Anwendungen zu verstehen und zu erweitern. Das Modell ist sehr viel restriktiver als native JavaScript-Anwendungen die keinerlei Beschränkungen haben wer wann wo in welche Variablen schreibt.</p>
+
+<p>Aber kann man mit einem solch restriktiven Modell trotzdem jeden Anwendungsfall abbilden?
+Ein Fall der sich mit dem bisher präsentierten <code class="language-plaintext highlighter-rouge">init-&gt;view-&gt;update</code> nicht abbilden lässt ist das Problem dem wir uns jetzt widmen wollen:</p>
+
+<blockquote>
+  <p>Jede Sekunde soll die Position unseres aktuellen Steins um eine Zeile verringert werden</p>
+</blockquote>
+
+<p>In nativen JavaScript würden wir hierfür die <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval#example_1_basic_syntax"><code class="language-plaintext highlighter-rouge">setInterval</code> Funktion</a> nutzen die uns vom Browser zur Verfügung gestellt wird.</p>
+
+<p>Aber in Elm haben wir keine Möglichkeit direkt JavaScript-Funktionen aufzurufen. Ein Grund dafür ist, dass es unser schön einfaches Dogma brechen würde, dass wir den Anwendungszustand lediglich von einem Ort (<code class="language-plaintext highlighter-rouge">update</code>) beeinflussen.</p>
+
+<p>Um diesen Prinzip treu zu bleiben müssen wir also einen neuen “Fall” für unsere <code class="language-plaintext highlighter-rouge">update</code> Funktion einführen. Wir erweitern unseren ‘Nachrichtentyp’ <code class="language-plaintext highlighter-rouge">Msg</code> um eine neue Variante <code class="language-plaintext highlighter-rouge">GravityTick</code> und behandeln diese in der <code class="language-plaintext highlighter-rouge">update</code> Funktion. Dort rufen wir <code class="language-plaintext highlighter-rouge">dropCurrentPiece</code> auf die anhand des vorherigen Models eine neues Model mit der aktualisierten Position des aktuellen Steins berechnet.</p>
+
+<pre><code class="language-Elm">type Msg = ... | GravityTick 
+
+
+update : Msg -&gt; Model -&gt; ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        GravityTick -&gt;
+            ( dropCurrentPiece model
+            , Cmd.none
+            )
+
+dropCurrentPiece : Model -&gt; Model
+dropCurrentPiece model = ...
+</code></pre>
+
+<p>So weit so gut. Doch wie <strong>produzieren</strong> wir diese neue Nachricht? Bisher haben wir lediglich mit interaktiven Elementen wie <code class="language-plaintext highlighter-rouge">&lt;button&gt;</code> Nachrichten gesendet.</p>
+
+<p>Das ist der Moment wo <strong>Subscriptions</strong> ins Spiel kommen. Mit der <code class="language-plaintext highlighter-rouge">subscriptions</code> Funktion die wir als Teil unser Anwendungsdefinition übergeben können wir Quellen für Nachrichten registrieren die <strong>nicht</strong> durch den Benutzer ausgelöst werden!</p>
+
+<pre><code class="language-Elm">main =
+    Browser.element
+        { init = init
+        , update = update
+        , subscriptions = subscriptions
+        , view = view
+        }
+
+subscriptions : Model -&gt; Sub Msg
+subscriptions _ =
+    Time.every 1000 GravityTick
+</code></pre>
+
+<p><img src="/assets/posts/tetris-gravity/elmloopsubs.svg" alt="Elm application loop" /></p>
+
+<p>Mit der <a href="https://package.elm-lang.org/packages/elm/time/latest/Time#every"><code class="language-plaintext highlighter-rouge">every</code> Funktion</a> die uns von Elm zur Verfügung gestellt wird können wir eine solche Quelle registrieren.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Time.every</code> wird aufgerufen mit einer Anzahl Millisekunden die definiert wie <em>häufig</em> die Nachricht gesendet werden soll. Als zweiter Parameter müssen wir spezifizieren <em>welche</em> Nachricht gesendet werden soll.</p>
+
+<p>Die Signatur für <code class="language-plaintext highlighter-rouge">every</code> sieht etwas zu kompliziert aus für das, was ich gerade beschrieben habe:</p>
+
+<pre><code class="language-Elm">every : Float -&gt; (Posix -&gt; msg) -&gt; Sub msg
+</code></pre>
+
+<p>Der zweite Parameter ist vom Typ <code class="language-plaintext highlighter-rouge">(Posix -&gt; msg)</code> - das ist nicht wie ich beschrieben habe einfach eine Nachricht!
+Das stimmt, und der Grund dafür ist, dass <code class="language-plaintext highlighter-rouge">every</code> unsere Nachricht <code class="language-plaintext highlighter-rouge">GravityTick</code> noch ein Stück Information mitgeben möchte: die aktuelle, absolute Zeit.
+Der Grund dafür ist, dass uns der Browser nicht garantieren kann, dass die Nachricht tatsächlich exakt jede Sekunde gesendet wird. D.h. wenn wir zum Beispiel zählen wollen wieviel Zeit tatsächlich vergangen ist, sollten wir relativ von einer Uhrzeit rechnen als Sekunden zählen.</p>
+
+<p>Damit <code class="language-plaintext highlighter-rouge">every</code> also eine Nachricht senden kann, die die aktuelle Uhrzeit enthält müssen wir ihr eine Funktion geben die eine Uhrzeit (<code class="language-plaintext highlighter-rouge">Posix</code>) erwartet und eine Nachricht erzeugt.</p>
+
+<p>Wenn wir unsere <code class="language-plaintext highlighter-rouge">Msg</code> Variante mit <code class="language-plaintext highlighter-rouge">Posix</code> als Parameter definieren hat der Name der Variante genau diese Signatur. Das ist der Grund warum wir einfach <code class="language-plaintext highlighter-rouge">Time.every 1000 GravityTick</code> schreiben können.</p>
+
+<pre><code class="language-Elm">main =
+    Browser.element
+        { init = init
+        , update = update
+        , subscriptions = subscriptions
+        , view = view
+        }
+
+type Msg = .. | .. | GravityTick Posix | ..
+
+subscriptions : Model -&gt; Sub Msg
+subscriptions _ =
+    Time.every 1000 GravityTick
+
+update : Msg -&gt; Model -&gt; ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        GravityTick currentTime -&gt;
+            ( computeNewModel currentTime
+            , Cmd.none
+            )
+        ...
+</code></pre>
+
+<p>Für unser Tetris interessiert uns nicht wirklich wieviel Zeit vergangen ist, sondern lediglich, dass etwas jede Sekunde passiert. Deswegen ignorieren wir die übergebene Zeit.</p>
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

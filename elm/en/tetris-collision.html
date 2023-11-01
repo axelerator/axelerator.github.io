@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 6 & 7: Collision detection and Test Driven Development</title>
+  </head>
+  <body class="tetris-collision">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/">Home</a></div>
+  
+    <div><a href="/about">About</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇺🇸</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+          <li>
+            <a href="/elm/de/tetris-collision" class="de">🇩🇪</a>
+          </li>
+        
+      
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 6 & 7: Collision detection and Test Driven Development</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+27 August 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p><img src="/assets/posts/tetris-collision/collision_cropped.gif" alt="collision detection" style="float: left; padding-right: 5px" />
+This article is the summary of the last two episodes. Tetris-wise I’m trying to implement the functionality that lets the current piece rest on the ground or other previously dropped pieces. After I introduced a gnarly logic error in <a href="https://www.youtube.com/watch?v=KXtmFh0C-9s">episode 6</a> I decided to start from scratch in <a href="https://www.youtube.com/watch?v=ZXMQCuvLHMg">episode 7</a>. This gave me the opportunity to talk about <code class="language-plaintext highlighter-rouge">elm-test</code> and to show the strengths of the Test Driven Development technique.</p>
+
+<p>Episode 7 <a href="https://github.com/axelerator/elm-tetris/tree/episode7">on Github</a></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZXMQCuvLHMg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<ol>
+  <li><a href="#debug">Console logging in Elm</a></li>
+  <li><a href="#elm-test">Installation und Verwendung von <code class="language-plaintext highlighter-rouge">elm-test</code></a></li>
+  <li><a href="#tdd">Test Driven Development</a></li>
+  <li><a href="#fail">Wo war der Fehler in Episode 6?</a></li>
+</ol>
+
+<h3 id="-console-logging-in-elm"><a name="debug"></a> Console logging in Elm</h3>
+
+<p>I wasn’t really fit when I recorded episode 6 and I introduced a logical error into the new code. I had different speculations about what the problem could be (all wrong) and tried to close in on the error using a lot of debug output.</p>
+
+<p>Elm comes with a <a href="https://package.elm-lang.org/packages/elm/core/latest/Debug"><code class="language-plaintext highlighter-rouge">Debug</code> packet</a>. The <a href="https://package.elm-lang.org/packages/elm/core/latest/Debug#log"><code class="language-plaintext highlighter-rouge">log</code> function</a> lets us print debug output to the JavaScript console, pretty much exactly like the <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/log"><code class="language-plaintext highlighter-rouge">console.log</code>in JavaScript</a>.</p>
+
+<p>At first sight however it looks a bit strange how it has to be invoked:</p>
+
+<pre><code class="language-Elm">sumIt : Int -&gt; Int -&gt; Int
+sumIt a b =
+  let
+    _ = Debug.log "a is:" a
+  in
+    a + b
+</code></pre>
+
+<p>Why can’t we just write <code class="language-plaintext highlighter-rouge">Debug.log "a is:" a</code> only? The reason is that the intention of the <code class="language-plaintext highlighter-rouge">let</code> block is to <strong>give names</strong> to expressions.
+<code class="language-plaintext highlighter-rouge">Debug.log</code> is <strong>the only</strong> function in Elm that’s not <strong>pure</strong> and where we don’t care about its result.
+<strong>All other</strong> we call <strong>only</strong> to get their result. So for our <code class="language-plaintext highlighter-rouge">Debug.log</code> line to have the same format as the other expressions in a <code class="language-plaintext highlighter-rouge">let</code> block, we’ll just assign it the name <code class="language-plaintext highlighter-rouge">_</code> (the underscore).
+By doing so it can be avoided that the compiler has to implement an extra syntax rule <strong>only</strong> for the <code class="language-plaintext highlighter-rouge">Debug.log</code> call.</p>
+
+<p>This is not the only use case for the underscore. We use it generally as an identifier for an expression that is not used further down the function body.</p>
+
+<p>I already did that in the <a href="https://github.com/axelerator/elm-tetris/blob/episode5/src/Main.elm#L137"><code class="language-plaintext highlighter-rouge">mkEmptyRow</code> function</a>:</p>
+
+<pre><code class="language-Elm">  mkEmptyRow _ =
+      Row &lt;| map (\_ -&gt; Empty) (range 1 11)
+</code></pre>
+
+<p>I#m using the “looping notion” of the <a href="https://package.elm-lang.org/packages/elm/core/latest/List#map"><code class="language-plaintext highlighter-rouge">map</code> function</a> to call another function on every element in a <a href="https://package.elm-lang.org/packages/elm/core/latest/List#range">range</a> 
+But in this function, I’m not really interested in the actual number for each iteration. By using the underscore as the identifier for the parameter we’re giving a potential reader of the code an <strong>early</strong> sign that they don’t have to care about it.</p>
+
+<h3 id="-installation-and-usage-of-elm-test"><a name="elm-test"></a> Installation and usage of <code class="language-plaintext highlighter-rouge">elm-test</code></h3>
+
+<p><code class="language-plaintext highlighter-rouge">elm-test</code> is a standalone tool that has to be installed separately next to the <code class="language-plaintext highlighter-rouge">elm</code> executable.
+The execution of our Elm (test-) code is done with Node.js. So it’s not surprising that it’s installed with the <code class="language-plaintext highlighter-rouge">npm</code> packet manager, which goes hand in hand with Node.js.</p>
+
+<p>So to be able to install <code class="language-plaintext highlighter-rouge">elm-test</code> one first has to install Node.js. Next to the <a href="https://nodejs.org/en/">official download</a> there are a few different other ways to install it depending on the operating system as well.</p>
+
+<p>I personally prefer <a href="https://github.com/nodenv/nodenv">nodenv</a> to manage my Node.js installations, because it allows me to have multiple, different versions of it installed.</p>
+
+<h3 id="test-driven-development"><a name="tdd"></a>Test Driven Development</h3>
+
+<p>My failed attempt to “wing” the implementation of the collision detection turned into a welcomed opportunity to demonstrate the strengths of <strong>Test Driven Development</strong> (TDD).</p>
+
+<p>TDD is not an Elm-specific technique. It’s been around for more than 20 years! It was popularized by <a href="https://twitter.com/KentBeck">Kent Beck</a> and is part of a larger methodology called <a href="https://en.wikipedia.org/wiki/Extreme_programming">extreme programming</a>.</p>
+
+<p>In this technique, we start by writing a test first before we start writing the implementation. But why?</p>
+
+<p>As a developer, it’s easy to get too excited about the <strong>solution</strong>. As demonstrated in episode 6 it’s very tempting to start writing the implementation first. Signatures and names of functions follow as a mere afterthought.</p>
+
+<p>TDD forces us to think about the <strong>what</strong> before the <strong>how</strong>. Before we execute the test we have to make up our mind how we want to call the function. That usually leads to functions that are better named and easier to test.</p>
+
+<p>TDD also means we start with the simplest, smallest most naive test. We then follow up with a constant alternation of:</p>
+
+<ul>
+  <li>Making the test pass, by extending the implementation</li>
+  <li>Adding another failing test, that tests for the smallest logical addition</li>
+</ul>
+
+<p>In episode 7 I start by reverting all changes from episode 6 to start from scratch. Over the duration of the episode, I create a full test suite just by following that technique. And it already pays off at the moment where I add some of the more complex logic in the second half of the episode.
+Thanks to the tests that I had already written up to that point I was able to quickly identify the mistake without the need for adding excessive needs of logging.</p>
+
+<h3 id="where-was-the-mistake-in-episode-6"><a name="fail"></a>Where was the mistake in episode 6?</h3>
+
+<p>I was pretty exhausted when I recorded the episode. But of course, I still had to figure out where I made the mistake! Did you find it?</p>
+
+<p>The error was in the calculation of the positions that the dropped piece <strong>would</strong> have taken. The expression <code class="language-plaintext highlighter-rouge">translateTile</code> uses the <strong>current</strong> position of the piece instead of the one in the row below.</p>
+
+<p>Wrong:</p>
+<pre><code class="language-Elm">  translateTile ( tx, ty ) =
+      ( x + tx, y + ty )
+</code></pre>
+
+<p>Fixed:</p>
+<pre><code class="language-Elm">  translateTile ( tx, ty ) =
+      ( x + tx, nextRow + ty )
+</code></pre>
+
+<p>On top of that, I added more mistakes in my attempt to fix it ( the <code class="language-plaintext highlighter-rouge">- 1</code> when dropping rows/columns). So while I was not super happy after recording the first attempt, I am happy that I went the extra mile with <code class="language-plaintext highlighter-rouge">elm-test</code>. This way I have a working test setup that’s easy to extend for the upcoming tasks!</p>
+
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

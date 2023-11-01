@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Episode 2: Darstellung des leeren Boards und partielle Anwendung</title>
+  </head>
+  <body class="basic-board">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/elm/en/board" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Episode 2: Darstellung des leeren Boards und partielle Anwendung</h1>
+       
+<label for="post-meta" class="margin-toggle">&#8853;</label>
+<input type="checkbox" id="post-meta"  class="margin-toggle"/>
+<span class="marginnote">
+8 July 2021
+<br/>
+
+  
+  <a href="/tags#elm">elm</a>
+
+</span>
+
+
+
+<section>
+<section>
+<p>Nachdem wir uns letzte Episode Zeile für Zeile durch die <em>Hello World</em> Anwendung gekämpft haben, schauen wir heute nochmal etwas abstrakter auf die Natur
+einer Elm-Anwendung bevor wir uns ans Programmieren begeben.</p>
+
+<p><a href="/assets/posts/basic-board/architecture.png"><img src="/assets/posts/basic-board/architecture.png" width="300" /></a></p>
+
+<p>Danach bringen wir unseren Protoypen in einen Zustand wo er das leere Board darstellt. Den Zustand den der Code nach der Episode hat ist im <a href="https://github.com/axelerator/elm-tetris/tree/episode2">episode2 Branch auf Github </a> verfügbar.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rJXE328qYz8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>Die Entwicklung einer Elm Anwedung startet meistens mit Überlegungen über die Grundlegenden Datentypen. Dabei müssen wir nicht alles “durchdesignen”.
+Wir fangen mit einem sehr begrenzten Datenmodell an, dass ausschließlich leere Zeilen kennt an. Ich habe Vetrauen, dass das starke Typesystem von Elm es mir ermöglicht 
+das Modell Stück für Stück schnell zu erweitern ohne Regressionen einzuführen.</p>
+
+<p>Die Art wie wir Funktionen in Elm definieren kommt Benutzern anderer Sprachen oft komisch vor:</p>
+
+<pre><code class="language-Elm">fieldView : Int -&gt; Int -&gt; Html Msg
+fieldView row column =
+  rect [x (col * 10), y (row * 10)] []
+</code></pre>
+
+<p>Die erste Zeile ist die Funktionssignatur und lässt sich wie folgt interpretieren:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">fieldView</code> ist eine Funktion mit zwei Integer Parametern
+und gibt einen Wert vom Typ <code class="language-plaintext highlighter-rouge">Html Msg</code> zurück.</p>
+</blockquote>
+
+<h2 id="aber-warum-sind-die-parameter-nicht-zum-beispiel-in-klammern-vom-rückgabewert-getrennt">“Aber warum sind die Parameter nicht zum Beispiel in Klammern vom Rückgabewert getrennt?”</h2>
+<p>Der Grund dafür ist, dass dies nicht der einzige Weg ist die Signatur zu lesen!</p>
+
+<p>Die Funktionssignatur kann man auch wie folgt lesen:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">fieldView</code> ist eine Funktion mit <strong>einem</strong> Integer Parameter.
+Der Rückgabewert ist <strong>eine (neue) Funktion</strong> die einen (den anderen) Integer Parameter
+entgegennimmt und ein <code class="language-plaintext highlighter-rouge">Html Msg</code> zurückgibt.</p>
+</blockquote>
+
+<p>Praktisch heißt das jenachdem mit wieviele Parametern wir tatsächlich <code class="language-plaintext highlighter-rouge">fieldView</code> aufrufen bestimmt ob wir einen Wert oder eine Funktion zurück bekommen.</p>
+
+<h2 id="aber-wozu-ist-das-gut">“Aber wozu ist das gut!?”</h2>
+
+<p>Die Anwedung dieses Prinzips heißt <strong>partielle Anwendung</strong> und wird erst so richtig praktisch wenn wir Funktionen verwenden die andere Funktionen als Parameter erwarten.</p>
+
+<p>Das prominenteste Beispiel einer solchen Funktion ist <a href="https://package.elm-lang.org/packages/elm/core/latest/Array#map">map</a>.
+Sie wendet die übergebene Funktion auf die Elemente einer Liste an.</p>
+
+<p>Ein vereinfachte Version der Darstellung des Boards sieht wie folgt aus:</p>
+
+<pre><code class="language-Elm">boardView : Html Msg
+boardView =
+  let
+    rowNumbers = range 0 20
+  in
+    map rowView rowNumbers
+
+rowView : Int -&gt; Html Msg
+rowView rowNumber =
+  let
+    columnNumbers = range 0 10
+  in
+    map fieldView columnNumbers
+
+fieldView : Int -&gt; Int -&gt; Html Msg
+fieldView row column =
+  rect [x (col * 10), y (row * 10)] []
+</code></pre>
+
+<p>Dieser Code kann nicht kompiliert werden, weil der Rückgabewert von <code class="language-plaintext highlighter-rouge">rowView</code> nicht stimmt. 
+Wir übergeben <code class="language-plaintext highlighter-rouge">fieldView</code> an <code class="language-plaintext highlighter-rouge">map</code>. Ein Funktion die, wenn wir ihr einen <code class="language-plaintext highlighter-rouge">Int</code> geben eine Funktion zurückgibt.
+Wir wollen aber ein <code class="language-plaintext highlighter-rouge">Html Msg</code> haben. Die Lösung ist die Zeilennummer durch partielle Anwedung von rowView in eine neue Funktion “einzubacken”.</p>
+
+<p>Eine sehr verbose Art dies zu tun sieht wie folgt aus:</p>
+
+<pre><code class="language-Elm">-- nimmt *einen* Int
+-- gibt eine Funktion von Int -&gt; Html zurück
+fieldInRow : Int -&gt; (Int -&gt; Html Msg)
+fieldInRow rowNumber = fieldView rowNumber -- partielle Anwedung hier!
+
+rowView : Int -&gt; Html Msg
+rowView rowNumber =
+  let
+    columnNumbers = range 0 10
+  in
+    map (fieldInRow rowNumber) columnNumbers
+</code></pre>
+
+<p>Und jetz kommt der Moment <img src="/assets/mindblown.gif" alt="mind blown" /> .
+Wenn wir die Klammern in der Definition <code class="language-plaintext highlighter-rouge">fieldInRow : Int -&gt; (Int -&gt; Html Msg)</code> weglassen, sehen wir, dass es genau die gleiche ist
+wie <code class="language-plaintext highlighter-rouge">fieldView : Int -&gt; Int -&gt; Html Msg</code>.</p>
+
+<p>Und die Bedeutung ist ebenfalls exakt die gleiche. Also können wir uns die gesamte Funktion <code class="language-plaintext highlighter-rouge">fieldInRow</code> sparen und statt dessen direkt schreiben:</p>
+
+<pre><code class="language-Elm">rowView : Int -&gt; Html Msg
+rowView rowNumber =
+  let
+    columnNumbers = range 0 10
+  in
+    map (fieldView rowNumber) columnNumbers
+</code></pre>
+
+<p>Das ist die Ausdrucksstärke und Elegeanz von Elm!</p>
+
+</section>
+
+</section>
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+
