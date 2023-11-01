@@ -13,18 +13,19 @@ body
 
 
 
-$primarycolour: rgb(255,255,255)
+$primarycolour: rgb(250,251,251)
 #bg 
   pointer-events: none
   position: absolute
   top: -5.5rem
-  left: 3rem
   font-size: 10em
   color: #FFFFF8
   font-weight: 700
   line-height: 1
   letter-spacing: 0.4rem
-  @include text3d(adjust-color($primarycolour, $lightness: -8%), $depth: 8, $primaryshadowcolour: adjust-color($primarycolour, $lightness: -10%, $saturation: +20%) , $shadowopacity: .3)
+  @include text3d(adjust-color($primarycolour, $lightness: -8%), $depth: 8, $primaryshadowcolour: adjust-color($primarycolour, $lightness: -10%, $saturation: +0%) , $shadowopacity: .3)
+  max-width: 100%
+  overflow: hidden
 
 
 nav
@@ -106,6 +107,10 @@ nav
     display: none
     a
       background: none
+  #lang-toggle
+    display: none
+  #lang-toggle:checked ~ ul
+    display: block
 
   &:hover
     ul
@@ -147,3 +152,9 @@ code
   code
     text-shadow: none
   
+
+@media (max-width: 760px) 
+  nav
+    display: block
+  #bg
+    margin-left: -8%

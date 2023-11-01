@@ -10,12 +10,13 @@
   position: relative;
   display: flex;
   overflow: hidden;
+  width: 100%;
 }
 .packages > .overlapping:nth-child(2) {
   left: 25%;
 }
 .packages > .overlapping:nth-child(3) {
-  left: 50%;
+  left: 40%;
 }
 
 .packages > * {
@@ -37,6 +38,10 @@
   top: 0.5em;
 }
 @media (max-width: 760px) {
+  nav {
+    display: block;
+  }
+
   .packages h3 {
     font-size: 1.0rem;
   }

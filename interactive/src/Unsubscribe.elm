@@ -82,7 +82,7 @@ view model =
 postSubscription : String -> Cmd Msg
 postSubscription email =
   Http.post
-    { url = "http://localhost:8080/unsubscribe"
+    { url = "https://newsletter.axelerator.de/unsubscribe"
     , body = Http.jsonBody <| subscriptionEncoder email
     , expect = Http.expectWhatever GotSubscriptionResponse 
     }

@@ -56,16 +56,14 @@ view model =
   case model of
       Input v ->
         div [] 
-          [p [] [text "Want to get a weekly digest?"]
-          , form [onSubmit Submit] 
+          [ form [onSubmit Submit] 
             [ input [type_ "email", required True, value v, onInput ChangeEmail] []
             , button [] [text "Subscribe"]
             ]
           ]
       Pending v ->
         div [] 
-          [p [] [text "Want to get a weekly digest?"]
-          , form [] 
+          [ form [] 
             [ input [type_ "email", required True, value v] []
             , button [disabled True] [text "Subscribe"]
             ]
@@ -82,7 +80,7 @@ view model =
 postSubscription : String -> Cmd Msg
 postSubscription email =
   Http.post
-    { url = "http://localhost:8080/subscribe"
+    { url = "https://newsletter.axelerator.de/subscribe"
     , body = Http.jsonBody <| subscriptionEncoder email
     , expect = Http.expectWhatever GotSubscriptionResponse 
     }

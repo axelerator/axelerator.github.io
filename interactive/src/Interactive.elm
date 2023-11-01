@@ -11,8 +11,8 @@ import Variants
 import Shape
 
 type Flags
-  = InitVariants
-  | InitFeatures
+  = InitVariants String
+  | InitFeatures String
   | InitFeatureTree
   | InitSubscribe
   | InitUnsubscribe String
@@ -22,8 +22,9 @@ decodeFlags =
  Decode.field "kind" Decode.string
   |> Decode.andThen (\kind ->
     case kind of
-        "Variants" -> Decode.succeed InitVariants
-        "Features" -> Decode.succeed InitFeatures
+        "Variants" -> 
+          Decode.map InitVariants (Decode.field "lang" Decode.string)
+        "Features" -> Decode.map InitFeatures (Decode.field "lang" Decode.string)
         "FeatureTree" -> Decode.succeed InitFeatureTree
         "Subscribe" -> Decode.succeed InitSubscribe
         "Unsubscribe" -> Decode.map InitUnsubscribe (Decode.field "email" Decode.string)
@@ -44,17 +45,17 @@ main =
 
 init v =
   case Decode.decodeValue decodeFlags v of
-      Ok InitVariants ->
-        ( OnVariants <| Variants.init
+      Ok (InitVariants lang) ->
+        ( OnVariants <| Variants.init lang
         , Cmd.none
         )
       Ok InitFeatureTree ->
         ( OnFeatureTree <| FeatureTree.init
         , Cmd.none
         )
-      Ok InitFeatures ->
+      Ok (InitFeatures lang)->
         let
-           (m, c) = Features.init 
+           (m, c) = Features.init lang
         in
         
         ( OnFeatures <| m
@@ -69,7 +70,7 @@ init v =
         , Cmd.none
         )
       _ ->
-        ( OnVariants <| Variants.init
+        ( OnVariants <| Variants.init "en"
         , Cmd.none
         )
 

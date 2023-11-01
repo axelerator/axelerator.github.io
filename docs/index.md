@@ -6,14 +6,13 @@ lang: en
 tags: elm
 ---
 
-Welcome to my blog where I'm currently publishing the show notes to my weekly [livecoding stream on twitch - every Wednesday 7pm (EST)](https://www.twitch.tv/programmingisfun).
+I'm building a digital filing cabinet to order the chaos in my (and potentially your life).
+Whether you're a companion in struggling with staying on top of letters and e-mails or a fellow
+developer curious how this adventure unrolls, this is the place where I will regularly share my
+progress and learning, both form a technical as well as a business perspective.
 
-Inspired by [Shaun Lebrons ClojureScript implementation](https://shaunlebron.github.io/t3tr0s-slides/#0) I'm trying to showcase the beauty that webdevelopment in the Elm programming language is.
-The audience are developers that may have experience with other languages or frameworks for webdevelopment already. Although no particular familiarity with JavaScript or the browser API is needed.
 
-I'm trying to keep episodes between 30 and 90 minutes. After recording each episode I'm publishing a little write-up here where I go into detail about some concepts that developers with a less functional background might have questions about.
-
-## Latest posts
+## Posts
 {% assign posts=site.posts | where:"lang", page.lang %}
 {% for post in posts %}
   <section>

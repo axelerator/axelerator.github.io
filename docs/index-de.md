@@ -7,12 +7,12 @@ permalink: /de
 tags: elm
 ---
 
-Willkommen auf meinem Blog, wo ich zurzeit meine Shownotizen zu meinem [wöchentlichen Livecoding Stream](https://www.twitch.tv/programmingisfun) veröffentliche.
+Ich baue einen digitalen Aktenschrank als 1-Mann-Startup um mein (und potenziell Dein)
+Dokumentendurcheinander zu ordnen.
 
-Inspiriert von [Shaun Lebrons ClojureScript Implementierung](https://shaunlebron.github.io/t3tr0s-slides/#0) versuche ich vrzuführen wie anmutent die Anwedungsentwicklung mit Elm ist.
-Du bist in der Zielgruppe wenn Du schon mit anderen Sprachen/Frameworks Webanwendungen entwickelt hast. Besondere Kenntnis von JavaScript oder der Browser API ist allerdings nicht nötig.
-
-Ich versuche die Episoden zwischen 30 und 90 Minuten zu halten. Anschließend veröffenltiche ich hier dann einen Artikel pro Episode indem ich auf ein paar Konzepte näher eingehe mit denen Entwickler aus weniger 'funktionalem Umfeld' vielleicht nicht so vertraut sind.
+Wenn du ein Leidensgenosse im Kampf gegen das Dokumentenchaos bist oder neugiereig wie
+es ist ein Startup als Solo-entwickler auf die Beine zu stellen kannst du hier regelmäßig
+Erfahrungsberichte lesen. Sowohl von der technischen als auch der Businessperspektive.
 
 ## Neueste Beiträge
 {% assign posts=site.posts | where:"lang", page.lang %}

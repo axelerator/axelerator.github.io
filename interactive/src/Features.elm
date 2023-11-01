@@ -129,6 +129,7 @@ type alias LoadedModel =
     , hovered : Maybe { sequence : List String, percentage : Float }
     , total : Float
     , colorScale : OrdinalScale String Color
+    , lang: String
     }
 
 
@@ -145,6 +146,73 @@ type alias FeatureDescription =
   , body: String
   }
 
+featureDescriptionDE : List String -> FeatureDescription
+featureDescriptionDE sequence =
+  case sequence of
+    ["retrieval"] ->
+      { title = "Dokumentenabfrage"
+      , body = "Funktionen die helfen Dokumente schnell zu finden und anzuzeigen"
+      }
+    ["retrieval", "tags"] ->
+      { title = "Tagging"
+      , body = "Erlaubt es Dokumente mit 'Tags' zu versehen und sie danach aufzufinden"
+      }
+    ["retrieval", "sender"] ->
+      { title = "Absendererkennung"
+      , body = "Automatische Erkennung von Abserndern und die Möglichkeit Dokumente nach Absendern aufzulisten"
+      }
+    ["retrieval", "search"] ->
+      { title = "Volltext-Suche"
+      , body = "Eine globale Suche die alle Dokumente anzeigt die einen bestimment Begriff enthalten"
+      }
+    ["productivity"] ->
+      { title = "Produktivität"
+      , body = "Funktionen die Tätigkeiten erleichtern die ein hochgeladenes Dokument involvieren"
+      }
+    ["productivity", "tasks"] ->
+      { title = "Aufgaben"
+      , body = "Aufgaben mit Fälligkeitsdatum an ein Dokument anhängen"
+      }
+    ["productivity", "tasks", "workflows"] ->
+      { title = "Automtisierte Abläufe"
+      , body = "Definieren von Ketten von Aufgaben (Rechnung einreichen -> Beitragserstattung verifizieren)"
+      }
+    ["access"] ->
+      { title = "Zugriff"
+      , body = "Funktionen die den Zugriff auf Dokumente sicherstellen oder verbessern"
+      }
+    ["access", "privacy"] ->
+      { title = "Datenschutz"
+      , body = "Funktionen die den Zugriff für den Besitzer aber nicht für Dritte erleichtern"
+      }
+    ["access", "mobile"] ->
+      { title = "Mobile"
+      , body = "Dokumente mit dem Smartphone über eine mobile Webseite erfassen und anzeigen"
+      }
+    ["access", "mobile", "native"] ->
+      { title = "Native App"
+      , body = "iOS/Android app für bessere UX"
+      }
+    ["access", "privacy", "sbc"] ->
+      { title = "Managed self hosting"
+      , body = "Kombiniertes Hard- und Softwarepaket (z.B. RaspberryPi) das zum selber Hosten ohne technisches Know-How genutzt werden kann"
+      }
+    ["access", "backup"] ->
+      { title = "Backup"
+      , body = "Lösungen die das sichern der Dokumente in den verschiedenen Varianten unterstützen"
+      }
+    ["access", "backup", "cloud"] ->
+      { title = "Verschlüsseltes Cloud Backup"
+      , body = "Synchronisierung der Daten in eine vom Benutzer gewählte Lösung(e.g. iCloud, DropBox)"
+      }
+    ["access", "backup", "usb"] ->
+      { title = "Externer Speicher"
+      , body = "Für headless Installation: Unterstützung für Plg-and-Play Backup via USB-Stick"
+      }
+    _ ->
+      { title = "missing"
+      , body = ""
+      }
 featureDescription : List String -> FeatureDescription
 featureDescription sequence =
   case sequence of
@@ -218,10 +286,10 @@ featureDescription sequence =
 -- Data loading and processing
 
 
-init : ( Model, Cmd Msg )
-init =
+init : String -> ( Model, Cmd Msg )
+init lang =
     ( case convertCsv featuresStr of
-        Ok rawData -> loadData rawData
+        Ok rawData -> loadData rawData lang
         _ -> Loading
     , Cmd.none
     )
@@ -276,7 +344,7 @@ decoder =
         |> Csv.pipeline (Csv.column 1 Csv.int)
 
 
-loadData rawData =
+loadData rawData lang =
             let
                 categories =
                     Tree.foldl (\{ sequence } set -> Set.union set <| Set.fromList sequence) Set.empty rawData
@@ -336,6 +404,7 @@ loadData rawData =
                 , total = toFloat (Tree.label rawData).visits
                 , hovered = Nothing
                 , colorScale = colorScale
+                , lang = lang
                 }
             
 
@@ -433,7 +502,11 @@ sunburst model =
         , case model.hovered of
             Just { percentage, sequence } ->
               let
-                  {title, body} = featureDescription sequence
+                  {title, body} = 
+                    if model.lang == "de" then
+                      featureDescriptionDE sequence
+                    else
+                      featureDescription sequence
               in
               
                 g [ textAnchor AnchorMiddle, TypedSvg.Attributes.fontFamily [ "sans-serif" ], fill (Paint (Color.rgb 0.5 0.5 0.5)) ]

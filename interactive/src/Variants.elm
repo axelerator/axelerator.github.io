@@ -8,19 +8,21 @@ import String exposing (fromFloat)
 import TypedSvg exposing (circle, g, image, svg)
 import TypedSvg.Attributes exposing (cx, cy, d, fill, height, r, stdDeviation, stroke, strokeDasharray, strokeWidth, transform, viewBox, width)
 import TypedSvg.Core exposing (Svg)
-import TypedSvg.Filters.Attributes exposing (floodOpacity)
 import TypedSvg.Types exposing (Length(..), Opacity(..), Paint(..), Transform(..), px)
 
 
 type alias Model =
     { count : Int
     , package : Package
+    , lang : LanguageCode
     }
 
 
-init : Model
-init =
-    { count = 0, package = Pi False }
+type alias LanguageCode = String 
+
+init : LanguageCode -> Model
+init lang =
+    { count = 0, package = Pi False, lang = lang }
 
 
 type Msg
@@ -223,7 +225,11 @@ view model =
 
                 SaaS ->
                     "2"
-        pt = packageTable selfHostedSelected piSelected saasSelected
+        pt = 
+          if model.lang == "de" then
+            packageTableDE selfHostedSelected piSelected saasSelected
+          else
+            packageTable selfHostedSelected piSelected saasSelected
     in
     section []
         [ viewComps model.package
@@ -260,7 +266,38 @@ packageTable selfHostedSelected piSelected saasSelected overlapping =
                     [ li [] [ text "Maximum comfort" ]
                     , li [] [ text "Monthly subscription" ]
                     , li [] [ text "No installation needed" ]
+                    , li [] [ text "Access from everywhere with Internet acess" ]
                     , li [] [ text "Data is stored & backed up in the Cloud" ]
+                    ]
+                ]
+            ]
+
+packageTableDE selfHostedSelected piSelected saasSelected overlapping =
+            [ div [ classList [ ( "overlapping", overlapping ), ( "selected", selfHostedSelected ) ] ]
+                [ h3 [] [ text "Solo" ]
+                , ul []
+                    [ li [] [ text "Maximaler Datenschutz" ]
+                    , li [] [ text "Läuft auf deinem eigenen Computer" ]
+                    , li [] [ text "Du machst selber Backups (iCloud/DropBox/Google Drive)" ]
+                    ]
+                ]
+            , div [ classList [ ( "overlapping", overlapping ), ( "selected", piSelected ) ] ]
+                [ h3 [] [ text "Managed Self Host" ]
+                , ul []
+                    [ li [] [ text "Du bekommst einen Microcomputer mit vorinstallierter Software" ]
+                    , li [] [ text "Einfach an den Router stöpslen, fertig" ]
+                    , li [] [ text "Alle Geräte im Haushalt haben Zugriff" ]
+                    , li [] [ text "Aber Niemand aus dem Internet" ]
+                    ]
+                ]
+            , div [ classList [ ( "overlapping", overlapping ), ( "selected", saasSelected ) ] ]
+                [ h3 [] [ text "Cloud" ]
+                , ul []
+                    [ li [] [ text "Maximaler Komfort" ]
+                    , li [] [ text "Montaliches Abo" ]
+                    , li [] [ text "Keine Software-Installation notwendig" ]
+                    , li [] [ text "Zugriff von überall" ]
+                    , li [] [ text "Daten werden in der Cloud gespeichert" ]
                     ]
                 ]
             ]

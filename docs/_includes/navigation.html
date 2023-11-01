@@ -6,16 +6,15 @@
   </div>
   <div class="links">
     <a href="/feed.xml"><span class="rss"/></a>
-
     <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
     <a href="https://github.com/axelerator"><span class="github"/></a>
     <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
     <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
     <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
-
   </div>
   <div id="lang-picker">
-    <span class="current">{{  site.locales[page.lang].flag-icon  }}</span>
+    <label class="current" for="lang-toggle">{{  site.locales[page.lang].flag-icon  }}</label>
+    <input type="checkbox" id="lang-toggle">
     <ul>
       {% assign posts=site.posts | concat: site.pages | where:"ref", page.ref | sort: 'lang' %}
       {% for post in posts %}

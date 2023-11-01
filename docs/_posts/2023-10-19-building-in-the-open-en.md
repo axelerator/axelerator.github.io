@@ -8,6 +8,12 @@ permalink: /business/en/building-in-the-open
 tags: solopreneur business
 ---
 
+<img src="/assets/posts/building-in-the-open/features.svg" width="130" height="130" style="float:right; margin: 5px 10px 10px 0"/>
+Join me as I embark on a transparent journey to develop a digital filing cabinet that prioritizes your privacy.
+Using my years of experience in web development, I aim to craft a solution that bridges the gap between convenience and data security, 
+all while sharing each step of the process with you. 
+Follow along for live coding sessions, insights, and the chance to shape a product designed for individuals, families, and SMEs alike.
+
 ---
 
 Content:
@@ -16,44 +22,54 @@ Content:
   - [Who is this for?](#who)
   - [This is what I'm building](#usp)
   - [If you build it, ~~they will come~~ nobody cares](#building) 
-  - [Intro](#intro)
 
 ---
 
-### <a name="intro" /> Hi 👋
+<a name="intro" />
 
-
-I started web development in the last millennium with the help of a website called [SELFHTML](https://wiki.selfhtml.org/)
-
-{% capture snote_content %}
-[This](https://web.archive.org/web/20000915151937/http://www.netzwelt.com/selfhtml/tcab.htm)
-is how it looked back then. 
+{% capture note_content %}
+    ![Selfhtml.de in 1998](/assets/posts/building-in-the-open/selfhtml.jpg)<br>
+    Screenshot of SelfHtml.de from 1998 taken with the 
+    [WaybackMachine](https://web.archive.org/web/20000915151937/http://www.netzwelt.com/selfhtml/tcab.htm)
 {% endcapture %}
-{% include marginnote.html id="selfhtml" content=snote_content start_open=true %}
-![Selfhtml.de in 1998](/assets/posts/building-in-the-open/selfhtml.jpg)
+I started web development in the last millennium with the help of a website called 
+{% include marginnote.html id="selfhtml" content=note_content  %} [SELFHTML](https://wiki.selfhtml.org/)
 
 I ran my own [software company](https://www.fortytools.com/) with two friends in Germany for nearly a decade. 
 And then, five years ago, after I moved to Canada to work for Shopify.
 I'm currently enjoying some free time between jobs and want to use these months to 
 spin up a product/business as a solo entrepreneur with an idea I've been thinking about for nearly ten years.
 
-Here is the problem I want to address, you know that situation: You get a notification about an e-mail. You know it's important. You have to **act** on it, but you don't have the time to do it now.
-So you leave it marked as _unread_.
+Here is the problem I want to solve with my software:
+{% capture note_content %}
+    <img src="/assets/posts/building-in-the-open/unread.svg" style="width: 5em" alt="Mail logo indicating a lot of unreal e-mails">
+{% endcapture %}
+{% include marginnote.html id="unread" content=note_content  %}
+> You get a notification about an new e-mail. You open it and at a glance you can tell it's important and have to **act** on it.
+>
+> But you don't have the time to do it **right now**.
+>
+> So you leave it marked as _unread_.
 
-I do this with physical mail. And it is a nightmare. I end up with stacks of unopened letters scattered through my apartment. Some of them urgent, some of them
-important, some of them both some of them none of it.
+I do this with physical mail too -- And it is a nightmare. I end up with stacks of unopened letters scattered through my apartment. Some of them urgent, some of them
+important, some of them both, some of them none of it.
 
 And then comes the dreaded moment where I have to find that **one letter**.
 
-I never committed to an existing software because these days this most likely means I have to give a very complete picture of my personal life to a cloud
-software profile that 
+I never committed to an existing software because these days this most likely means I have to give a very complete 
+picture of my personal life. Additionally
 
-- will only give me access to my data as long as I pay them a monthly fee
-- will potentially use/sell my data
-- give government(s) agencies access to them
-- loose them
+- I can only maintain access to my data as long as I pay them a monthly fee
+- They will potentially use/sell my data
+- They might give generous access to government(s) agencies 
+- Might be accessed by third parties through a data leak
 
-While there are alternatives like [paperless](https://github.com/paperless-ngx/paperless-ngx) it is only accessible to people who are already well versed in
+{% capture note_content %}
+    <img src="/assets/posts/building-in-the-open/paperless.png" style="width: 5em" alt="Mail logo indicating a lot of unreal e-mails"><br>
+    [Paperless](https://github.com/paperless-ngx/paperless-ngx) is a self hosted open-source document management system.
+{% endcapture %}
+
+While there are alternatives like _Paperless_ {% include marginnote.html id="paperless" content=note_content  %} it is only accessible to people who are already well versed in
 hosting their own servers.
 
 I want to solve this problem for myself as well as non-technical people. Hitting the right spot between ease-of-use, level of privacy and cost to operate is 
@@ -66,13 +82,17 @@ I've talked to a lot of friends and family and a lot of people struggle with _do
 mail multiplies once you start a family and you receive documents that you have to manage on behalf of your children.
 
 {% capture note_content %}
-_"Minimum Viable Product"_([MVP](https://en.wikipedia.org/wiki/Minimum_viable_product))
+[MVP](https://en.wikipedia.org/wiki/Minimum_viable_product "Check out the definition on Wikipedia") stands for _"Minimum Viable Product"_
 {% endcapture %}
-{% include marginnote.html id="mvp-def" content=content%}
-So while the _MVP_ that I will build in the beginning
+
+So while the _MVP_ {% include marginnote.html id="mvp-def" content=note_content %} that I will build in the beginning
 will focus on individuals a **multiuser** concept will be part of the foundations software design.
 
-To some degree a solution of this problem could be even applied to Small and medium-sized enterprises ([SME](https://en.wikipedia.org/wiki/Small_and_medium-sized_enterprises)).
+{% capture note_content %}
+[SME](https://en.wikipedia.org/wiki/Small_and_medium-sized_enterprises  "Check out the definition on Wikipedia") stands for _"Small and medium-sized enterprises"_
+{% endcapture %}
+
+To some degree a solution of this problem could be even applied to SMEs {% include marginnote.html id="sme-def" content=note_content %}.
 For example at Fortytools we were between 15-20 people and had a lot going on between our own SaaS and our contracting business. We had enough _paperwork_ to deal
 with to employ someone. And documents often had to retrieved, processed and shared with other users.
 
@@ -81,16 +101,20 @@ with to employ someone. And documents often had to retrieved, processed and shar
 The core of the software I am going to build can best be described as a digital filing cabinet. That in itself is not especially novel, but I was surprised at
 how few solutions there are that do not satisfy my personal requirements for such a solution.
 
-{% capture note_content %}
+_"Data privacy"_ is the least interesting feature in any software until someone 
+gets access to you data who is not supposed to. Which happens a lot more often than you think!
+
 ![data breaches](/assets/posts/building-in-the-open/breaches23.svg)
+
+
+{% capture note_content %}
+[SaaS](https://en.wikipedia.org/wiki/Software_as_a_service) Software as a service is a software licensing and delivery model in which software is licensed on a subscription basis and is centrally hosted.
 {% endcapture %}
 
-_"Data privacy"_ is the least interesting feature in any software until someone 
-gets access to you data who is not supposed to.{% include marginnote.html id="breach-stats" content=note_content start_open=true %} Which happens a lot more often than you think!
-Leaving data with you Saas provider is certainly the most convenient. It's also arguably likely to loose your data when you rely
+Giving your data to a _SaaS_ {% include marginnote.html id="saas-def" content=note_content %} provider is certainly the most convenient. It's also arguably likely to loose your data when you rely
 on the backup tools of a cloud provider than managing external disks and thumb drives.
 
-However not all cloud providers are set up equally and there are a lot of data breaches each year. Larger companies are usually good
+However not all SaaS providers are set up equally and there are a lot of data breaches each year. Larger companies are usually good
 at protecting your data against unauthorized access. However if your are _not_ paying a significant price tag, for example for Google Drive,
 the provider will use your data in one way or another to monetize their project. Yes they will look **into** files. If you create
 a comparison Google Sheet for Baby strollers, you **will** get ads of baby products.
@@ -135,12 +159,12 @@ So if you're interested in following my journey I'd love to send you my weekly n
 <script>
   var variants = Elm.Interactive.init({
     node: document.getElementById('variants'),
-    flags: { kind: "Variants" }
+    flags: { kind: "Variants", lang: "en" }
   });
 
   var features = Elm.Interactive.init({
     node: document.getElementById('features'),
-    flags: { kind: "Features" }
+    flags: { kind: "Features" , lang: "en" }
   });
 
   var subscribe = Elm.Interactive.init({
