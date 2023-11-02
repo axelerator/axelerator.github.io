@@ -60,7 +60,7 @@
 <label for="post-meta" class="margin-toggle">&#8853;</label>
 <input type="checkbox" id="post-meta"  class="margin-toggle"/>
 <span class="marginnote">
-1 July 2021
+30 June 2021
 <br/>
 
   
@@ -123,15 +123,15 @@ function report() {
     # to also print errors in console we just compile a second time
     elm make src/Main.elm
     VALUE=`date -r tmp/build.log`
-    printf &quot;refresh('&quot; &gt; tmp/timestamp.js
+    printf &quot;refresh(&apos;&quot; &gt; tmp/timestamp.js
     printf &quot;$VALUE&quot; &gt;&gt;  tmp/timestamp.js
-    printf &quot;', &quot; &gt;&gt;  tmp/timestamp.js
+    printf &quot;&apos;, &quot; &gt;&gt;  tmp/timestamp.js
     cat tmp/build.log &gt;&gt; tmp/timestamp.js
     printf &quot;);&quot; &gt;&gt; tmp/timestamp.js
   else
     echo &quot;Compiled without errors&quot;
     VALUE=`date -r elm.js`
-    TIMESTAMP_JS_TEMPLATE=&quot;refresh('${VALUE}')&quot;
+    TIMESTAMP_JS_TEMPLATE=&quot;refresh(&apos;${VALUE}&apos;)&quot;
     INTERPOLATED=`echo &quot;${TIMESTAMP_JS_TEMPLATE}&quot; | sed &quot;s/VALUE/${VALUE}/&quot; | sed &quot;s/ERROR//&quot; `
     echo &quot;$INTERPOLATED&quot; &gt; tmp/timestamp.js
   fi
@@ -159,19 +159,19 @@ done
 <pre><code class="language-javascript">
 function loadElm() {
   window.Elm = undefined;
-  const scriptTag = mkScriptTag('elm-include', 'elm.js');
-  scriptTag.addEventListener('load', function() {
+  const scriptTag = mkScriptTag(&apos;elm-include&apos;, &apos;elm.js&apos;);
+  scriptTag.addEventListener(&apos;load&apos;, function() {
     initElm();
   });
 }
 
 function initElm() {
-  const main = document.querySelector('main')
+  const main = document.querySelector(&apos;main&apos;)
   while (main.firstChild) {
     main.removeChild(main.lastChild);
   }
   var main_content = document.createElement(&quot;div&quot;);
-  main_content.setAttribute('id', main_content);
+  main_content.setAttribute(&apos;id&apos;, main_content);
   main.appendChild(main_content);
 
   const app = Elm.Main.init({
@@ -180,27 +180,27 @@ function initElm() {
 }
 
 const hotReloadInterval = window.setInterval(checkTimestamp, 1000)
-window.lastTimestamp = '';
+window.lastTimestamp = &apos;&apos;;
 const parsedUrl = new URL(window.location.href);
-const pathPrefix = parsedUrl.pathname.replace('/index.html', '');
+const pathPrefix = parsedUrl.pathname.replace(&apos;/index.html&apos;, &apos;&apos;);
 
 
 function buildError(error) {
   const outerDiv = document.createElement(&quot;div&quot;); 
-  const path = error.path.replace(pathPrefix, '');
+  const path = error.path.replace(pathPrefix, &apos;&apos;);
   const newContent = document.createTextNode(path);
   outerDiv.appendChild(newContent);
 
   const problems = document.createElement(&quot;ul&quot;); 
   error.problems.forEach(function(p){
-    const li = document.createElement('li');
-    const pre = document.createElement('pre');
+    const li = document.createElement(&apos;li&apos;);
+    const pre = document.createElement(&apos;pre&apos;);
     li.appendChild(pre);
     p.message.forEach(function(message) {
-      if ((typeof message) == 'string') {
+      if ((typeof message) == &apos;string&apos;) {
         pre.appendChild(document.createTextNode(message));
       } else {
-        const span = document.createElement('span');
+        const span = document.createElement(&apos;span&apos;);
         span.setAttribute(&quot;style&quot;, &quot;color:&quot; + message.color);
         span.appendChild(document.createTextNode(message.string));
         pre.appendChild(span);
@@ -214,7 +214,7 @@ function buildError(error) {
 }
 
 function showErrors(errors) {
-  const oldScript = document.getElementById('build-errors');
+  const oldScript = document.getElementById(&apos;build-errors&apos;);
   if (oldScript) {
     oldScript.remove();
   }
@@ -226,11 +226,11 @@ function showErrors(errors) {
     newScript.appendChild(buildError(e));
   });
   // add the newly created element and its content into the DOM 
-  document.getElementById('build-info').appendChild(newScript);
+  document.getElementById(&apos;build-info&apos;).appendChild(newScript);
 }
 
 function refresh(timestamp, errors) {
-  if (window.lastTimestamp == '') {
+  if (window.lastTimestamp == &apos;&apos;) {
     if (errors) { 
       showErrors(errors);
     }
@@ -260,7 +260,7 @@ function mkScriptTag(id, filename) {
 }
 
 function checkTimestamp () { 
-  mkScriptTag('timestampjs',&quot;tmp/timestamp.js&quot;);
+  mkScriptTag(&apos;timestampjs&apos;,&quot;tmp/timestamp.js&quot;);
 }
   
 loadElm();
