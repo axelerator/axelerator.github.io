@@ -14,7 +14,8 @@ nav .links .twitch,
 nav .links .youtube,
 nav .links .linkedin,
 nav .links .github,
-nav .links .twitter {
+nav .links .twitter,
+nav .links .fediverse {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: inline-block;
@@ -24,7 +25,7 @@ nav .links .twitter {
   line-height: 1;
 }
 
-nav .links .twitch, nav .links .youtube, nav .links .linkedin, nav .links .rss, nav .links .github, nav .links .twitter {
+nav .links .twitch, nav .links .youtube, nav .links .linkedin, nav .links .rss, nav .links .github, nav .links .twitter, nav .links .fediverse {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: inline-block;
@@ -134,7 +135,8 @@ nav .links .fa-pull-left.twitch,
 nav .links .fa-pull-left.youtube,
 nav .links .fa-pull-left.linkedin,
 nav .links .fa-pull-left.github,
-nav .links .fa-pull-left.twitter {
+nav .links .fa-pull-left.twitter,
+nav .links .fa-pull-left.fediverse {
   margin-right: 0.3em;
 }
 .fa.fa-pull-right,
@@ -147,7 +149,8 @@ nav .links .fa-pull-right.twitch,
 nav .links .fa-pull-right.youtube,
 nav .links .fa-pull-right.linkedin,
 nav .links .fa-pull-right.github,
-nav .links .fa-pull-right.twitter {
+nav .links .fa-pull-right.twitter,
+nav .links .fa-pull-right.fediverse {
   margin-left: 0.3em;
 }
 
@@ -6101,7 +6104,7 @@ readers do not read off random characters that represent icons */
   src: url("/assets/webfonts/fa-brands-400.eot");
   src: url("/assets/webfonts/fa-brands-400.eot?#iefix") format("embedded-opentype"), url("/assets/webfonts/fa-brands-400.woff2") format("woff2"), url("/assets/webfonts/fa-brands-400.woff") format("woff"), url("/assets/webfonts/fa-brands-400.ttf") format("truetype"), url("/assets/webfonts/fa-brands-400.svg#fontawesome") format("svg");
 }
-.fab, nav .links .twitch, nav .links .youtube, nav .links .linkedin, nav .links .github, nav .links .twitter {
+.fab, nav .links .twitch, nav .links .youtube, nav .links .linkedin, nav .links .github, nav .links .twitter, nav .links .fediverse {
   font-family: "Font Awesome 5 Brands";
   font-weight: 400;
 }
@@ -6130,6 +6133,17 @@ body {
   background: linear-gradient(90deg, rgb(255, 255, 254) 0%, rgb(255, 255, 248) 50%, rgb(255, 255, 254) 100%);
 }
 
+.meta {
+  width: 55%;
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 760px) {
+  .meta {
+    width: 100%;
+  }
+}
 #bg {
   pointer-events: none;
   position: absolute;
@@ -6169,6 +6183,9 @@ nav .links {
 }
 nav .links a:not(:hover) {
   background: none;
+}
+nav .links .fediverse:before {
+  content: "\f4f6";
 }
 nav .links .twitter:before {
   content: "\f099";

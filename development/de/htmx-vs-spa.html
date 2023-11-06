@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>htmx vs. SPA</title>
+  </head>
+  <body class="htmx-vs-spa">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://hachyderm.io/@axelerator"><span class="fediverse"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/development/en/htmx-vs-spa" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>htmx vs. SPA</h1>
+       <div class="meta"> 
+  <div title="Lesedauer">3 Minuten</div>
+  <div>
+  
+    
+    <a href="/tags#webdevelopment">#webdevelopment</a>
+  
+    
+    <a href="/tags#htmx">#htmx</a>
+  
+    
+    <a href="/tags#spa">#spa</a>
+  
+    
+    <a href="/tags#elm">#elm</a>
+  
+  </div>
+  <div>5 November 2023</div>
+</div>
+
+
+<section>
+<p><img src="/assets/posts/htmx-vs-spa/scientist_caveman.jpg" width="130" style="float:left; margin: 5px 10px 10px 0" />
+Als Webentwickler liegt es in unserer Verantwortung, das beste Werkzeug für die
+jeweilige Aufgabe zu finden. htmx vereinfacht in der Tat den technischen Stack
+und senkt die Einstiegshürde für angehende Entwickler oder einfachere Projekte.
+Für komplizierte Benutzeroberflächen, die eine konsistente Darstellung der Daten
+erfordern, bietet der SPA-Ansatz jedoch eine bessere Unterstützung. Anstatt
+sich von Trends beeinflussen zu lassen, sollten wir die
+Nuancen in diesen Diskussionen anerkennen und unsere Tools mit Bedacht auswählen.</p>
+
+<hr />
+
+<p>Inhalt:</p>
+
+<ul>
+  <li><a href="#hype">Der htmx Hype</a></li>
+  <li><a href="#simplicity"><em>Einfach</em> ist realtive</a></li>
+  <li><a href="#tool">Das passende Werkzeug für den Job </a></li>
+</ul>
+
+<hr />
+
+<p><label for="def-spa" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-spa" class="margin-toggle" />
+<span class="marginnote">
+Eine <a href="https://en.wikipedia.org/wiki/Single-page_application">single-page application (SPA)</a>
+wird eine Webanwendung bezeichnet, die aus einem einzigen HTML-Dokument besteht und deren Inhalte dynamisch nachgeladen werden.
+</span></p>
+
+<p>Die Technologielandschaft entwickelt sich ständig weiter, und im Bereich der
+Webentwicklung hat in letzter Zeit nichts mehr Aufsehen erregt als <em>htmx</em>. Als
+Webentwickler erleben wir kontinuierliech, wie eine Vielzahl von Technologien und
+Praktiken ins Rampenlicht gerückt wurden, nur um dann wieder in der Versenkung zu
+verschwinden, wenn etwas Besseres auftaucht. Der derzeitige Hype um htmx ist
+ein Beleg für diesen Zyklus, und viele loben seine Fähigkeit, den Prozess der
+Erstellung interaktiver HTML-Seiten zu vereinfachen. Aber wie bei allen
+technischen Diskussionen ist es wichtig zu differenzieren, besonders
+wenn man htmx mit Single Page Applications (SPAs) vergleicht.</p>
+
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
+<span class="marginnote">
+<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 50%" /><br />
+<a href="https://htmx.org/docs/">htmx</a> ist eine JavaScript Bibliothek die es, erlaubt
+moderne Browserfunktionen direkt von HTML aus zuzugreifen, anstatt Javascript
+zu verwenden.
+</span></p>
+
+<h3 id="-der-htmx-hype"><a name="htmx"></a> Der htmx hype</h3>
+
+<p>htmx bietet einen erfrischenden Ansatz für die Entwicklung von Webanwendungen.
+Es bringt eine nachweisliche Einfachheit in den Tech-Stack, reduziert den Bedarf an
+mehreren Sprachen und eliminiert bestimmte Build-Tools. Diese messbare
+Einfachheit spricht Entwickler an, die einen geradlinigen Ansatz für
+interaktive Webseiten suchen.</p>
+
+<p>Allerdings hat der Aufstieg von htmx auch eine Welle der Kritik an SPAs
+ausgelöst, die sie als zu kompliziert und schwerfällig darstellen. Es ist
+jedoch wichtig anzuerkennen, dass Einfachheit nicht universell ist; was in einem
+Kontext einfach ist, kann in einem anderen komplex sein.</p>
+
+<h3 id="-einfach-ist-relativ"><a name="simplicity"></a> <em>Einfach</em> ist relativ</h3>
+
+<p>Während htmx für die Einfachheit des technischen Stacks optimiert, setzen SPAs
+auf eine andere Art von Einfachheit - die Einfachheit des UI-Zustnadnds-Managements.</p>
+
+<p>Die <a href="https://guide.elm-lang.org/architecture/">Elm-Architektur</a> 
+beispielsweise gewährleistet eine klare Ableitung der
+Darstellung aus einer einzigen Datenquelle. Ein solches Setup hilft bei der
+konsistenten Widerspiegelung von Daten in der gesamten Benutzeroberfläche.</p>
+
+<p>Ich bin mir sicher, dass Du auch auf größeren Webplattformen schon einmal auf
+den folgenden Fehler gestoßen sind:</p>
+
+<p>In der oberen rechten Ecke befindet sich ein Zähler, der die Anzahl der
+ungelesenen Nachrichten anzeigt. Du folgst einem Link zu einer ungelesenen
+Nachricht, nur nicht über genau diesen Zähler. Nun wird dieser Zähler aber nur
+dann aktualisiert, wenn die gesamte Seite neu geladen wird.</p>
+
+<p>Mit einem dedizierten Datenmodell für die Benutzeroberfläche steigt das
+Vertrauen Benutzeroberflächen bauen zu können, die konsistent genaue
+Daten wiedergeben.</p>
+
+<p>Das soll nicht heißen, dass SPAs eine Garantie für fehlerfreie
+Benutzeroberflächen sind, aber die grundlegende Architektur bietet Entwicklern
+einen robusteren Rahmen, um die Konsistenz der Benutzeroberfläche zu
+gewährleisten.</p>
+
+<h3 id="-das-richtige-werkzeug-für-die-aufgabe"><a name="tool"></a> Das richtige Werkzeug für die Aufgabe</h3>
+
+<p>Bei der Diskussion zwischen htmx und SPA sollte es nicht darum gehen, welches
+Tool <em>“auf der Welt”</em> ist, sondern darum, die Stärken und Grenzen der beiden zu
+verstehen.
+htmx setzt eine niedrigere Einstiegshürde für diejenigen, die mit
+einfachen Webanwendungen beginnen wollen. Es eignet sich hervorragend für Projekte, die
+weniger komplizierte Benutzeroberflächen erfordern, wie zum Beispiel ein einfaches
+Anmeldeformular für einen Newsletter.
+Für komplexe, interaktive Benutzeroberflächen, bei denen eine konsistente Datendarstellung entscheidend
+ist, bietet der SPA-Ansatz, insbesondere mit Frameworks wie Elm, eine zuverlässigere Struktur.</p>
+
+<p>Die häufigste Kritik an SPAs is wie <em>kompliziert</em> sie sind. In dem foglenden Video zeige
+ich wie man inerhalb weniger Minuten ein SPA setup aufsetzen kann, ganz ohne <em>NPM</em>, <em>Webpack</em>
+und eigentlich sogar ohne JavaScript.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xLUpTaI1oE0?si=M0CGBqFvMQOOMzoy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+
+</section>
+
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

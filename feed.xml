@@ -1,4 +1,199 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://blog.axelerator.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.axelerator.de/" rel="alternate" type="text/html" /><updated>2023-11-02T10:46:13-04:00</updated><id>https://blog.axelerator.de/feed.xml</id><title type="html">Rants &amp;amp; ramblings of yours truly</title><subtitle>Mostly posts about how to make getting started with Elm easy and the general joys of functional programming.</subtitle><entry xml:lang="en"><title type="html">Building in the open</title><link href="https://blog.axelerator.de/business/en/building-in-the-open" rel="alternate" type="text/html" title="Building in the open" /><published>2022-10-19T18:00:00-04:00</published><updated>2022-10-19T18:00:00-04:00</updated><id>https://blog.axelerator.de/business/en/building-in-the-open-en</id><content type="html" xml:base="https://blog.axelerator.de/business/en/building-in-the-open"><![CDATA[<p><img src="/assets/posts/building-in-the-open/features.svg" width="130" height="130" style="float:right; margin: 5px 10px 10px 0" />
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://blog.axelerator.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.axelerator.de/" rel="alternate" type="text/html" /><updated>2023-11-05T19:39:28-05:00</updated><id>https://blog.axelerator.de/feed.xml</id><title type="html">Rants &amp;amp; ramblings of yours truly</title><subtitle>Mostly posts about how to make getting started with Elm easy and the general joys of functional programming.</subtitle><entry xml:lang="en"><title type="html">htmx vs. SPA</title><link href="https://blog.axelerator.de/development/en/htmx-vs-spa" rel="alternate" type="text/html" title="htmx vs. SPA" /><published>2023-11-05T17:00:00-05:00</published><updated>2023-11-05T17:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/htmx-vs-spa-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/htmx-vs-spa"><![CDATA[<p><img src="/assets/posts/htmx-vs-spa/scientist_caveman.jpg" width="130" height="130" style="float:left; margin: 5px 10px 10px 0" />
+As web developers, it’s our responsibility to discern the best tool for the
+job. htmx indeed simplifies the tech stack and lowers the entry barrier for
+budding developers or simpler projects. However, for intricate UIs that demand
+consistent data representation, the SPA approach offers better support. Rather
+than getting swayed by trends, it’s time we appreciated the nuance in these
+discussions and chose our tools wisely.</p>
+
+<hr />
+
+<p>Content:</p>
+
+<ul>
+  <li><a href="#hype">The htmx hype</a></li>
+  <li><a href="#simplicity">Simplicity is relative</a></li>
+  <li><a href="#tool">The Right Tool for the Job</a></li>
+</ul>
+
+<hr />
+
+<p><label for="def-spa" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-spa" class="margin-toggle" />
+<span class="marginnote">
+A <a href="https://en.wikipedia.org/wiki/Single-page_application">single-page application (SPA)</a> is a web application or website that interacts with the user by dynamically rewriting the current web page with new data from the web server, instead of the default method of a web browser loading entire new pages.
+</span></p>
+
+<p>The technology landscape is ever-evolving, and in the realm of web development,
+nothing has generated more buzz recently than <strong>htmx</strong>. As web developers, we’ve
+seen a myriad of technologies and practices come into the spotlight, only to
+fade into obscurity when something better comes along. The current fanfare
+around htmx is testament to this cycle, with many praising its ability to
+simplify the process of crafting interactive HTML pages. But as with all tech
+discussions, it’s crucial to introduce some nuance, especially when comparing
+htmx to  Single Page Applications (SPAs).</p>
+
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
+<span class="marginnote">
+<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 50%" /><br />
+<a href="https://htmx.org/docs/">htmx</a> is a library that allows you to access modern browser features directly from HTML, rather than using javascript.
+</span></p>
+
+<h3 id="-the-htmx-hype"><a name="htmx"></a> The htmx Hype</h3>
+
+<p>htmx offers a refreshing take on web app development. It brings in a tangible
+simplicity to the tech stack, reducing the need for multiple languages and
+eliminating certain build tools. This is a measurable simplicity that appeals
+to developers who want a straightforward approach to interactive web
+components.</p>
+
+<p>That said, the rise of htmx has also ushered in a wave of criticism towards
+SPAs, painting them as overcomplicated and cumbersome. But it’s essential to
+recognize that simplicity isn’t universal; what’s simple in one context might
+be complex in another.</p>
+
+<h3 id="-simplicity-is-relative"><a name="simplicity"></a> Simplicity is relative</h3>
+
+<p>While htmx champions the simplicity of the tech stack, SPAs champion a 
+different kind of simplicity - the simplicity of UI state management.</p>
+
+<p>The <a href="https://guide.elm-lang.org/architecture/">Elm architecture</a>, for instance, ensures a clear derivation of UI state from
+<strong>a single data source</strong>. Such a setup helps with consistent reflection of data across
+the user interface.</p>
+
+<p>I’m sure you’ve run into the following bug on even bigger web platforms:</p>
+
+<p>In the top-right corner there is a counters that displays the number of unread messages. 
+You’re following a link to an unread message, just not through that very counter.
+But now that counter fails to update unless the whole page is refreshed.</p>
+
+<p>With a dedicated data model for the UI, there’s a heightened confidence in producing user interfaces that
+consistently reflect accurate data.</p>
+
+<p>Now, this isn’t to say that SPAs guarantee flawless UIs, but the foundational
+architecture gives developers a more robust framework to ensure UI consistency.</p>
+
+<h3 id="-the-right-tool-for-the-job"><a name="tool"></a> The Right Tool for the Job</h3>
+
+<p>The discussion between htmx and SPA shouldn’t be about which is universally
+better; it should be about understanding the strengths and limitations of each.
+htmx sets a lower entry barrier for those looking to get started with web apps.
+It’s brilliant for projects that require less intricate user interfaces, like a
+simple signup form for a newsletter.</p>
+
+<p>On the other hand, for complex, interactive UIs where consistent data
+representation is crucial, the SPA approach, especially with frameworks like
+Elm, offers a more reliable structure.</p>
+
+<p>The most common criticism of SPAs is how complicated they are to work with. 
+In the following video I show how you can set up an SPA setup within a few minutes, 
+without the usage of NPM, Webpack and actually even without JavaScript.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xLUpTaI1oE0?si=M0CGBqFvMQOOMzoy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>]]></content><author><name></name></author><category term="webdevelopment" /><category term="htmx" /><category term="spa" /><category term="elm" /><summary type="html"><![CDATA[As web developers, it’s our responsibility to discern the best tool for the job. htmx indeed simplifies the tech stack and lowers the entry barrier for budding developers or simpler projects. However, for intricate UIs that demand consistent data representation, the SPA approach offers better support. Rather than getting swayed by trends, it’s time we appreciated the nuance in these discussions and chose our tools wisely.]]></summary></entry><entry xml:lang="de"><title type="html">htmx vs. SPA</title><link href="https://blog.axelerator.de/development/de/htmx-vs-spa" rel="alternate" type="text/html" title="htmx vs. SPA" /><published>2023-11-05T17:00:00-05:00</published><updated>2023-11-05T17:00:00-05:00</updated><id>https://blog.axelerator.de/development/de/htmx-vs-spa-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/htmx-vs-spa"><![CDATA[<p><img src="/assets/posts/htmx-vs-spa/scientist_caveman.jpg" width="130" style="float:left; margin: 5px 10px 10px 0" />
+Als Webentwickler liegt es in unserer Verantwortung, das beste Werkzeug für die
+jeweilige Aufgabe zu finden. htmx vereinfacht in der Tat den technischen Stack
+und senkt die Einstiegshürde für angehende Entwickler oder einfachere Projekte.
+Für komplizierte Benutzeroberflächen, die eine konsistente Darstellung der Daten
+erfordern, bietet der SPA-Ansatz jedoch eine bessere Unterstützung. Anstatt
+sich von Trends beeinflussen zu lassen, sollten wir die
+Nuancen in diesen Diskussionen anerkennen und unsere Tools mit Bedacht auswählen.</p>
+
+<hr />
+
+<p>Inhalt:</p>
+
+<ul>
+  <li><a href="#hype">Der htmx Hype</a></li>
+  <li><a href="#simplicity"><em>Einfach</em> ist realtive</a></li>
+  <li><a href="#tool">Das passende Werkzeug für den Job </a></li>
+</ul>
+
+<hr />
+
+<p><label for="def-spa" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-spa" class="margin-toggle" />
+<span class="marginnote">
+Eine <a href="https://en.wikipedia.org/wiki/Single-page_application">single-page application (SPA)</a>
+wird eine Webanwendung bezeichnet, die aus einem einzigen HTML-Dokument besteht und deren Inhalte dynamisch nachgeladen werden.
+</span></p>
+
+<p>Die Technologielandschaft entwickelt sich ständig weiter, und im Bereich der
+Webentwicklung hat in letzter Zeit nichts mehr Aufsehen erregt als <em>htmx</em>. Als
+Webentwickler erleben wir kontinuierliech, wie eine Vielzahl von Technologien und
+Praktiken ins Rampenlicht gerückt wurden, nur um dann wieder in der Versenkung zu
+verschwinden, wenn etwas Besseres auftaucht. Der derzeitige Hype um htmx ist
+ein Beleg für diesen Zyklus, und viele loben seine Fähigkeit, den Prozess der
+Erstellung interaktiver HTML-Seiten zu vereinfachen. Aber wie bei allen
+technischen Diskussionen ist es wichtig zu differenzieren, besonders
+wenn man htmx mit Single Page Applications (SPAs) vergleicht.</p>
+
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
+<span class="marginnote">
+<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 50%" /><br />
+<a href="https://htmx.org/docs/">htmx</a> ist eine JavaScript Bibliothek die es, erlaubt
+moderne Browserfunktionen direkt von HTML aus zuzugreifen, anstatt Javascript
+zu verwenden.
+</span></p>
+
+<h3 id="-der-htmx-hype"><a name="htmx"></a> Der htmx hype</h3>
+
+<p>htmx bietet einen erfrischenden Ansatz für die Entwicklung von Webanwendungen.
+Es bringt eine nachweisliche Einfachheit in den Tech-Stack, reduziert den Bedarf an
+mehreren Sprachen und eliminiert bestimmte Build-Tools. Diese messbare
+Einfachheit spricht Entwickler an, die einen geradlinigen Ansatz für
+interaktive Webseiten suchen.</p>
+
+<p>Allerdings hat der Aufstieg von htmx auch eine Welle der Kritik an SPAs
+ausgelöst, die sie als zu kompliziert und schwerfällig darstellen. Es ist
+jedoch wichtig anzuerkennen, dass Einfachheit nicht universell ist; was in einem
+Kontext einfach ist, kann in einem anderen komplex sein.</p>
+
+<h3 id="-einfach-ist-relativ"><a name="simplicity"></a> <em>Einfach</em> ist relativ</h3>
+
+<p>Während htmx für die Einfachheit des technischen Stacks optimiert, setzen SPAs
+auf eine andere Art von Einfachheit - die Einfachheit des UI-Zustnadnds-Managements.</p>
+
+<p>Die <a href="https://guide.elm-lang.org/architecture/">Elm-Architektur</a> 
+beispielsweise gewährleistet eine klare Ableitung der
+Darstellung aus einer einzigen Datenquelle. Ein solches Setup hilft bei der
+konsistenten Widerspiegelung von Daten in der gesamten Benutzeroberfläche.</p>
+
+<p>Ich bin mir sicher, dass Du auch auf größeren Webplattformen schon einmal auf
+den folgenden Fehler gestoßen sind:</p>
+
+<p>In der oberen rechten Ecke befindet sich ein Zähler, der die Anzahl der
+ungelesenen Nachrichten anzeigt. Du folgst einem Link zu einer ungelesenen
+Nachricht, nur nicht über genau diesen Zähler. Nun wird dieser Zähler aber nur
+dann aktualisiert, wenn die gesamte Seite neu geladen wird.</p>
+
+<p>Mit einem dedizierten Datenmodell für die Benutzeroberfläche steigt das
+Vertrauen Benutzeroberflächen bauen zu können, die konsistent genaue
+Daten wiedergeben.</p>
+
+<p>Das soll nicht heißen, dass SPAs eine Garantie für fehlerfreie
+Benutzeroberflächen sind, aber die grundlegende Architektur bietet Entwicklern
+einen robusteren Rahmen, um die Konsistenz der Benutzeroberfläche zu
+gewährleisten.</p>
+
+<h3 id="-das-richtige-werkzeug-für-die-aufgabe"><a name="tool"></a> Das richtige Werkzeug für die Aufgabe</h3>
+
+<p>Bei der Diskussion zwischen htmx und SPA sollte es nicht darum gehen, welches
+Tool <em>“auf der Welt”</em> ist, sondern darum, die Stärken und Grenzen der beiden zu
+verstehen.
+htmx setzt eine niedrigere Einstiegshürde für diejenigen, die mit
+einfachen Webanwendungen beginnen wollen. Es eignet sich hervorragend für Projekte, die
+weniger komplizierte Benutzeroberflächen erfordern, wie zum Beispiel ein einfaches
+Anmeldeformular für einen Newsletter.
+Für komplexe, interaktive Benutzeroberflächen, bei denen eine konsistente Datendarstellung entscheidend
+ist, bietet der SPA-Ansatz, insbesondere mit Frameworks wie Elm, eine zuverlässigere Struktur.</p>
+
+<p>Die häufigste Kritik an SPAs is wie <em>kompliziert</em> sie sind. In dem foglenden Video zeige
+ich wie man inerhalb weniger Minuten ein SPA setup aufsetzen kann, ganz ohne <em>NPM</em>, <em>Webpack</em>
+und eigentlich sogar ohne JavaScript.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xLUpTaI1oE0?si=M0CGBqFvMQOOMzoy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>]]></content><author><name></name></author><category term="webdevelopment" /><category term="htmx" /><category term="spa" /><category term="elm" /><summary type="html"><![CDATA[Als Webentwickler liegt es in unserer Verantwortung, das beste Werkzeug für die jeweilige Aufgabe zu finden. htmx vereinfacht in der Tat den technischen Stack und senkt die Einstiegshürde für angehende Entwickler oder einfachere Projekte. Für komplizierte Benutzeroberflächen, die eine konsistente Darstellung der Daten erfordern, bietet der SPA-Ansatz jedoch eine bessere Unterstützung. Anstatt sich von Trends beeinflussen zu lassen, sollten wir die Nuancen in diesen Diskussionen anerkennen und unsere Tools mit Bedacht auswählen.]]></summary></entry><entry xml:lang="en"><title type="html">Building in the open</title><link href="https://blog.axelerator.de/business/en/building-in-the-open" rel="alternate" type="text/html" title="Building in the open" /><published>2023-10-19T18:00:00-04:00</published><updated>2023-10-19T18:00:00-04:00</updated><id>https://blog.axelerator.de/business/en/building-in-the-open-en</id><content type="html" xml:base="https://blog.axelerator.de/business/en/building-in-the-open"><![CDATA[<p><img src="/assets/posts/building-in-the-open/features.svg" width="130" height="130" style="float:right; margin: 5px 10px 10px 0" />
 Join me as I embark on a transparent journey to develop a digital filing cabinet that prioritizes your privacy.
 Using my years of experience in web development, I aim to craft a solution that bridges the gap between convenience and data security, 
 all while sharing each step of the process with you. 
@@ -177,7 +372,7 @@ interested in learning from other peoples journey.</p>
     node: document.getElementById('subscribe'),
     flags: { kind: "Subscribe" }
   });
-</script>]]></content><author><name></name></author><category term="solopreneur" /><category term="business" /><summary type="html"><![CDATA[Join me as I embark on a transparent journey to develop a digital filing cabinet that prioritizes your privacy. Using my years of experience in web development, I aim to craft a solution that bridges the gap between convenience and data security, all while sharing each step of the process with you. Follow along for live coding sessions, insights, and the chance to shape a product designed for individuals, families, and SMEs alike.]]></summary></entry><entry xml:lang="de"><title type="html">Bauen im Freien</title><link href="https://blog.axelerator.de/business/de/building-in-the-open" rel="alternate" type="text/html" title="Bauen im Freien" /><published>2022-10-19T18:00:00-04:00</published><updated>2022-10-19T18:00:00-04:00</updated><id>https://blog.axelerator.de/business/de/building-in-the-open-de</id><content type="html" xml:base="https://blog.axelerator.de/business/de/building-in-the-open"><![CDATA[<p><img src="/assets/posts/building-in-the-open/features.svg" width="130" height="130" style="float:right; margin: 5px 10px 10px 0" />
+</script>]]></content><author><name></name></author><category term="solopreneur" /><category term="business" /><summary type="html"><![CDATA[Join me as I embark on a transparent journey to develop a digital filing cabinet that prioritizes your privacy. Using my years of experience in web development, I aim to craft a solution that bridges the gap between convenience and data security, all while sharing each step of the process with you. Follow along for live coding sessions, insights, and the chance to shape a product designed for individuals, families, and SMEs alike.]]></summary></entry><entry xml:lang="de"><title type="html">Bauen im Freien</title><link href="https://blog.axelerator.de/business/de/building-in-the-open" rel="alternate" type="text/html" title="Bauen im Freien" /><published>2023-10-19T18:00:00-04:00</published><updated>2023-10-19T18:00:00-04:00</updated><id>https://blog.axelerator.de/business/de/building-in-the-open-de</id><content type="html" xml:base="https://blog.axelerator.de/business/de/building-in-the-open"><![CDATA[<p><img src="/assets/posts/building-in-the-open/features.svg" width="130" height="130" style="float:right; margin: 5px 10px 10px 0" />
 Begleite mich wie ich meinen <em>digitalen Aktenschrank</em> und mein 1-Mann-Startup darum in der Öffentlichkeit baue.
 Mit langjähriged Erfahrungen in der Softwareentwicklung strebe ich an, eine Lösung zu schaffen, die die Lücke zwischen Bequemlichkeit und Datensicherheit schließt,
 während ich jeden Schritt des Prozesses mit Dir teile.</p>
@@ -718,7 +913,181 @@ Man muss also bei der Anwedung dieser Optimierung gut überlegen was einem wicht
 <ul>
   <li>Wieviele Zweige muss ich explizit aufzählen falls ich ohne den <code class="language-plaintext highlighter-rouge">_ -&gt; ..</code> Zweig arbeite?</li>
   <li>Wie einfach ist es die Stellen zu finden die angefasst werden müssen, wenn ich <strong>mit</strong> dem <code class="language-plaintext highlighter-rouge">_ -&gt; ..</code> Zweig arbeite?</li>
-</ul>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Noch fehlen ein paar Elemente damit unser Tetris ‘vollständig’ ist. Aber zumindest können wir nach Episode 11 (40min) sagen “Game Over”.]]></summary></entry><entry xml:lang="en"><title type="html">Episode 10: Clearing lines</title><link href="https://blog.axelerator.de/elm/en/tetris-clear-rows" rel="alternate" type="text/html" title="Episode 10: Clearing lines" /><published>2021-09-16T19:00:00-04:00</published><updated>2021-09-16T19:00:00-04:00</updated><id>https://blog.axelerator.de/elm/en/tetris-clear-lines-en</id><content type="html" xml:base="https://blog.axelerator.de/elm/en/tetris-clear-rows"><![CDATA[<p><img src="/assets/posts/tetris-clear-rows/teaser.gif" style="float:left; margin: 5px 10px 10px 0" />
+</ul>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Noch fehlen ein paar Elemente damit unser Tetris ‘vollständig’ ist. Aber zumindest können wir nach Episode 11 (40min) sagen “Game Over”.]]></summary></entry><entry xml:lang="de"><title type="html">Episode 10: Komplette Reihen verschwinden mit Falten</title><link href="https://blog.axelerator.de/elm/de/tetris-clear-rows" rel="alternate" type="text/html" title="Episode 10: Komplette Reihen verschwinden mit Falten" /><published>2021-09-16T19:00:00-04:00</published><updated>2021-09-16T19:00:00-04:00</updated><id>https://blog.axelerator.de/elm/de/tetris-clear-lines-de</id><content type="html" xml:base="https://blog.axelerator.de/elm/de/tetris-clear-rows"><![CDATA[<p><img src="/assets/posts/tetris-clear-rows/teaser.gif" style="float:left; margin: 5px 10px 10px 0" />
+Damit mein Tetris spielbar wird sorge ich in <a href="https://www.youtube.com/watch?v=b1vnT6XTFP4">Episode 10 (55min)</a> 
+dafür, dass vollständige Zeilen verschwinden. Mit mehr Unit-Tests und der Anwendung der Faltung einer Liste nähere ich mich einem vollständigen Version.</p>
+
+<p>Die Code-Änderungen von dieser Woche gibt es im <a href="https://github.com/axelerator/elm-tetris/tree/episode10">episode10 Branch</a> bzw <a href="https://github.com/axelerator/elm-tetris/commit/74ac057b1037e10cd6c47b63647952c943054718">Commit</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/b1vnT6XTFP4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>Es ist immer sehr befriedigend wenn man sich einen Plan zurechtlegt und die Ausführung dann auch einigermaßen danach abläuft.
+Dementsprechend hat die Aufzeichnung dieser Episode auch Spaß gemacht. Die initiale Idee war es die <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code> zu entwickeln, welche ein Board von den vollständigen Reihen befreien sollte.</p>
+
+<p>Da ich bereits in <a href="/elm/de/tetris-collision">Episode 7</a> ein Setup für automatisierte Tests eingerichtet hatte, fiel die Entscheidung nicht schwer diesmal gleich mit einem Test loszulegen.</p>
+
+<p>Der Algorithmus für den ich mich am Ende entschieden habe läuft wie folgt ab:</p>
+
+<ol>
+  <li>Durchlaufe alle Zeilen des Spielbretts:
+    <ul>
+      <li><em>1a</em> für eine <strong>unvollständige</strong> Reihe: Sammele sie als <em>“Boden”</em>-Reihe für das Folgespielbrett</li>
+      <li><em>1b</em> für eine <strong>vollständige</strong> Reihe: Sammel eine leere <em>“Kopf”</em>-Reihe in einer Extra-Liste</li>
+    </ul>
+  </li>
+  <li>Erstelle das Folgespielbrett mit den <em>“Boden”</em>-Reihen (1a) unten und hänge die <em>“Kopf”</em>-Reihen (1b) darüber.</li>
+</ol>
+
+<p>Bei der Implementierung habe ich mich für die Nutzung der <code class="language-plaintext highlighter-rouge">foldr</code> Funktion entschieden. Da einige Programmierer Angst vor dieser Funktion zu haben scheinen möchte ich hier die Gelegenheit nutzen ein paar Unklarheiten zu breinigen.</p>
+
+<h3 id="wofür-ist-foldr-gut">Wofür ist <code class="language-plaintext highlighter-rouge">foldr</code> gut?</h3>
+
+<p><code class="language-plaintext highlighter-rouge">foldr</code> existiert in vielen Sprachen, sie heißt nur manchmal anders:</p>
+
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce">reduce</a> in JavaScript</li>
+  <li><a href="https://ruby-doc.org/core-3.0.2/Enumerable.html#method-i-inject">inject</a> in Ruby</li>
+</ul>
+
+<p>Ähnlich wie <code class="language-plaintext highlighter-rouge">map</code> können wir <code class="language-plaintext highlighter-rouge">fold</code> eine Funktion als Parameter übergeben, die für jedes Element ausgeführt wird. Im Gegensatz zu <code class="language-plaintext highlighter-rouge">map</code> braucht das Ergebnis allerdings nicht zwingend eine Liste zu sein, sonder kann von einem beliebigem Typ sein.
+In diesem Sinne ist <code class="language-plaintext highlighter-rouge">fold</code> also <em>“mächtiger”</em> als <code class="language-plaintext highlighter-rouge">map</code>.</p>
+
+<p>Diese Macht erkaufen wir uns allerdings auch mit etwas mehr Komplexität. Vergleichen wir einmal die Signaturen von <code class="language-plaintext highlighter-rouge">map</code> und <code class="language-plaintext highlighter-rouge">foldr</code>:</p>
+
+<pre><code class="language-Elm">map :   (a -&gt; b)             -&gt; List a -&gt; List b
+
+foldr : (a -&gt; b -&gt; b)  -&gt;  b -&gt; List a -&gt; b
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">map</code> ist einfach: Es verwandelt eine Liste von Elementen vom typ <code class="language-plaintext highlighter-rouge">a</code> in eine gleich lange Liste von Elementen vom Typ <code class="language-plaintext highlighter-rouge">b</code>. Dafür verwendet <code class="language-plaintext highlighter-rouge">map</code> die Funktion <code class="language-plaintext highlighter-rouge">(a -&gt; b)</code> die wir übergeben.</p>
+
+<p>Ich habe die einzelnen Parameter in Signaturen bewusst ausgerichtet um die Unterschiede zu verdeutlichen.
+Für <code class="language-plaintext highlighter-rouge">fold</code> taucht <code class="language-plaintext highlighter-rouge">b</code> jetzt an viel mehr Stellen auf! 
+Der Rückgabewert ist jetzt nur noch <code class="language-plaintext highlighter-rouge">b</code> anstatt <code class="language-plaintext highlighter-rouge">List b</code>!
+Unsere “Faltfunktion” ist nicht mehr <code class="language-plaintext highlighter-rouge">(a -&gt; b)</code> sondern <code class="language-plaintext highlighter-rouge">(a -&gt; b -&gt; b)</code>. Das heißt um den Rückggabewert <em>pro Element</em> zu berechnen müssen wir zusätzlich einen weiteren Wert vom selben Typ wie dem Ergebnis unserer Faltoperation konsumieren.
+Und dann ist da noch das <code class="language-plaintext highlighter-rouge">b</code> “in der Mitte” - der zweite Parameter den wir <code class="language-plaintext highlighter-rouge">foldr</code> übergeben müssen, bevor wir es auf die Liste von <code class="language-plaintext highlighter-rouge">a</code> anwenden können.</p>
+
+<p>Wie immer wird hoffentlich alles klarer wenn wir uns ein einfaches Beispiel anschauen. 
+Sagen wir mal, wir möchten eine Funktion <code class="language-plaintext highlighter-rouge">totalLength</code> implementieren die Anzahl aller Buchstaben in einer Liste von Wörter berechnet.</p>
+
+<pre><code class="language-Elm">totalLength : List String -&gt; Int
+</code></pre>
+
+<p>In einer imperativen Sprache mit <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in"><code class="language-plaintext highlighter-rouge">for</code>-Schleife</a> können wir das ganze so berechnen:</p>
+
+<pre><code class="language-JavaScript">function totalLength(words) {
+  var sum = 0;
+  for (let word of words) {
+    sum = sum + word.length
+  }
+  return sum;
+}
+
+totalLength(['x', 'yy', 'zzz']) == 6 // true
+</code></pre>
+
+<p>Eine solche Lösung wäre nicht zulässig in Elm da wir keine <em>Variablen</em> haben deren Wert wir überschreiben können. Deswegen gibt es auch keine <code class="language-plaintext highlighter-rouge">for</code>-Schleife in Elm. Aber <code class="language-plaintext highlighter-rouge">fold</code> erledigt den gleichen Job mindestens genauso gut. Um zu verstehen wie man <code class="language-plaintext highlighter-rouge">foldr</code> verwendet bauen wir unsere JavaScript-Lösung von oben wie folgt um.</p>
+
+<p>Refaktorisierung 1:</p>
+
+<pre><code class="language-JavaScript">function totalLength2(words) {
+  var init = 0;
+  var adder = 
+    function(word, accu) { 
+      return accu + word.length; 
+    }
+
+  var sum = init;
+  for (let word of words) {
+    sum = adder(word, sum);
+  }
+  return sum;
+}
+</code></pre>
+
+<p>Refaktorisierung 2:</p>
+
+<pre><code class="language-JavaScript">function fold(f, init, array) {
+  var sum = init;
+  for (let item of array) {
+    sum = f(item, sum);
+  }
+  return sum;
+}
+
+function totalLength3(words) {
+  var init = 0;
+  var adder = 
+    function(word, accu) { 
+      return accu + word.length; 
+    }
+  return fold(adder, init, words);
+}
+</code></pre>
+
+<p>Jetzt haben wir unsere eigene <code class="language-plaintext highlighter-rouge">fold</code>-Implementierung in JavaScript geschrieben. Und genaus wie wir sie dort verwenden rufen wir sie auch in Elm auf:</p>
+
+<pre><code class="language-Elm">totalLength : List String -&gt; Int
+totalLength words =
+  let
+    init = 0
+    adder word accu =
+      accu + (String.length word)
+  in
+    List.foldr adder init words
+</code></pre>
+
+<h2 id="anwendung-von-fold-in-erasecompleterows">Anwendung von <code class="language-plaintext highlighter-rouge">fold</code> in <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code></h2>
+
+<p>Die Funktion heißt <code class="language-plaintext highlighter-rouge">fold</code> oder <code class="language-plaintext highlighter-rouge">reduce</code> weil wir häufig eine potentiell lange Liste auf einen <em>kleinen, einzelnen</em> Wert reduzieren.</p>
+
+<p>Wie einfach der Wert ist auf den reduzieren hängt von der Funktion ab mit der wir “falten”.
+Die <a href="https://github.com/axelerator/elm-tetris/blob/74ac057b1037e10cd6c47b63647952c943054718/src/Main.elm#L396">Anwendung von <code class="language-plaintext highlighter-rouge">fold</code> in <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code></a> erzeugt als Rückgabewert ein Paar von Listen von Reihen.</p>
+
+<pre><code class="language-Elm">folder : Row -&gt; ( List Row, List Row ) -&gt; ( List Row, List Row )
+folder ((Row fields) as row) ( nonEmptyRows, header ) =
+    if isFull row then
+        ( nonEmptyRows
+        , mkEmptyRow (length fields) 0 :: header
+        )
+
+    else
+        ( row :: nonEmptyRows
+        , header
+        )
+
+( allNonEmptyRows, finalHeader ) =
+    foldr folder ( [], [] ) board.rows
+</code></pre>
+
+<p>Wenn wir die Typparameter in unserem <code class="language-plaintext highlighter-rouge">foldr</code> Ausdruck auswerten ergibt das die folgenden Typen.
+Ich definiere zunächst einen Typalias, damit alles in eine Zeile passt.</p>
+
+<pre><code class="language-Elm">type alias RowTuple = (List Row, List Row)
+
+foldr : ( a   -&gt;    b    -&gt;     b   )  -&gt;   b  -&gt; List  a  -&gt;    b
+foldr : (Row -&gt; RowTuple -&gt; RowTuple)  -&gt;  RowTuple -&gt; List Row -&gt; RowTuple
+</code></pre>
+
+<p>Der zweite Parameter für <code class="language-plaintext highlighter-rouge">foldr</code> ist also der <code class="language-plaintext highlighter-rouge">b</code> für den ersten Aufruf unserer “Faltfunktion”. Jeder weitere Aufruf bekommt als <code class="language-plaintext highlighter-rouge">b</code> den Rückggabewert der “Faltfunktion” des vorherigen Listenelements.</p>
+
+<p>Das erstemal das unsere <code class="language-plaintext highlighter-rouge">folder</code>-Funktion von aufgerufen wird:</p>
+
+<pre><code class="language-Elm">folder : Row -&gt; ( List Row, List Row ) -&gt; ( List Row, List Row )
+folder row ( nonEmptyRows, header ) = ..
+</code></pre>
+
+<p>enthält <code class="language-plaintext highlighter-rouge">row</code> die erste Reihe und <code class="language-plaintext highlighter-rouge">( nonEmptyRows, header )</code> hat den Wert <code class="language-plaintext highlighter-rouge">( [], [] )</code>, denn das ist der zweite Parameter in unserem Aufruf: <code class="language-plaintext highlighter-rouge">foldr folder ( [], [] ) board.rows</code>.</p>
+
+<ul>
+  <li>Ist diese Reihe voll hängen wir eine leere Reihen an den hinteren Wert des Paares.</li>
+  <li>Ist die Reihe <em>nicht</em> voll, hängen wir sie an den vorderen Teil des Paares.</li>
+</ul>
+
+<p>Der so berechnete Rückgabewert wird (neben der nächsten Reihe) der neue Eingabewert für den nächsten `folder-Aufruf. Das wird solange wiederholt bis wir alle Reihen bearbeitet haben.
+Danach haben wir zwei Listen in dem Ergebnispaar: Eine mit ‘unvollständigen’ Reihen die den unteren Teil des Bretts bilden, und eine Liste mit leeren Reihen die wir oben drauf packen um die entfernten, vollständigen Reihen zu kompenieren.</p>
+
+<p><img src="/assets/posts/tetris-clear-rows/fold.svg" style="width: 100%" /></p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Damit mein Tetris spielbar wird sorge ich in Episode 10 (55min) dafür, dass vollständige Zeilen verschwinden. Mit mehr Unit-Tests und der Anwendung der Faltung einer Liste nähere ich mich einem vollständigen Version.]]></summary></entry><entry xml:lang="en"><title type="html">Episode 10: Clearing lines</title><link href="https://blog.axelerator.de/elm/en/tetris-clear-rows" rel="alternate" type="text/html" title="Episode 10: Clearing lines" /><published>2021-09-16T19:00:00-04:00</published><updated>2021-09-16T19:00:00-04:00</updated><id>https://blog.axelerator.de/elm/en/tetris-clear-lines-en</id><content type="html" xml:base="https://blog.axelerator.de/elm/en/tetris-clear-rows"><![CDATA[<p><img src="/assets/posts/tetris-clear-rows/teaser.gif" style="float:left; margin: 5px 10px 10px 0" />
 For my Tetris to be actually playable I’m adding in <a href="https://www.youtube.com/watch?v=b1vnT6XTFP4">episode 10 (55min)</a> the code to have full rows cleared. With the help of more unit tests and the infamous <code class="language-plaintext highlighter-rouge">fold</code> function, I’m inching my way towards a complete solution.</p>
 
 <p>The state of the code after this episode is captured in the <a href="https://github.com/axelerator/elm-tetris/tree/episode10">episode10 Branch</a>. The changes I made can be found in the last <a href="https://github.com/axelerator/elm-tetris/commit/74ac057b1037e10cd6c47b63647952c943054718">Commit</a>.</p>
@@ -912,368 +1281,4 @@ folder row ( nonEmptyRows, header ) = ..
 
 <p>Now we just have to concatenate those two lists in the right order to assemble the board in the expected state.</p>
 
-<p><img src="/assets/posts/tetris-clear-rows/fold.svg" style="width: 100%" /></p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[For my Tetris to be actually playable I’m adding in episode 10 (55min) the code to have full rows cleared. With the help of more unit tests and the infamous fold function, I’m inching my way towards a complete solution.]]></summary></entry><entry xml:lang="de"><title type="html">Episode 10: Komplette Reihen verschwinden mit Falten</title><link href="https://blog.axelerator.de/elm/de/tetris-clear-rows" rel="alternate" type="text/html" title="Episode 10: Komplette Reihen verschwinden mit Falten" /><published>2021-09-16T19:00:00-04:00</published><updated>2021-09-16T19:00:00-04:00</updated><id>https://blog.axelerator.de/elm/de/tetris-clear-lines-de</id><content type="html" xml:base="https://blog.axelerator.de/elm/de/tetris-clear-rows"><![CDATA[<p><img src="/assets/posts/tetris-clear-rows/teaser.gif" style="float:left; margin: 5px 10px 10px 0" />
-Damit mein Tetris spielbar wird sorge ich in <a href="https://www.youtube.com/watch?v=b1vnT6XTFP4">Episode 10 (55min)</a> 
-dafür, dass vollständige Zeilen verschwinden. Mit mehr Unit-Tests und der Anwendung der Faltung einer Liste nähere ich mich einem vollständigen Version.</p>
-
-<p>Die Code-Änderungen von dieser Woche gibt es im <a href="https://github.com/axelerator/elm-tetris/tree/episode10">episode10 Branch</a> bzw <a href="https://github.com/axelerator/elm-tetris/commit/74ac057b1037e10cd6c47b63647952c943054718">Commit</a>.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/b1vnT6XTFP4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-
-<p>Es ist immer sehr befriedigend wenn man sich einen Plan zurechtlegt und die Ausführung dann auch einigermaßen danach abläuft.
-Dementsprechend hat die Aufzeichnung dieser Episode auch Spaß gemacht. Die initiale Idee war es die <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code> zu entwickeln, welche ein Board von den vollständigen Reihen befreien sollte.</p>
-
-<p>Da ich bereits in <a href="/elm/de/tetris-collision">Episode 7</a> ein Setup für automatisierte Tests eingerichtet hatte, fiel die Entscheidung nicht schwer diesmal gleich mit einem Test loszulegen.</p>
-
-<p>Der Algorithmus für den ich mich am Ende entschieden habe läuft wie folgt ab:</p>
-
-<ol>
-  <li>Durchlaufe alle Zeilen des Spielbretts:
-    <ul>
-      <li><em>1a</em> für eine <strong>unvollständige</strong> Reihe: Sammele sie als <em>“Boden”</em>-Reihe für das Folgespielbrett</li>
-      <li><em>1b</em> für eine <strong>vollständige</strong> Reihe: Sammel eine leere <em>“Kopf”</em>-Reihe in einer Extra-Liste</li>
-    </ul>
-  </li>
-  <li>Erstelle das Folgespielbrett mit den <em>“Boden”</em>-Reihen (1a) unten und hänge die <em>“Kopf”</em>-Reihen (1b) darüber.</li>
-</ol>
-
-<p>Bei der Implementierung habe ich mich für die Nutzung der <code class="language-plaintext highlighter-rouge">foldr</code> Funktion entschieden. Da einige Programmierer Angst vor dieser Funktion zu haben scheinen möchte ich hier die Gelegenheit nutzen ein paar Unklarheiten zu breinigen.</p>
-
-<h3 id="wofür-ist-foldr-gut">Wofür ist <code class="language-plaintext highlighter-rouge">foldr</code> gut?</h3>
-
-<p><code class="language-plaintext highlighter-rouge">foldr</code> existiert in vielen Sprachen, sie heißt nur manchmal anders:</p>
-
-<ul>
-  <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce">reduce</a> in JavaScript</li>
-  <li><a href="https://ruby-doc.org/core-3.0.2/Enumerable.html#method-i-inject">inject</a> in Ruby</li>
-</ul>
-
-<p>Ähnlich wie <code class="language-plaintext highlighter-rouge">map</code> können wir <code class="language-plaintext highlighter-rouge">fold</code> eine Funktion als Parameter übergeben, die für jedes Element ausgeführt wird. Im Gegensatz zu <code class="language-plaintext highlighter-rouge">map</code> braucht das Ergebnis allerdings nicht zwingend eine Liste zu sein, sonder kann von einem beliebigem Typ sein.
-In diesem Sinne ist <code class="language-plaintext highlighter-rouge">fold</code> also <em>“mächtiger”</em> als <code class="language-plaintext highlighter-rouge">map</code>.</p>
-
-<p>Diese Macht erkaufen wir uns allerdings auch mit etwas mehr Komplexität. Vergleichen wir einmal die Signaturen von <code class="language-plaintext highlighter-rouge">map</code> und <code class="language-plaintext highlighter-rouge">foldr</code>:</p>
-
-<pre><code class="language-Elm">map :   (a -&gt; b)             -&gt; List a -&gt; List b
-
-foldr : (a -&gt; b -&gt; b)  -&gt;  b -&gt; List a -&gt; b
-</code></pre>
-
-<p><code class="language-plaintext highlighter-rouge">map</code> ist einfach: Es verwandelt eine Liste von Elementen vom typ <code class="language-plaintext highlighter-rouge">a</code> in eine gleich lange Liste von Elementen vom Typ <code class="language-plaintext highlighter-rouge">b</code>. Dafür verwendet <code class="language-plaintext highlighter-rouge">map</code> die Funktion <code class="language-plaintext highlighter-rouge">(a -&gt; b)</code> die wir übergeben.</p>
-
-<p>Ich habe die einzelnen Parameter in Signaturen bewusst ausgerichtet um die Unterschiede zu verdeutlichen.
-Für <code class="language-plaintext highlighter-rouge">fold</code> taucht <code class="language-plaintext highlighter-rouge">b</code> jetzt an viel mehr Stellen auf! 
-Der Rückgabewert ist jetzt nur noch <code class="language-plaintext highlighter-rouge">b</code> anstatt <code class="language-plaintext highlighter-rouge">List b</code>!
-Unsere “Faltfunktion” ist nicht mehr <code class="language-plaintext highlighter-rouge">(a -&gt; b)</code> sondern <code class="language-plaintext highlighter-rouge">(a -&gt; b -&gt; b)</code>. Das heißt um den Rückggabewert <em>pro Element</em> zu berechnen müssen wir zusätzlich einen weiteren Wert vom selben Typ wie dem Ergebnis unserer Faltoperation konsumieren.
-Und dann ist da noch das <code class="language-plaintext highlighter-rouge">b</code> “in der Mitte” - der zweite Parameter den wir <code class="language-plaintext highlighter-rouge">foldr</code> übergeben müssen, bevor wir es auf die Liste von <code class="language-plaintext highlighter-rouge">a</code> anwenden können.</p>
-
-<p>Wie immer wird hoffentlich alles klarer wenn wir uns ein einfaches Beispiel anschauen. 
-Sagen wir mal, wir möchten eine Funktion <code class="language-plaintext highlighter-rouge">totalLength</code> implementieren die Anzahl aller Buchstaben in einer Liste von Wörter berechnet.</p>
-
-<pre><code class="language-Elm">totalLength : List String -&gt; Int
-</code></pre>
-
-<p>In einer imperativen Sprache mit <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in"><code class="language-plaintext highlighter-rouge">for</code>-Schleife</a> können wir das ganze so berechnen:</p>
-
-<pre><code class="language-JavaScript">function totalLength(words) {
-  var sum = 0;
-  for (let word of words) {
-    sum = sum + word.length
-  }
-  return sum;
-}
-
-totalLength(['x', 'yy', 'zzz']) == 6 // true
-</code></pre>
-
-<p>Eine solche Lösung wäre nicht zulässig in Elm da wir keine <em>Variablen</em> haben deren Wert wir überschreiben können. Deswegen gibt es auch keine <code class="language-plaintext highlighter-rouge">for</code>-Schleife in Elm. Aber <code class="language-plaintext highlighter-rouge">fold</code> erledigt den gleichen Job mindestens genauso gut. Um zu verstehen wie man <code class="language-plaintext highlighter-rouge">foldr</code> verwendet bauen wir unsere JavaScript-Lösung von oben wie folgt um.</p>
-
-<p>Refaktorisierung 1:</p>
-
-<pre><code class="language-JavaScript">function totalLength2(words) {
-  var init = 0;
-  var adder = 
-    function(word, accu) { 
-      return accu + word.length; 
-    }
-
-  var sum = init;
-  for (let word of words) {
-    sum = adder(word, sum);
-  }
-  return sum;
-}
-</code></pre>
-
-<p>Refaktorisierung 2:</p>
-
-<pre><code class="language-JavaScript">function fold(f, init, array) {
-  var sum = init;
-  for (let item of array) {
-    sum = f(item, sum);
-  }
-  return sum;
-}
-
-function totalLength3(words) {
-  var init = 0;
-  var adder = 
-    function(word, accu) { 
-      return accu + word.length; 
-    }
-  return fold(adder, init, words);
-}
-</code></pre>
-
-<p>Jetzt haben wir unsere eigene <code class="language-plaintext highlighter-rouge">fold</code>-Implementierung in JavaScript geschrieben. Und genaus wie wir sie dort verwenden rufen wir sie auch in Elm auf:</p>
-
-<pre><code class="language-Elm">totalLength : List String -&gt; Int
-totalLength words =
-  let
-    init = 0
-    adder word accu =
-      accu + (String.length word)
-  in
-    List.foldr adder init words
-</code></pre>
-
-<h2 id="anwendung-von-fold-in-erasecompleterows">Anwendung von <code class="language-plaintext highlighter-rouge">fold</code> in <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code></h2>
-
-<p>Die Funktion heißt <code class="language-plaintext highlighter-rouge">fold</code> oder <code class="language-plaintext highlighter-rouge">reduce</code> weil wir häufig eine potentiell lange Liste auf einen <em>kleinen, einzelnen</em> Wert reduzieren.</p>
-
-<p>Wie einfach der Wert ist auf den reduzieren hängt von der Funktion ab mit der wir “falten”.
-Die <a href="https://github.com/axelerator/elm-tetris/blob/74ac057b1037e10cd6c47b63647952c943054718/src/Main.elm#L396">Anwendung von <code class="language-plaintext highlighter-rouge">fold</code> in <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code></a> erzeugt als Rückgabewert ein Paar von Listen von Reihen.</p>
-
-<pre><code class="language-Elm">folder : Row -&gt; ( List Row, List Row ) -&gt; ( List Row, List Row )
-folder ((Row fields) as row) ( nonEmptyRows, header ) =
-    if isFull row then
-        ( nonEmptyRows
-        , mkEmptyRow (length fields) 0 :: header
-        )
-
-    else
-        ( row :: nonEmptyRows
-        , header
-        )
-
-( allNonEmptyRows, finalHeader ) =
-    foldr folder ( [], [] ) board.rows
-</code></pre>
-
-<p>Wenn wir die Typparameter in unserem <code class="language-plaintext highlighter-rouge">foldr</code> Ausdruck auswerten ergibt das die folgenden Typen.
-Ich definiere zunächst einen Typalias, damit alles in eine Zeile passt.</p>
-
-<pre><code class="language-Elm">type alias RowTuple = (List Row, List Row)
-
-foldr : ( a   -&gt;    b    -&gt;     b   )  -&gt;   b  -&gt; List  a  -&gt;    b
-foldr : (Row -&gt; RowTuple -&gt; RowTuple)  -&gt;  RowTuple -&gt; List Row -&gt; RowTuple
-</code></pre>
-
-<p>Der zweite Parameter für <code class="language-plaintext highlighter-rouge">foldr</code> ist also der <code class="language-plaintext highlighter-rouge">b</code> für den ersten Aufruf unserer “Faltfunktion”. Jeder weitere Aufruf bekommt als <code class="language-plaintext highlighter-rouge">b</code> den Rückggabewert der “Faltfunktion” des vorherigen Listenelements.</p>
-
-<p>Das erstemal das unsere <code class="language-plaintext highlighter-rouge">folder</code>-Funktion von aufgerufen wird:</p>
-
-<pre><code class="language-Elm">folder : Row -&gt; ( List Row, List Row ) -&gt; ( List Row, List Row )
-folder row ( nonEmptyRows, header ) = ..
-</code></pre>
-
-<p>enthält <code class="language-plaintext highlighter-rouge">row</code> die erste Reihe und <code class="language-plaintext highlighter-rouge">( nonEmptyRows, header )</code> hat den Wert <code class="language-plaintext highlighter-rouge">( [], [] )</code>, denn das ist der zweite Parameter in unserem Aufruf: <code class="language-plaintext highlighter-rouge">foldr folder ( [], [] ) board.rows</code>.</p>
-
-<ul>
-  <li>Ist diese Reihe voll hängen wir eine leere Reihen an den hinteren Wert des Paares.</li>
-  <li>Ist die Reihe <em>nicht</em> voll, hängen wir sie an den vorderen Teil des Paares.</li>
-</ul>
-
-<p>Der so berechnete Rückgabewert wird (neben der nächsten Reihe) der neue Eingabewert für den nächsten `folder-Aufruf. Das wird solange wiederholt bis wir alle Reihen bearbeitet haben.
-Danach haben wir zwei Listen in dem Ergebnispaar: Eine mit ‘unvollständigen’ Reihen die den unteren Teil des Bretts bilden, und eine Liste mit leeren Reihen die wir oben drauf packen um die entfernten, vollständigen Reihen zu kompenieren.</p>
-
-<p><img src="/assets/posts/tetris-clear-rows/fold.svg" style="width: 100%" /></p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Damit mein Tetris spielbar wird sorge ich in Episode 10 (55min) dafür, dass vollständige Zeilen verschwinden. Mit mehr Unit-Tests und der Anwendung der Faltung einer Liste nähere ich mich einem vollständigen Version.]]></summary></entry><entry xml:lang="de"><title type="html">Episode 9: Eingeschränkt bewegungsfähig</title><link href="https://blog.axelerator.de/elm/de/tetris-limit-movement" rel="alternate" type="text/html" title="Episode 9: Eingeschränkt bewegungsfähig" /><published>2021-09-11T16:00:00-04:00</published><updated>2021-09-11T16:00:00-04:00</updated><id>https://blog.axelerator.de/elm/de/tetris-limit-movement-de</id><content type="html" xml:base="https://blog.axelerator.de/elm/de/tetris-limit-movement"><![CDATA[<p>In <a href="https://www.youtube.com/watch?v=ZacgfAavKzQ">Episode 9 (48min)</a> stelle ich sicher das wir das aktuelle Teil nicht außerhalb des Spielbretts oder in andere Teile hineinbewegen können. Dabei muss ich zwei Argumente einer Funktion umdrehen und nutze dies für eine funktionale Fingerübung.</p>
-
-<p>Die Code-Änderungen von dieser Woche gibt es im <a href="https://github.com/axelerator/elm-tetris/tree/episode9">episode9 Branch</a> bzw <a href="https://github.com/axelerator/elm-tetris/commit/c9e1d2564626e3584e96500ee210ad14a7a9b1c4">Commit</a>.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ZacgfAavKzQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-
-<ol>
-  <li><a href="#canmove">Bewegung erlaubt?</a></li>
-  <li><a href="#curry">Exkurs <em>Currying</em></a></li>
-</ol>
-
-<h3 id="-bewegung-erlaubt"><a name="canmove"></a> Bewegung erlaubt?</h3>
-
-<p>Der Einstiegspunkt für diese Episode war die <a href="https://github.com/axelerator/elm-tetris/blob/episode8/src/Main.elm#L222"><code class="language-plaintext highlighter-rouge">movePiece</code> Funktion</a>. Das Ziel war es hier Logik hinzuzufügen die die Ausführung der Bewegung nur zulässt, wenn die Spielregeln es auch zulassen.</p>
-
-<p>Mit fast 50 Zeilen Code ist die <code class="language-plaintext highlighter-rouge">movePiece</code> Funktion bereits verhältnismäßig lang. Doch durch Nutzung ein paar einfacher Syntaxelemente bleibt die finale Funktion mit der zusätzlichen Funktionalität bei der gleichen Länge.</p>
-
-<p>Die Erklärung für ‘was erlaubt’ ist, habe ich in meinem Kopf wie folgt definiert:</p>
-
-<blockquote>
-  <p>Alle Plätze die der aktuelle Spielstein einnehmen <strong>würde</strong>, wenn die Bewegung ausgeführt wird müssen leer sein.
-Wenn das nicht der Fall ist, wird die Bewegung nicht ausgeführt.</p>
-</blockquote>
-
-<p>Der signifankte Teil der sich geändert hat sieht wie folgt aus:</p>
-
-<pre><code class="language-Elm">movePiece : Key -&gt; Model -&gt; Model
-movePiece key model =
-  ...
-  let
-      canMove =
-          all ((==) (Just Empty)) &lt;|
-              map (flip lookUp model.board) &lt;|
-                  occupiedPositions movedPiece
-  in
-  if canMove then
-      { model | currentPiece = Just movedPiece }
-
-  else
-      model
-</code></pre>
-
-<p>Hohe Softwarequalität drückt sich meiner Meinung nach darin aus, wenn sich das ‘mentale Modell’ möglichst direkt aus dem Code ablesen lässt.</p>
-
-<p>Die Art wie sich Ausdrücke in Elm kombinieren lassen ermöglicht dies meiner Meinung nach sehr elegant.
-Wenn wir die Berechnung von <code class="language-plaintext highlighter-rouge">canMove</code> von unten nach oben lesen, ist <code class="language-plaintext highlighter-rouge">canMove</code> wahr wenn:</p>
-
-<ul>
-  <li>die Positionen des bewegten Teils (<code class="language-plaintext highlighter-rouge">occupiedPositions movedPiece</code>)</li>
-  <li>transformiert in welchen Zustand dieses Feld auf dem aktuellen Brett hat (<code class="language-plaintext highlighter-rouge">map (flip lookUp model.board)</code>)</li>
-  <li>alle leer sind (<code class="language-plaintext highlighter-rouge">all ((==) (Just Empty))</code>)</li>
-</ul>
-
-<h3 id="-exkurs-currying"><a name="curry"></a> Exkurs <em>Currying</em></h3>
-
-<p>Das funktionalen Programmieren habe ich dank meines ehemaligen Professor <a href="https://github.com/UweSchmidt">Uwe Schmidt</a> entdeckt. Die theoretischen Hintegründe aus der Vorlesung sind jedoch nur teilweise hängengeblieben. Und so bin ich im Livestream doch etwas ins Stolpern geraten als es darum ging zu erklären was genau bei der <a href="https://github.com/axelerator/elm-tetris/blob/episode9/src/Main.elm#L250"><code class="language-plaintext highlighter-rouge">flip</code> Funktion</a> passiert.</p>
-
-<p>Deswegen gebe ich hier nun eine etwas detailierte Erklärung dazu was <code class="language-plaintext highlighter-rouge">Currying</code> bedeutet.
-In den <a href="https://blog.axelerator.de/elm/de/board">vergangenen Episoden</a> habe ich mehrfach von <em>‘partieller Anwendung’</em> Gebrauch gemacht.</p>
-
-<p><code class="language-plaintext highlighter-rouge">Currying</code> beschreibt den Vorgang eine Funktion so aufzubrechen, dass jeder Parameterwert einzeln aufgerufen/gebunden werden kann. Bei Sprachen wie Elm und Haskell bekommen sind Funktionen ‘von Haus aus’ gecurried.</p>
-
-<p>In JavaScript is Currying auch möglich, allerdings müssen wir es hier explizit ausfomulieren.</p>
-
-<pre><code class="language-Javascript">// not curried
-function addAndMultiply(a, b, times) {
-  return (a + b) * times;
-}
-
-// curried
-function addAndMultiplyCurried(a) {
-  return function(b) {
-    return function(times) {
-      return (a + b) * times;
-    }
-  }
-}
-
-// curried ES6
-const addAndMultiplyCurriedES6 = 
-  (a) =&gt; 
-    (b) =&gt; 
-      (times) =&gt; (a + b) * times;
-
-// same result
-addAndMultiply(1,2,3) == addAndMultiplyCurried(1)(2)(3)
-</code></pre>
-
-<p>Funktionen die “gecurried” sind sind vielseitiger einsetzbar als ihre nicht-gecurrieten Gegenstücke. Bereits in unserem kleinen Tetrisprogramm machen wir davon ein paar mal gebraucht.</p>
-
-<p>Currying alleine macht ein Programm nicht autmatisch X% besser. Ich würde sogar behaupten, dass wenn man in einer Sprache wie JavaScript in der man seine Funktionnsdefinition umschreiben muss, der Aufwand es nicht wert ist.</p>
-
-<p>In Sprachen jedoch wo es currying ‘gratis’ dazu gibt, wird es zu einer Selbstverständlichkeit die man schnell nicht mehr missen möchte. Und je größer ein Softwareprojekt wird, desto größer sind die Effizienzgewinne von solch kleinen Optimierungen.</p>
-
-<p>Ein ‘Fun Fact’ den man nennen muss, wenn man über Currying spricht ist, dass es nach <a href="https://de.wikipedia.org/wiki/Haskell_Brooks_Curry">Haskell Curry</a> benannt wurde. Seine Ideen beruhen auf den Grundlagen der kobinatorischen Logik die von <a href="https://de.wikipedia.org/wiki/Moses_Sch%C3%B6nfinkel">Moses Schönfinkel</a> vor <strong>über 100 Jahren</strong> entwickelt wurden.
-Der Name ‘Currying’ hat sich mutmaßlich durchgesetzt, weil eine Funktion ‘schönfinkeln’ halt nur im deutschen Sprachraum von der Zunge rollt.</p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[In Episode 9 (48min) stelle ich sicher das wir das aktuelle Teil nicht außerhalb des Spielbretts oder in andere Teile hineinbewegen können. Dabei muss ich zwei Argumente einer Funktion umdrehen und nutze dies für eine funktionale Fingerübung.]]></summary></entry><entry xml:lang="en"><title type="html">Episode 9: Preventing invalid movements</title><link href="https://blog.axelerator.de/elm/en/tetris-limit-movement" rel="alternate" type="text/html" title="Episode 9: Preventing invalid movements" /><published>2021-09-11T16:00:00-04:00</published><updated>2021-09-11T16:00:00-04:00</updated><id>https://blog.axelerator.de/elm/en/tetris-limit-movement-en</id><content type="html" xml:base="https://blog.axelerator.de/elm/en/tetris-limit-movement"><![CDATA[<p>In <a href="https://www.youtube.com/watch?v=ZacgfAavKzQ">episode 9 (48min)</a> I make sure the current piece can’t be moved out of the board or into other pieces. With that came the opportunity to do a little functional finger exercise and develop a function that swaps the arguments of another function.</p>
-
-<p>The state of the code can be found on the <a href="https://github.com/axelerator/elm-tetris/tree/episode9">episode9 branch</a>.
-Or you can have a look at the <a href="https://github.com/axelerator/elm-tetris/commit/c9e1d2564626e3584e96500ee210ad14a7a9b1c4">commit</a> if you just want to see what’s changed.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ZacgfAavKzQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-
-<ol>
-  <li><a href="#canmove">Movement allowed?</a></li>
-  <li><a href="#curry">Excursion <em>Currying</em></a></li>
-</ol>
-
-<h3 id="-movement-allowed"><a name="canmove"></a> Movement allowed?</h3>
-
-<p>The entry point for this week’s changes was the <a href="https://github.com/axelerator/elm-tetris/blob/episode8/src/Main.elm#L222"><code class="language-plaintext highlighter-rouge">movePiece</code> function</a>. The goal was to extend the logic in a way that would prevent invalid moves.</p>
-
-<p>With nearly 50 lines of code, the <code class="language-plaintext highlighter-rouge">movePiece</code> function was already quite long, to begin with. But with the application of a few basic syntax elements, we were able to keep the length at that despite adding the new logic.</p>
-
-<p>The definition of what I understand to constitute a valid move is as follows:</p>
-
-<blockquote>
-  <p>All fields the current piece <strong>would</strong> occupy on the board must be empty.
-If that’s not the case, don’t execute the move</p>
-</blockquote>
-
-<p>The significant change of the code looks like this:</p>
-
-<pre><code class="language-Elm">movePiece : Key -&gt; Model -&gt; Model
-movePiece key model =
-  ...
-  let
-      canMove =
-          all ((==) (Just Empty)) &lt;|
-              map (flip lookUp model.board) &lt;|
-                  occupiedPositions movedPiece
-  in
-  if canMove then
-      { model | currentPiece = Just movedPiece }
-
-  else
-      model
-</code></pre>
-
-<p>One sign of high software quality is in my opinion when the ‘natural mental model’ can be read directly from the code
-From my point of view Elm offers many ways to combine expressions in a way that brings us close to this goal.</p>
-
-<p>If we read the calculation of <code class="language-plaintext highlighter-rouge">canMove</code> from the bottom up, <code class="language-plaintext highlighter-rouge">canMove</code> is true if:</p>
-
-<ul>
-  <li>the positions the current piece would occupy (<code class="language-plaintext highlighter-rouge">occupiedPositions movedPiece</code>)</li>
-  <li>transformed into the state of the field on the board (<code class="language-plaintext highlighter-rouge">map (flip lookUp model.board)</code>)</li>
-  <li>are all empty (<code class="language-plaintext highlighter-rouge">all ((==) (Just Empty))</code>)</li>
-</ul>
-
-<h3 id="-excursion-currying"><a name="curry"></a> Excursion <em>Currying</em></h3>
-
-<p>I discovered functional programming thanks to my professor <a href="https://github.com/UweSchmidt">Uwe Schmidt</a> at university.
-But the theoretical groundwork for it only partly managed to persist in my brain. What led to me fumbling a bit for words when it came to explain what concepts I was making use of when I developed the <a href="https://github.com/axelerator/elm-tetris/blob/episode9/src/Main.elm#L250"><code class="language-plaintext highlighter-rouge">flip</code> function</a></p>
-
-<p>That’s why I’d like to spend a few lines here to make up for the lack of explanation. In the <a href="https://blog.axelerator.de/elm/en/board">previous episodes</a> I made use of partial function application quite a bit.</p>
-
-<p><em>Currying</em> describes a process to transform a function in a way that <strong>every</strong> parameter can be called/bound separately. In some languages like Elm and Haskell functions are automatically curried.</p>
-
-<p>But currying is also possible in languages that don’t have it build in, for example in JavaScript
-However, we do have to explicitly rewrite our function definition and how we call the function.</p>
-
-<pre><code class="language-Javascript">// not curried
-function addAndMultiply(a, b, times) {
-  return (a + b) * times;
-}
-
-// curried
-function addAndMultiplyCurried(a) {
-  return function(b) {
-    return function(times) {
-      return (a + b) * times;
-    }
-  }
-}
-
-// curried ES6
-const addAndMultiplyCurriedES6 = 
-  (a) =&gt; 
-    (b) =&gt; 
-      (times) =&gt; (a + b) * times;
-
-// same result
-addAndMultiply(1,2,3) == addAndMultiplyCurried(1)(2)(3)
-</code></pre>
-
-<p>Functions that are <em>curried</em> are more versatile. That is mainly for their ability to use them with partial function application, of which we made use multiple times already in our little Tetris program.</p>
-
-<p>The use of currying alone does not make a program automatically X% better. I would even argue that in languages that require an extra effort to rewrite a function it’s not worth it.
-However in languages where it comes for free out of the box, it quickly becomes a tool you don’t want to miss. And the larger a software project grows the more even those little optimization pay off.</p>
-
-<p>One ‘fun fact’ one must mention when talking about <em>currying</em> is how it’s got its name. It’s based on the work of <a href="https://en.wikipedia.org/wiki/Haskell_Curry">Haskell Curry</a>. An American logician who took great inspiration from <a href="https://en.wikipedia.org/wiki/Moses_Sch%C3%B6nfinkel">Moses Schönfinkel</a>s concept of <a href="https://en.wikipedia.org/wiki/Combinatory_logic">combinatory logic</a>. So strictly speaking it should be called <em>schönfinkeling</em> - but that just does not roll off the tongue as easily I guess.</p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[In episode 9 (48min) I make sure the current piece can’t be moved out of the board or into other pieces. With that came the opportunity to do a little functional finger exercise and develop a function that swaps the arguments of another function.]]></summary></entry></feed>
+<p><img src="/assets/posts/tetris-clear-rows/fold.svg" style="width: 100%" /></p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[For my Tetris to be actually playable I’m adding in episode 10 (55min) the code to have full rows cleared. With the help of more unit tests and the infamous fold function, I’m inching my way towards a complete solution.]]></summary></entry></feed>
