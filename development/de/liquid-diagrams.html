@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Dynamische Diagramme</title>
+  </head>
+  <body class="liquid-diagrams">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://hachyderm.io/@axelerator"><span class="fediverse"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/development/en/liquid-diagrams" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Dynamische Diagramme</h1>
+       <div class="meta"> 
+  <div title="Lesedauer">4 Minuten</div>
+  <div>
+  
+    
+    <a href="/tags#diagrams">#diagrams</a>
+  
+    
+    <a href="/tags#visualization">#visualization</a>
+  
+    
+    <a href="/tags#documentation">#documentation</a>
+  
+  </div>
+  <div>15 November 2023</div>
+</div>
+
+
+<section>
+<p><img src="/assets/posts/liquid-diagrams/ld.webp" width="130" style="float:right; margin: 5px 10px 10px 0" />
+Statische Bilder, Videos und SVG-Animationen bringen jeweils ihre eigenen Herausforderungen mit sich, wenn es darum geht 
+komplexe Systeme durch Diagramme zu visualisieren.
+Ich habe eine Minisprache und eine Webkomponente entwickelt, um Diagrammen ein erzählerisches Element hinzuzufügen.</p>
+
+<hr />
+
+<p>Content:</p>
+
+<ul>
+  <li><a href="#solutions">Aktuellen Lösungsansätze und ihre Grenzen</a></li>
+  <li><a href="#liquid">Eine neue, einfache Sprache für interaktive Diagramme</a></li>
+</ul>
+
+<hr />
+
+<p>Technische Dokumentation ist ein wesentlicher Bestandteil zur Erläuterung komplexer
+Systeme. Um die Beziehungen zwischen den Systemkomponenten effektiv darzustellen,
+sind Diagramme ein wesetnloches Wergzeug. 
+Mit zunehmender Komplexität der Systeme wachsen jedoch auch
+die dazugehörigen Diagramme, was oft zu komplizierten und schwer verständlichen Darstellungen führt.
+Eine der größten Herausforderungen ist es zeitliche Abläufe verständlich abzubilden.</p>
+
+<style>
+    liquid-diagram rect {
+        fill: #CCC;
+    }
+    liquid-diagram path {
+        stroke: #333;
+    }
+    liquid-diagram text {
+        font-size: 0.15em;
+    }
+    liquid-diagram button {
+      width: auto;
+      font-size: 0.5em;
+      line-height: 0.5em;
+      margin: 0 0.25em;
+    }
+    liquid-diagram input[type="range"] {
+      flex: 1;
+    }
+
+  </style>
+
+<p><label for="def-help" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-help" class="margin-toggle" />
+<span class="marginnote">
+You can yog through the different states of the diagram using the arrow buttons ⬅ ➡ or the slider.<br />
+With the ✏️  button you can view <strong>and</strong> update the source of the diagram.
+</span></p>
+
+<figure>
+<liquid-diagram style="width: 100%; display: block">
+add "A"
+  pos 0 -35
+  size 20 15
+add "B"
+  pos -35 5
+  size 20 15
+add "C"
+  pos 20 35
+  size 20 15
+|- m1 -|
+connect "A" "B" "First"
+|- - -|
+connect "B" "C" "Second"
+|- closing the loop -|
+connect "C" "A" "Third"
+|- dance! -|
+update "C"
+  pos 0 -35
+update "A"
+  pos -35 5
+update "B"
+  pos 20 35
+</liquid-diagram>
+</figure>
+
+<h3 id="-aktuellen-lösungsansätze-und-ihre-grenzen"><a name="solutions"></a> Aktuellen Lösungsansätze und ihre Grenzen</h3>
+
+<p>Derzeit gibt es einige Ansätze, um diese Probleme zu lösen:</p>
+
+<ol>
+  <li>
+    <p><strong>Mehrere statische Bilder</strong>: Es ist üblich, sich entwickelnde Diagramme in
+mehrere statische Bilder aufzuteilen. Diese Methode kann jedoch umständlich
+sein, da sie den Leser zwingt, nach oben und unten zu scrollen, um auf die
+verschiedenen Stufen des Diagramms zu verweisen.</p>
+  </li>
+  <li>
+    <p><strong>Video-Format</strong>: Die Verwendung von Videos zur Animation von Diagrammen verleiht
+diesen einen dynamischen Aspekt, der es leichter macht, Veränderungen im Laufe
+der Zeit zu verstehen. Die Videoproduktion erfordert jedoch besondere
+Fähigkeiten und führt oft zu großen Dateien, was für eine schnell ladende
+Webdokumentation nicht ideal ist.</p>
+  </li>
+  <li>
+    <p><strong>SVG-Animationen</strong>: SVG, kombiniert mit CSS- und JS-Animationen, ist eine weitere
+Methode zur Erstellung dynamischer Diagramme. Dieser Ansatz ist zwar
+vielversprechend, erfordert aber vom Autor jedoch spezielle
+Fähigkeiten und potenziell teure Tools.</p>
+  </li>
+</ol>
+
+<h3 id="-eine-neue-einfache-sprache-für-interaktive-diagramme"><a name="liquid"></a> Eine neue, einfache Sprache für interaktive Diagramme</h3>
+
+<p>Ich persönlich war schon immer ein Fan von MermaidJS. Wie viele Entwickler
+schätze ich die Tatsache, dass textbasierte Diagrammgeneratoren einen Großteil
+der Komplexität wegnehmen, die mit visuellen Tools wie <a href="https://inkscape.org">Inkscape</a> oder
+<a href="https://app.diagrams.net">diagrams.net</a> verbunden ist.</p>
+
+<p>Textbasierte tools wie MermaidJS, werden wegen
+ihrer Einfachheit und Effektivität sehr geschätzt. Der eigentliche Charme liegt
+in ihrer Fähigkeit, kurzen, prägnanten Text in ausgefeilte Diagramme zu
+verwandeln. Dieser textuelle Ansatz erleichtert nicht nur die Erstellung von
+Diagrammen, sondern lässt sich auch nahtlos in Versionskontrollsysteme
+integrieren, so dass eine klare Semantik über mehrere Übertragungen hinweg
+erhalten bleibt.
+Wenn deine Dokumentation in Form von Markdown Dokumenten bei Github liegt kannst du 
+<a href="https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/">Diagramme direkt einbinden</a> 
+ohne weitere Werkzeuge zu benötigen.</p>
+
+<p>Wenn ich ein Diagramm erstellen will, brauche ich meistens nur ein paar
+Kästchen, die durch Pfeile verbunden sind. Ich habe mich jedoch immer nach
+einer Möglichkeit gesehnt, mit meinen Diagrammen eine Geschichte zu erzählen,
+Ich möchte Elemente wie Kästchen und Pfeile gerne <strong>nach und nach</strong> einzuführen, anstatt alles auf
+einmal zu präsentieren. Das hat mich dazu veranlasst, eine neue Sprache und
+eine Webkomponente zu entwickeln, mit der genau das möglich ist. 
+Mit meinem Tool kann ich meine Erzählung langsam aufbauen, indem ich dem Diagramm
+Schritt für Schritt Elemente hinzufüge und so die komplexen Informationen
+verständlicher und ansprechender machen kann.</p>
+
+<p>Wenn du interaktive Diagramme auf deiner Seite haben möchtest <a href="/assets/js/liquid-diagrams.js">lade die Webkomponente runter</a>.
+Binde sie <strong>am Ende</strong> deiner Seite ein <strong>nachdem</strong> du die <code class="language-plaintext highlighter-rouge">liquid-diagram</code> Elemente speyifiziert hast.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;liquid-diagram</span> <span class="na">style=</span><span class="s">"display: block"</span><span class="nt">&gt;</span>
+add "A"
+  pos -10 -7
+  size 20 15
+add "B"
+  pos -35 -35
+  size 20 15
+|- then -|
+connect "A" "B" "A to B"
+<span class="nt">&lt;/liquid-diagram&gt;</span>
+
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/js/liquid-diagrams.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+</code></pre></div></div>
+
+<figure>
+<liquid-diagram style="display: block">
+add "client1"
+  pos -30 -35
+  size 15 10
+|- m1 -|
+add "load-balancer"
+  pos -10 -5
+  size 25 10
+add "app-server1"
+  pos -30 15
+  size 25 10
+add "app-server2"
+  pos 20 15
+  size 25 10
+add "db"
+  pos -10 35
+  size 25 10
+|- m2 -|
+connect "client1" "load-balancer"
+|- m3 -|
+connect "load-balancer" "app-server1"
+connect "app-server1" "db"
+|- m3 -|
+add "client2"
+  pos 10 -35
+  size 15 10
+|- m4 -|
+connect "client2" "load-balancer"
+connect "load-balancer" "app-server2"
+connect "app-server2" "db"
+</liquid-diagram>
+</figure>
+
+<script src="/assets/js/liquid-diagrams.js"></script>
+
+
+</section>
+
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+
