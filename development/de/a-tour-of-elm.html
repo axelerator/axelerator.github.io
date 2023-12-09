@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Entdecke funktionale Programmierung mit Elm</title>
+  </head>
+  <body class="a-tour-of-elm">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://hachyderm.io/@axelerator"><span class="fediverse"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/development/en/a-tour-of-elm" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Entdecke funktionale Programmierung mit Elm</h1>
+       <div class="meta"> 
+  <div title="Lesedauer">4 Minuten</div>
+  <div>
+  
+    
+    <a href="/tags#elm">#elm</a>
+  
+  </div>
+  <div>9 December 2023</div>
+</div>
+
+
+<section>
+<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
+Wenn Du mit funktionaler Programmierung liebäugelst oder in die Entwicklung von
+Single Page Applications (SPA) einsteigen willst, gibt es kein besseres
+Tool als Elm. Elm zeichnet sich als eine Sprache aus, die nicht nur die
+Entwicklung angenehm macht, sondern auch als perfekter Einstieg in die Welt der
+funktionalen Programmierung dient.</p>
+
+<hr />
+
+<h2 id="statisch-getypte-glückseligkeit">Statisch getypte Glückseligkeit</h2>
+
+<p>Einer der wichtigsten Vorzüge von Elm ist, man mag es kaum glauben, die statische Typisierung.
+Im Vergleich zu JavaScript bietet das entscheidende Vorteile. Der Compiler
+fungiert als treuer Helfer und fängt Fehler ab, bevor sie zur Laufzeit
+Schaden anrichten können. 
+Was Elm auszeichnet, ist nicht nur die Typisierung selbst, sondern auch die unglaubliche Klarheit der Compiler-Meldungen.</p>
+
+<p>Elm ist nicht nur eine weitere funktionale Sprache, sondern eine komplettes
+Werkstatt für die Erstellung von SPAs. 
+Wenn wir in “React-Begriffen” denken, kombiniert sie:</p>
+
+<ul>
+  <li><em>TypeScript</em> (Sprache)</li>
+  <li><em>NPM</em> (Paket manager)</li>
+  <li><em>React</em> (Rendering)</li>
+  <li><em>Redux</em> (State Management)</li>
+</ul>
+
+<p>Alles in <strong>einem einzigen</strong> Werkzeug.</p>
+
+<p><label for="def-haskell" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-haskell" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://www.haskell.org">
+<img src="/assets/posts/a-tour-of-elm/haskell-logo.svg" style="width: 35%" alt="Haskell logo" /></a>
+Haskell wurde als Forschungssprache entwickelt und war als solche ausdrücklich dafür ausgelegt
+um experimentelle Funktionen und Syntax zu enthalten.<br />
+Das führt zu vielen verschiedenen “Stilen”, die es schwer machen, die Sprache schnell zu lernen.
+</span></p>
+
+<p>Durch die Konzentration auf eine einzige Zielplattform (den Browser) ist Elm
+einfacher als seine funktionalen Allzweck-Pendants wie <a href="https://www.haskell.org">Haskell</a>.</p>
+
+<p>Im Vergleich zu anderen Sprachen, die funktionale Muster <em>zusätzlich</em> zu
+imperativen und/oder objektorientierten Mustern anbieten,</p>
+
+<p><label for="def-imperative" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-imperative" class="margin-toggle" />
+<span class="marginnote">
+Lanugages like Ruby and JavaScript also <em>allow</em> but don’t enforce
+the functional style. Leading to the majority of code in these languages
+being in imperative.
+</span></p>
+
+<p>zeichnet sich Elm dadurch aus, dass es durchgehend dem funktionalen Programmierstil treu bleibt.
+Das macht Sie zu einem idealen Kandidaten für Entwickler, die bereits mit
+konventionelleren Programmiersprachen vertraut sind vertraut sind und sich auf das Erlernen des
+<strong>funktionalen Ansatzes</strong> konzentrieren wollen.</p>
+
+<h2 id="einfachheit">Einfachheit</h2>
+<p>Die Eleganz von Elm liegt in seiner Einfachheit. Es ist eine vergleichsweise <em>kleine</em> Sprache. Konkret
+bedeutet das, dass es <em>weniger Schlüsselwörter</em> und weniger <em>Konzepte</em> gibt (keine Objektorientierung).
+Das bedeutet ganz allgemein <em>weniger Wege, um dasselbe zu erreichen</em>.</p>
+
+<p>Natürlich hat das seinen Preis, und es gibt bestimmte <em>“Meta-Konzepte”</em>, 
+die nicht so <em>elegant</em> abstrahiert werden können wie z.B. in Haskell (Elm hat z.B. keine Typklassen).</p>
+
+<p><label for="def-ts" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-ts" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://www.typescriptlang.org">
+    <img src="/assets/posts/a-tour-of-elm/ts.svg" style="width: 15%" alt="TspeScript logo" />
+</a><br />
+<a href="https://www.typescriptlang.org">TypeScript’s</a>
+TypeScript Motto lautet: “TypeScript” ist JavaScript mit einer Syntax für Typen.”
+Du musst also JavaScript beherrschen und dann <strong>noch mehr</strong> lernen, um von den
+die zusätzlichen Funktionen von TypeScript zu nutzen können.
+</span></p>
+
+<p>Aber im Gegenzug ist es viel einfacher, <em>“die ganze”</em> Sprache zu lernen als andere Sprachen wie 
+<a href="https://www.typescriptlang.org"><em>TypeScript</em></a>.</p>
+
+<p>Ich glaube, dass “Frontend-Code” <em>einfach und dumm</em> bleiben sollte. Besonders in Webanwendungen
+sollte die meiste komplizierte Zahlenspielerei sowieso im Backend erledigt werden. Und dort 
+ist man frei, jede beliebige Sprache zu verwenden.</p>
+
+<p>(Ich halte Vorstellung, das die gleiche Sprache im Front- und Backend das Non-plus-Ultra ist für überbewertet,
+aber das Thema reicht für einen separaten Blogbeitrag).</p>
+
+<h2 id="unmittelbare-belohnung">Unmittelbare Belohnung</h2>
+<p>Ein weiterer Grund, warum ich Experimente gerne in Elm protoype, ist, dass es einfach ist, etwas zu produzieren
+mit dem jeder interagieren kann. 
+Der übliche Weg, Allzwecksprachen zu lernen, ist, mit Kommandozeilenanwendungen zu beginnen,
+die für normale Benutzer nicht zugänglich sind.
+Durch die Ausrichtung auf den Browser kannst Du mit nur ein paar Zeilen Code etwas bauen, das <a href="https://elm-visualization.netlify.app/weatherradial/">bunt</a> 
+und/oder <a href="https://elm-lang.org/examples/mario">interaktiv</a> ist.</p>
+
+<h2 id="a-tour-of-elm">A Tour of Elm</h2>
+
+<p>Ich freue mich sehr “A Tour of Elm” vorzustellen. Ein Einsteigerkurs für diejenigen
+die noch keine Erfahrung mit funktionaler Programmierung oder SPAs haben. 
+Am Anfang werden zunächst schnell die Grundlagen durchgehen und wesentliche Konzepte
+wie HTML, CSS und JavaScript, die die Grundlage für die SPA-Entwicklung vorgestellt.
+Der Kurs geht nahtlos in interaktive Lektionen über und bietet praktische Lektionen 
+in verdaulichen Portionen. Und was noch besser ist, Du kannst sofort loslegen
+ohne lästige Software-Installation - alles ist direkt im Browser.</p>
+
+<h2 id="fazit">Fazit</h2>
+
+<p>Elm ist nicht nur eine Sprache, sondern auch eine spannende Erfahrung, die darauf wartet, erkundet zu werden. 
+Egal, ob Du neu in der funktionalen Programmierung bist oder SPAs meistern willst, die Einfachheit und der Fokus von Elm
+machen Elm zum perfekten Begleiter.</p>
+
+<p><a href="https://a-tour-of-elm.axelerator.de">Probier “A Tour of Elm”</a> aus und fange an SPAs mit Spass und Sicherheit zu bauen.</p>
+
+<hr />
+
+
+</section>
+
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Discover Functional Programming with Elm</title>
+  </head>
+  <body class="a-tour-of-elm">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/">Home</a></div>
+  
+    <div><a href="/about">About</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a href="https://hachyderm.io/@axelerator"><span class="fediverse"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇺🇸</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+          <li>
+            <a href="/development/de/a-tour-of-elm" class="de">🇩🇪</a>
+          </li>
+        
+      
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Discover Functional Programming with Elm</h1>
+       <div class="meta"> 
+  <div title="Reading time">4 minutes</div>
+  <div>
+  
+    
+    <a href="/tags#elm">#elm</a>
+  
+  </div>
+  <div>9 December 2023</div>
+</div>
+
+
+<section>
+<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
+If you’ve been eyeing functional programming or diving into Single Page
+Application (SPA) development I think no other tool is better suited for you than
+<a href="https://elm-lang.org">Elm</a>. It stands out as a language that not only makes development
+delightful but also serves as the perfect gateway to the world of functional
+programming.</p>
+
+<hr />
+
+<h2 id="statically-typed-bliss">Statically Typed Bliss</h2>
+
+<p>One of Elm’s key charms is, believe it or not, its static typing, a game-changer when compared to
+JavaScript. The compiler acts as your trusty sidekick, catching errors before
+they wreak havoc at runtime. What sets Elm apart is not just the typing but the
+incredible clarity of compiler messages.</p>
+
+<p>Elm isn’t just another functional language; it’s a dedicated tool for building
+SPAs. 
+If you think in “React terms” it combines</p>
+
+<ul>
+  <li><em>TypeScript</em> (language)</li>
+  <li><em>NPM</em> (package manager)</li>
+  <li><em>React</em> (rendering)</li>
+  <li><em>Redux</em> (state management)</li>
+</ul>
+
+<p>all in <strong>one single</strong> tool.</p>
+
+<p><label for="def-haskell" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-haskell" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://www.haskell.org">
+<img src="/assets/posts/a-tour-of-elm/haskell-logo.svg" style="width: 35%" alt="Haskell logo" /></a>
+was created as a research langugage and as such was explicitly designed
+to contain experimental features and syntax.<br />
+That leads to many different “styles” which make it hard to learn fast.
+</span></p>
+
+<p>The focus on a single target platform (the browser) allows Elm to be simpler than its
+general-purpose functional counterparts like 
+<a href="https://www.haskell.org">Haskell</a>.</p>
+
+<p>Compared to other languages offering functional features <em>additionally</em> to imperative and/or object oriented patters,
+<label for="def-imperative" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-imperative" class="margin-toggle" />
+<span class="marginnote">
+Lanugages like Ruby and JavaScript also <em>allow</em> but don’t enforce
+the functional style. Leading to the majority of code in these languages
+being in imperative.
+</span></p>
+
+<p>Elm stands out by staying true to the functional programming style throughout.
+This makes it an ideal canditate for developers who are already familiar with more 
+conventional programming languages and want to focus on learning the <strong>functional approach</strong>.</p>
+
+<h2 id="simplicity">Simplicity</h2>
+
+<p>Elm’s elegance lies in its simplicity. It is a comapartively <em>small</em> language. Concretely
+that means there are <em>less keywords</em> and less <em>concepts</em> (no object orientation).
+That results just in general in <em>less ways to achieve the same thing</em>.</p>
+
+<p>Of course this comes at a cost and there are certain <em>“meta concepts”</em> that cannot be abstracted
+away as <em>elegantly</em> as in for example Haskell (Elm has no type classes for example).</p>
+
+<p>But in return it is just easier to learn “the whole” language than other languages like 
+<label for="def-ts" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-ts" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://www.typescriptlang.org">
+    <img src="/assets/posts/a-tour-of-elm/ts.svg" style="width: 15%" alt="TspeScript logo" />
+</a><br />
+<a href="https://www.typescriptlang.org">TypeScript’s</a>
+claim is “TypeScript” is JavaScript with syntax for types.
+So you have to master JavaScript and then <strong>learn some more</strong> to benefit from
+the additional features of TypeScript.
+</span></p>
+
+<p><a href="https://www.typescriptlang.org"><em>TypeScript</em></a>.</p>
+
+<p>I do believe that “frontend code” should stay <em>simple and stupid</em>. Especially in web apps
+most of the complicated number wrangling should be done in the backend anyway. And there you
+are free to use any lanugage you want.</p>
+
+<p>(I do think the idea that having the same lanugage is highly overrated, but that topic makes
+for a complete separate blog post).</p>
+
+<h2 id="instant-gratification">Instant gratification</h2>
+
+<p>Another reason why I love to protoype experiments in Elm is that it easy to produce something
+anyone can interact with. 
+The usual way to learn general purpose languages is to start with command line applications,
+which are not accessible to regular users.
+By targeting the browser you can create something that’s <a href="https://elm-visualization.netlify.app/weatherradial/">colorful</a> 
+and/or <a href="https://elm-lang.org/examples/mario">interactive</a>
+with only a few lines of code.</p>
+
+<h2 id="a-tour-of-elm">A Tour of Elm</h2>
+
+<p>I’m thrilled to share “A Tour of Elm,” a beginner course tailored for those
+with no prior experience in functional programming or SPAs. In this
+journey, we’ll first quickly go over with the basics, covering essential concepts
+like HTML, CSS, and JavaScript that lay the foundation for SPA development. The
+course seamlessly progresses with interactive lessons, providing a hands-on Elm
+experience in digestible portions. What’s even better? You can dive right in
+without the hassle of installing any software – it’s all accessible directly in
+your browser.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Elm isn’t just a language; it’s a delightful experience waiting to be explored. 
+Whether you’re new to functional programming or eager to master SPAs, Elm’s
+simplicity and focus make it the perfect companion. Embrace the joy of coding
+with Elm today!</p>
+
+<p><a href="https://a-tour-of-elm.axelerator.de">Check out “A Tour of Elm”</a> and start building SPAs with confidence.</p>
+
+<hr />
+
+
+</section>
+
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+
