@@ -1,121 +1,287 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://blog.axelerator.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.axelerator.de/" rel="alternate" type="text/html" /><updated>2023-12-09T17:41:10-05:00</updated><id>https://blog.axelerator.de/feed.xml</id><title type="html">Rants &amp;amp; ramblings of yours truly</title><subtitle>Mostly posts about how to make getting started with Elm easy and the general joys of functional programming.</subtitle><entry xml:lang="en"><title type="html">Discover Functional Programming with Elm</title><link href="https://blog.axelerator.de/development/en/a-tour-of-elm" rel="alternate" type="text/html" title="Discover Functional Programming with Elm" /><published>2023-12-09T14:00:00-05:00</published><updated>2023-12-09T14:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/a-tour-of-elm-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/a-tour-of-elm"><![CDATA[<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
-If you’ve been eyeing functional programming or diving into Single Page
-Application (SPA) development I think no other tool is better suited for you than
-<a href="https://elm-lang.org">Elm</a>. It stands out as a language that not only makes development
-delightful but also serves as the perfect gateway to the world of functional
-programming.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://blog.axelerator.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.axelerator.de/" rel="alternate" type="text/html" /><updated>2024-01-02T13:57:20-05:00</updated><id>https://blog.axelerator.de/feed.xml</id><title type="html">Rants &amp;amp; ramblings of yours truly</title><subtitle>Mostly posts about how to make getting started with Elm easy and the general joys of functional programming.</subtitle><entry xml:lang="de"><title type="html">Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung</title><link href="https://blog.axelerator.de/development/de/language-monogamy" rel="alternate" type="text/html" title="Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung" /><published>2024-01-02T13:00:00-05:00</published><updated>2024-01-02T13:00:00-05:00</updated><id>https://blog.axelerator.de/development/de/language-monogamy-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/language-monogamy"><![CDATA[<p><img src="/assets/posts/language-monogamy/handshake.webp" width="230" style="float:right; margin: 5px 10px 10px 0" />
+In der sich ständig wandelnden Welt der Webentwicklung streben viele nach dem
+Ideal, die gleiche Programmiersprache sowohl im Frontend als auch im Backend zu
+verwenden. Wenn wir uns aber auf gemeinsame Daten anstatt auf eine gemeinsame Sprache 
+Sprache konzentrieren, können wir das Beste aus beiden Welten rausholen ohne auf 
+signifikante Synergien verzichten zu müssen.
+—</p>
+
+<p>Content:</p>
+
+<ul>
+  <li><a href="#dream">Der Traum von der einzigen Programmiersprache</a></li>
+  <li><a href="#illusion">Entzauberung der Illusion</a></li>
+  <li><a href="#data">Gemeinsame Datendefinition vs. gemeinsame Sprache</a></li>
+  <li><a href="#ruelm">Ein Praxisbeispiel: Das Zusammenspiel von Rust und Elm</a></li>
+</ul>
 
 <hr />
 
-<h2 id="statically-typed-bliss">Statically Typed Bliss</h2>
+<h2 id="-der-traum-von-der-einzigen-programmiersprache"><a name="dream"></a> Der Traum von der einzigen Programmiersprache</h2>
 
-<p>One of Elm’s key charms is, believe it or not, its static typing, a game-changer when compared to
-JavaScript. The compiler acts as your trusty sidekick, catching errors before
-they wreak havoc at runtime. What sets Elm apart is not just the typing but the
-incredible clarity of compiler messages.</p>
+<p>Viele sind von der Idee angetan, eine einzige Programmiersprache für Frontend und Backend zu verwenden.
+<label for="def-nodejs" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-nodejs" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://nodejs.org/en/about"><img src="/assets/posts/language-monogamy/nodejs-logo.svg" style="background-color:#333" /></a><br />
+<a href="https://nodejs.org/en/about">Node.js</a> ist eine Laufzeitumgebung, mit der Entwickler JavaScript-Code serverseitig ausführen können.
+</span></p>
 
-<p>Elm isn’t just another functional language; it’s a dedicated tool for building
-SPAs. 
-If you think in “React terms” it combines</p>
+<p>Ein Grund dafür ist der Reiz, nur eine einzige Sprache beherrschen zu müssen.
+<a href="https://nodejs.org/en">NodeJS</a> beispielsweise bietet JavaScript-Entwicklern
+die Möglichkeit, ihr Backend in der gleichen Sprache zu schreiben, die der
+Browser versteht.</p>
+
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
+<span class="marginnote">
+<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 40%" /><br />
+<a href="https://htmx.org/docs/">htmx</a> ist eine Bibliothek, die es Ihnen ermöglicht, auf moderne Browserfunktionen direkt von HTML aus zuzugreifen, anstatt Javascript zu verwenden.
+</span></p>
+
+<p><a href="https://htmx.org/docs/">htmx</a> bietet Backend-Entwicklern mehr Möglichkeiten,
+da sie nur HTML in ihrer Backend-Sprache schreiben müssen, um eine dynamische
+UX zu erstellen.</p>
+
+<p>Ein zweites Argument ist die Idee, bestimmte Funktionalitäten nur einmal zu schreiben und sie sowohl im Front- als auch im Backend verwenden zu können. Halten wir jedoch inne und überlegen wir, ob diese Gründe ein vollständiges Bild ergeben oder lediglich eine Optimierung für ein lokales Maximum darstellen.</p>
+
+<h2 id="-entzauberung-der-illusion"><a name="illusion"></a> Entzauberung der Illusion</h2>
+
+<p>Meiner Meinung nach wird die Menge an Codes/Funktionalität, die tatsächlich
+zwischen dem Frontend und dem Backend geteilt werden kann, oft überschätzt
+wird. Das Backend und der Browser arbeiten in sehr unterschiedlichen
+Laufzeitumgebungen, die unterschiedliche Programmiermuster erfordern. Im
+Browser programmieren wir eine interaktive grafische Benutzeroberfläche. Im
+Backend ist die effiziente Verwaltung der Businessdaten unser primäres Ziel</p>
+
+<p>Weiter würde ich behaupten, dass man in den meisten Fällen mindestens genauso
+viel (wenn nicht sogar mehr) Aufwand in das Erlernen des <strong>Frameworks</strong> (und des
+damit gelösten Problems) investieren muss wie in das Erlernen der
+Programmiersprache.</p>
+
+<p>Zum Beispiel gibt es kaum Synergien zwischen dem Erlernen von, sagen wir,
+<strong>“React”</strong> und <strong>“Ruby on Rails”</strong>. Der Grund ist nicht so sehr, dass sie in
+unterschiedlichen Sprachen geschrieben sind, sonder die Tatsache, dass sie
+völlig unterschiedliche Probleme lösen.</p>
+
+<h2 id="-gemeinsame-datendefinition-vs-gemeinsame-sprache"><a name="data"></a> Gemeinsame Datendefinition vs. gemeinsame Sprache</h2>
+
+<p>Das überwiegende Potenzial für Wiederverwendung von Code ist die 
+Nutzung <strong>gemeinsamer Datenstrukturen</strong>!</p>
+
+<p><label for="def-gql" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-gql" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://graphql.org"><img src="/assets/posts/language-monogamy/graphql-logo.svg" style="width: 2em" /> GraphQL</a><br />
+ermöglicht es ein Schema für Datentypen und -beziehungen einer API definieren, das als Vertrag zwischen dem Client und dem Server dient und eine strukturierte und konsistente Kommunikation gewährleistet.</span></p>
+
+<p>Um dies zu erreichen setzen viele Firmen <a href="https://graphql.org">GraphQL</a> ein. 
+Die Verwaltung einer <strong>“GraphQL-Schicht”</strong> ist jedoch mit erheblichen Kosten verbunden.
+Oft haben Unternehmen ganze Teams, die sich ausschließlich um die Integrität der GraphQL API kümmern. 
+Darüber hinaus verfügt GraphQL über eine eigene (Schema-/Abfrage-)Sprache, die die Entwickler ebenfalls erlernen müssen.</p>
+
+<p>Wenn man sich auf das richtige Problem <strong>- die gemeinsame Datendefinition -</strong> konzentriert und die Herausforderung, eine neue Sprache zu erlernen, ins richtige Verhältnis setzt, tun sich eine Menge interessanter Möglichkeiten auf.</p>
+
+<p>Anstatt sich auf die Homogenität der Programmiersprache zu fixieren, bietet die Konzentration auf ein gemeinsames Verständnis von Datenstrukturen einen pragmatischeren und effektiveren Ansatz, um die Wiederverwendung von Code dort zu erreichen, wo es zählt.</p>
+
+<h2 id="ein-praxisbeispiel-das-zusammenspiel-von-rust-und-elm"><a name="ruelm"></a>Ein Praxisbeispiel: Das Zusammenspiel von Rust und Elm</h2>
+
+<p><label for="def-elm" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-elm" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://elm-lang.org"><img src="/assets/posts/language-monogamy/elm-logo.svg" style="width: 4em" /> Elm</a>
+ist eine kleine Programmiersprache für die Front-End-Webentwicklung mit Fokus auf Einfachheit.
+In meinem <a href="../a-tour-of-elm">vorherigen Blogpost</a> schildere ich im Detail warum jeder Entwickler
+Elm ausprobieren sollte.
+</span></p>
+
+<p>Elm ist eine funktionale Programmiersprache für die Front-End-Webentwicklung,
+die für ihr starkes Typensystem und ihren Fokus auf Einfachheit, Korrektheit
+und Zuverlässigkeit bei der Erstellung interaktiver Benutzeroberflächen bekannt
+ist.</p>
+
+<p>Rust zeichnet sich im Backend durch seinen Fokus auf Sicherheit, Leistung und
+Gleichzeitigkeit aus und bietet eine robuste und effiziente
+Entwicklungserfahrung.</p>
+
+<p>Die Wahl von Elm als Frontend-Sprache und Rust im Backend bietet uns das Beste
+aus beiden Welten. Da beide Sprachen statisch getypt sind, können wir die
+Typinformationen aus unseren Rust-Datenstrukturen verwenden, um automatiesiert Elm-Typen und
+(De-)Serialisierer zu erzeugen.</p>
+
+<p><label for="def-elmrs" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-elmrs" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://crates.io/crates/elm-rs">elm_rs</a> ist eine Rust Crate die
+automatisch Typdefinitionen und Funktionen für Elm aus Rust-Backend-Typen generiert, so dass es einfach ist, die beiden auf dem gleichen Stand zu halten.</span></p>
+
+<p>Das Backend ist die natürliche erste Wahl für die “Quelle der Wahrheit” wenn es 
+um die Defintion der gemeinsamen Datentypen geht. 
+Die elm_rs-Crate übersetzt diese Rust-Datentypen dann in die
+entsprechenden Elm-Typen (und De-/Serialisierer).</p>
+
+<p>Anstatt die Komplexität der Anwengung durch eine dedizierte API-Schicht zu erhöhen,
+definieren wir zwei Datentypen <code class="language-plaintext highlighter-rouge">ToBackend</code> und <code class="language-plaintext highlighter-rouge">ToFrontend</code>, die jeweils die
+Nachrichten repräsentieren, die entweder zum Backend oder zum Frontend fließen.
+Diese Art der Kommunikation ist stark von <a href="https://dashboard.lamdera.app/docs/overview">Lamdera</a> inspiriert.
+<label for="def-lamdera" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-lamdera" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://dashboard.lamdera.app/docs/overview"><img src="/assets/posts/language-monogamy/lamdera-logo.png" style="width: 10em" /></a><br />
+Lamdera ist eine Full-Stack-Web-Plattform, die Elm sowohl im Frontend als auch im Backend verwendet.
+Allerdings kommt sie mit erhebliche Einschränkungen, wie sich Code im Backend ausführen lässt.
+</span></p>
+
+<p>Auf diese Weise können wir Elm dafür einsetzen wofür es geschaffen wurde: Sicheres Arbeiten
+mit der Brwoser API ohne auf ansprchsvolle UI verzichten zu müssen.
+Im Gegenzug müssen wir uns im Backend <strong>überhaupt nicht</strong> mit HTML und dem
+Zustand der Benutzeroberfläche befassen.</p>
+
+<p>Mein <a href="https://github.com/axelerator/ruelm">Startertemplate <em>“Rülm”</em></a> zeigt das
+so eine Architektur abseits von den populären Web-Frameworks nicht kompliziert
+sein muss. In weniger als <code class="language-plaintext highlighter-rouge">400</code> Zeilen Code bekommen wir eine Webanwendung die
+typsicher und effizient Daten in beide Richtungen austauschen kann. Und das
+alles ohne externe Build-Tools!</p>]]></content><author><name></name></author><category term="elm" /><category term="rust" /><summary type="html"><![CDATA[In der sich ständig wandelnden Welt der Webentwicklung streben viele nach dem Ideal, die gleiche Programmiersprache sowohl im Frontend als auch im Backend zu verwenden. Wenn wir uns aber auf gemeinsame Daten anstatt auf eine gemeinsame Sprache Sprache konzentrieren, können wir das Beste aus beiden Welten rausholen ohne auf signifikante Synergien verzichten zu müssen. —]]></summary></entry><entry xml:lang="en"><title type="html">The misguided dream of language monogamy in web development</title><link href="https://blog.axelerator.de/development/en/language-monogamy" rel="alternate" type="text/html" title="The misguided dream of language monogamy in web development" /><published>2024-01-02T13:00:00-05:00</published><updated>2024-01-02T13:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/language-monogamy-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/language-monogamy"><![CDATA[<p><img src="/assets/posts/language-monogamy/handshake.webp" width="230" style="float:right; margin: 5px 10px 10px 0" />
+In the ever-changing world of web development, many seek the ideal of using one
+language for both frontend and backend.
+But if we focus on common data instead of a common language 
+language, we can get the best out of both worlds without having to sacrifice 
+significant synergies.
+—</p>
+
+<p>Content:</p>
 
 <ul>
-  <li><em>TypeScript</em> (language)</li>
-  <li><em>NPM</em> (package manager)</li>
-  <li><em>React</em> (rendering)</li>
-  <li><em>Redux</em> (state management)</li>
+  <li><a href="#dream">Exploring the One-Language Dream</a></li>
+  <li><a href="#illusion">Unraveling the Illusion</a></li>
+  <li><a href="#data">Shared Data Definition vs. Language Uniformity</a></li>
+  <li><a href="#ruelm">A Real-world Example: Rust and Elm Collaboration</a></li>
 </ul>
 
-<p>all in <strong>one single</strong> tool.</p>
+<hr />
 
-<p><label for="def-haskell" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-haskell" class="margin-toggle" />
+<h2 id="-exploring-the-one-language-dream"><a name="dream"></a> Exploring the One-Language Dream:</h2>
+
+<p>Many are drawn to the idea of sticking to a single programming language for both frontend and backend.
+<label for="def-nodejs" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-nodejs" class="margin-toggle" />
 <span class="marginnote">
-<a href="https://www.haskell.org">
-<img src="/assets/posts/a-tour-of-elm/haskell-logo.svg" style="width: 35%" alt="Haskell logo" /></a>
-was created as a research langugage and as such was explicitly designed
-to contain experimental features and syntax.<br />
-That leads to many different “styles” which make it hard to learn fast.
+<a href="https://nodejs.org/en/about"><img src="/assets/posts/language-monogamy/nodejs-logo.svg" style="background-color:#333" /></a><br />
+<a href="https://nodejs.org/en/about">Node.js</a> is a runtime environment that allows developers to execute JavaScript code server-side
 </span></p>
 
-<p>The focus on a single target platform (the browser) allows Elm to be simpler than its
-general-purpose functional counterparts like 
-<a href="https://www.haskell.org">Haskell</a>.</p>
+<p>One reason is the appeal of having to master just a single language 
+For example <a href="https://nodejs.org/en">NodeJS</a>
+offers JavaScript developers to write their backend in
+the same language that the browser understands.</p>
 
-<p>Compared to other languages offering functional features <em>additionally</em> to imperative and/or object oriented patters,
-<label for="def-imperative" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-imperative" class="margin-toggle" />
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
 <span class="marginnote">
-Lanugages like Ruby and JavaScript also <em>allow</em> but don’t enforce
-the functional style. Leading to the majority of code in these languages
-being in imperative.
+<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 40%" /><br />
+<a href="https://htmx.org/docs/">htmx</a> is a library that allows you to access modern browser features directly from HTML, rather than using javascript.
 </span></p>
 
-<p>Elm stands out by staying true to the functional programming style throughout.
-This makes it an ideal canditate for developers who are already familiar with more 
-conventional programming languages and want to focus on learning the <strong>functional approach</strong>.</p>
+<p><a href="https://htmx.org/docs/">htmx</a> advertises more to backend developers by having to only produce HTML in their backend language 
+to create a dynamic UX.</p>
 
-<h2 id="simplicity">Simplicity</h2>
+<p>A second argument, is the idea of writing certain functionalities only <em>once</em>
+and being able to use them both on front- and backend. However, let’s pause and
+consider whether these reasons paint the complete picture or merely optimize
+for a local maximum.</p>
 
-<p>Elm’s elegance lies in its simplicity. It is a comapartively <em>small</em> language. Concretely
-that means there are <em>less keywords</em> and less <em>concepts</em> (no object orientation).
-That results just in general in <em>less ways to achieve the same thing</em>.</p>
+<h2 id="unraveling-the-illusion"><a name="illusion"></a>Unraveling the Illusion</h2>
 
-<p>Of course this comes at a cost and there are certain <em>“meta concepts”</em> that cannot be abstracted
-away as <em>elegantly</em> as in for example Haskell (Elm has no type classes for example).</p>
+<p>I would argue that the <em>surface area</em> of code/functionality that can <strong>genuinely be
+reused</strong> between the frontend and the backend is often overestimated. 
+The backend and the browser, operate in vastly different runtime environments,
+demanding distinct programming patterns. 
+In the browser, we run an interactive, graphical user interface.
+Our primary goal in the backend is the correct and efficient management of business data.</p>
 
-<p>But in return it is just easier to learn “the whole” language than other languages like 
-<label for="def-ts" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-ts" class="margin-toggle" />
+<p>I would further argue that in most cases you will spend at least as much (if not
+more) effort learning the <strong>framework</strong> (and the problem they’re solving) as you
+spend learning the programming language.</p>
+
+<p>The reason that there are little synergies between learning let’s say <em>React</em> and
+<em>Ruby on Rails</em> is not so much that they are written in different languages. It’s the
+fact that they solve completely disparate problems.</p>
+
+<h2 id="shared-data-definition-vs-language-uniformity"><a name="data"></a>Shared Data Definition vs. Language Uniformity</h2>
+
+<p>The main potential for code reuse is the use of <strong>shared data structures</strong>!</p>
+
+<p><label for="def-gql" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-gql" class="margin-toggle" />
 <span class="marginnote">
-<a href="https://www.typescriptlang.org">
-    <img src="/assets/posts/a-tour-of-elm/ts.svg" style="width: 15%" alt="TspeScript logo" />
-</a><br />
-<a href="https://www.typescriptlang.org">TypeScript’s</a>
-claim is “TypeScript” is JavaScript with syntax for types.
-So you have to master JavaScript and then <strong>learn some more</strong> to benefit from
-the additional features of TypeScript.
+<a href="https://graphql.org"><img src="/assets/posts/language-monogamy/graphql-logo.svg" style="width: 2em" /> GraphQL</a><br />
+lets you define a schema for the types and relationships of data in an API, serving as a contract between the client and the server, ensuring structured and consistent communication.
 </span></p>
 
-<p><a href="https://www.typescriptlang.org"><em>TypeScript</em></a>.</p>
+<p>To achieve this, many companies use <a href="https://graphql.org">GraphQL</a>. 
+However, managing a <strong>“GraphQL layer”</strong> is associated with considerable costs.
+Companies often have entire teams dedicated solely to the integrity of the GraphQL API. 
+On top of that GraphQL comes with its own (schema/query) language that developers have to learn as well.</p>
 
-<p>I do believe that “frontend code” should stay <em>simple and stupid</em>. Especially in web apps
-most of the complicated number wrangling should be done in the backend anyway. And there you
-are free to use any lanugage you want.</p>
+<p>If you focus on the right problem <strong>- “the common data definition” -</strong> and put the challenge of learning a new language in the right perspective, a lot of interesting possibilities open up.
+Rather than fixating on the homogeneity of programming languages, focusing on a
+shared understanding of data structures provides a more pragmatic and effective
+approach to achieving code reuse <em>where it matters the most</em>.</p>
 
-<p>(I do think the idea that having the same lanugage is highly overrated, but that topic makes
-for a complete separate blog post).</p>
+<h2 id="a-real-world-example-rust-and-elm-collaboration"><a name="ruelm"></a>A Real-world Example: Rust and Elm Collaboration</h2>
 
-<h2 id="instant-gratification">Instant gratification</h2>
+<p><label for="def-elm" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-elm" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://elm-lang.org"><img src="/assets/posts/language-monogamy/elm-logo.svg" style="width: 4em" /> Elm</a>
+is a <strong>small</strong> programming language focused on simplicity. In my 
+<a href="../a-tour-of-elm">previous post</a>,
+I go into detail why I think everyone should give it a try.
+</span></p>
 
-<p>Another reason why I love to protoype experiments in Elm is that it easy to produce something
-anyone can interact with. 
-The usual way to learn general purpose languages is to start with command line applications,
-which are not accessible to regular users.
-By targeting the browser you can create something that’s <a href="https://elm-visualization.netlify.app/weatherradial/">colorful</a> 
-and/or <a href="https://elm-lang.org/examples/mario">interactive</a>
-with only a few lines of code.</p>
+<p>Elm is a functional programming language for front-end web development,
+known for its strong type system and focus on simplicity, correctness,
+and reliability in building interactive user interfaces.</p>
 
-<h2 id="a-tour-of-elm">A Tour of Elm</h2>
+<p>Rust excels in the backend with its focus on safety, performance, and concurrency,
+offering a robust and efficient development experience.</p>
 
-<p>I’m thrilled to share “A Tour of Elm,” a beginner course tailored for those
-with no prior experience in functional programming or SPAs. In this
-journey, we’ll first quickly go over with the basics, covering essential concepts
-like HTML, CSS, and JavaScript that lay the foundation for SPA development. The
-course seamlessly progresses with interactive lessons, providing a hands-on Elm
-experience in digestible portions. What’s even better? You can dive right in
-without the hassle of installing any software – it’s all accessible directly in
-your browser.</p>
+<p>Choosing Elm as the frontend language and Rust in the backend gives us the best
+of both worlds.
+Since both are statically typed we can use the type information from our Rust 
+data structures to generate Elm types and (de-)serializers.</p>
 
-<h2 id="conclusion">Conclusion</h2>
+<p><label for="def-elmrs" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-elmrs" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://crates.io/crates/elm-rs">elm_rs</a> is a Rust crate that
+automatically generates type definitions and functions for your Elm frontend from your Rust backend types, making it easy to keep the two in sync. 
+</span></p>
 
-<p>Elm isn’t just a language; it’s a delightful experience waiting to be explored. 
-Whether you’re new to functional programming or eager to master SPAs, Elm’s
-simplicity and focus make it the perfect companion. Embrace the joy of coding
-with Elm today!</p>
+<p>The backend makes the natural candidate for the <em>“source of truth”</em> of the shared
+data type. The <code class="language-plaintext highlighter-rouge">elm_rs</code> crate translates the Rust data types into the
+corresponding Elm types (and de-/serializers).</p>
 
-<p><a href="https://a-tour-of-elm.axelerator.de">Check out “A Tour of Elm”</a> and start building SPAs with confidence.</p>
+<p>Instead of adding complexity through a dedicated API layer we define 
+two data types <code class="language-plaintext highlighter-rouge">ToBackend</code> or <code class="language-plaintext highlighter-rouge">ToFrontend</code>, each representing messages flowing
+either to the backend or to the frontend.
+This way of communication is highly inspired by <a href="https://dashboard.lamdera.app/docs/overview">Lamdera</a>.
+<label for="def-lamdera" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-lamdera" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://dashboard.lamdera.app/docs/overview"><img src="/assets/posts/language-monogamy/lamdera-logo.png" style="width: 10em" /></a><br />
+Lamdera is a full-stack platform that actually <strong>does</strong> use Elm in both the frontend and the backend.
+But it also imposes significant restrictions on how you can run code in the backend.
+</span></p>
 
-<hr />]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[If you’ve been eyeing functional programming or diving into Single Page Application (SPA) development I think no other tool is better suited for you than Elm. It stands out as a language that not only makes development delightful but also serves as the perfect gateway to the world of functional programming.]]></summary></entry><entry xml:lang="de"><title type="html">Entdecke funktionale Programmierung mit Elm</title><link href="https://blog.axelerator.de/development/de/a-tour-of-elm" rel="alternate" type="text/html" title="Entdecke funktionale Programmierung mit Elm" /><published>2023-12-09T14:00:00-05:00</published><updated>2023-12-09T14:00:00-05:00</updated><id>https://blog.axelerator.de/development/de/a-tour-of-elm-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/a-tour-of-elm"><![CDATA[<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
+<p>In this way, we can use Elm for what it was created for: Working 
+with the Brwoser API in a safe and delightful way without having to sacrifice a responsive UI.
+In return, we don’t have to deal with HTML and the state of the user interface in the backend <strong>at all</strong>.</p>
+
+<p>My <a href="https://github.com/axelerator/ruelm">starter template <em>“Rülm”</em></a> shows that such an architecture beyond the popular web frameworks
+does not have to be complicated. In less than <code class="language-plaintext highlighter-rouge">400</code> lines of code we get a web application that is type-safe
+and efficiently exchange data in both directions.
+And all this without external build tools!</p>]]></content><author><name></name></author><category term="elm" /><category term="rust" /><summary type="html"><![CDATA[In the ever-changing world of web development, many seek the ideal of using one language for both frontend and backend. But if we focus on common data instead of a common language language, we can get the best out of both worlds without having to sacrifice significant synergies. —]]></summary></entry><entry xml:lang="de"><title type="html">Entdecke funktionale Programmierung mit Elm</title><link href="https://blog.axelerator.de/development/de/a-tour-of-elm" rel="alternate" type="text/html" title="Entdecke funktionale Programmierung mit Elm" /><published>2023-12-09T14:00:00-05:00</published><updated>2023-12-09T14:00:00-05:00</updated><id>https://blog.axelerator.de/development/de/a-tour-of-elm-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/a-tour-of-elm"><![CDATA[<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
 Wenn Du mit funktionaler Programmierung liebäugelst oder in die Entwicklung von
 Single Page Applications (SPA) einsteigen willst, gibt es kein besseres
 Tool als Elm. Elm zeichnet sich als eine Sprache aus, die nicht nur die
@@ -230,7 +396,124 @@ machen Elm zum perfekten Begleiter.</p>
 
 <p><a href="https://a-tour-of-elm.axelerator.de">Probier “A Tour of Elm”</a> aus und fange an SPAs mit Spass und Sicherheit zu bauen.</p>
 
-<hr />]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Wenn Du mit funktionaler Programmierung liebäugelst oder in die Entwicklung von Single Page Applications (SPA) einsteigen willst, gibt es kein besseres Tool als Elm. Elm zeichnet sich als eine Sprache aus, die nicht nur die Entwicklung angenehm macht, sondern auch als perfekter Einstieg in die Welt der funktionalen Programmierung dient.]]></summary></entry><entry xml:lang="en"><title type="html">Dynamic Diagrams</title><link href="https://blog.axelerator.de/development/en/liquid-diagrams" rel="alternate" type="text/html" title="Dynamic Diagrams" /><published>2023-11-15T15:00:00-05:00</published><updated>2023-11-15T15:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/liquid-diagrams-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/liquid-diagrams"><![CDATA[<p><img src="/assets/posts/liquid-diagrams/ld.webp" width="130" style="float:right; margin: 5px 10px 10px 0" />
+<hr />]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Wenn Du mit funktionaler Programmierung liebäugelst oder in die Entwicklung von Single Page Applications (SPA) einsteigen willst, gibt es kein besseres Tool als Elm. Elm zeichnet sich als eine Sprache aus, die nicht nur die Entwicklung angenehm macht, sondern auch als perfekter Einstieg in die Welt der funktionalen Programmierung dient.]]></summary></entry><entry xml:lang="en"><title type="html">Discover Functional Programming with Elm</title><link href="https://blog.axelerator.de/development/en/a-tour-of-elm" rel="alternate" type="text/html" title="Discover Functional Programming with Elm" /><published>2023-12-09T14:00:00-05:00</published><updated>2023-12-09T14:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/a-tour-of-elm-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/a-tour-of-elm"><![CDATA[<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
+If you’ve been eyeing functional programming or diving into Single Page
+Application (SPA) development I think no other tool is better suited for you than
+<a href="https://elm-lang.org">Elm</a>. It stands out as a language that not only makes development
+delightful but also serves as the perfect gateway to the world of functional
+programming.</p>
+
+<hr />
+
+<h2 id="statically-typed-bliss">Statically Typed Bliss</h2>
+
+<p>One of Elm’s key charms is, believe it or not, its static typing, a game-changer when compared to
+JavaScript. The compiler acts as your trusty sidekick, catching errors before
+they wreak havoc at runtime. What sets Elm apart is not just the typing but the
+incredible clarity of compiler messages.</p>
+
+<p>Elm isn’t just another functional language; it’s a dedicated tool for building
+SPAs. 
+If you think in “React terms” it combines</p>
+
+<ul>
+  <li><em>TypeScript</em> (language)</li>
+  <li><em>NPM</em> (package manager)</li>
+  <li><em>React</em> (rendering)</li>
+  <li><em>Redux</em> (state management)</li>
+</ul>
+
+<p>all in <strong>one single</strong> tool.</p>
+
+<p><label for="def-haskell" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-haskell" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://www.haskell.org">
+<img src="/assets/posts/a-tour-of-elm/haskell-logo.svg" style="width: 35%" alt="Haskell logo" /></a>
+was created as a research langugage and as such was explicitly designed
+to contain experimental features and syntax.<br />
+That leads to many different “styles” which make it hard to learn fast.
+</span></p>
+
+<p>The focus on a single target platform (the browser) allows Elm to be simpler than its
+general-purpose functional counterparts like 
+<a href="https://www.haskell.org">Haskell</a>.</p>
+
+<p>Compared to other languages offering functional features <em>additionally</em> to imperative and/or object oriented patters,
+<label for="def-imperative" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-imperative" class="margin-toggle" />
+<span class="marginnote">
+Lanugages like Ruby and JavaScript also <em>allow</em> but don’t enforce
+the functional style. Leading to the majority of code in these languages
+being in imperative.
+</span></p>
+
+<p>Elm stands out by staying true to the functional programming style throughout.
+This makes it an ideal candidate for developers who are already familiar with more 
+conventional programming languages and want to focus on learning the <strong>functional approach</strong>.</p>
+
+<h2 id="simplicity">Simplicity</h2>
+
+<p>Elm’s elegance lies in its simplicity. It is a comparatively <em>small</em> language. Concretely
+that means there are <em>less keywords</em> and less <em>concepts</em> (no object orientation).
+That results just in general in <em>less ways to achieve the same thing</em>.</p>
+
+<p>Of course this comes at a cost and there are certain <em>“meta concepts”</em> that cannot be abstracted
+away as <em>elegantly</em> as in for example Haskell (Elm has no type classes for example).</p>
+
+<p>But in return it is just easier to learn “the whole” language than other languages like 
+<label for="def-ts" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-ts" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://www.typescriptlang.org">
+    <img src="/assets/posts/a-tour-of-elm/ts.svg" style="width: 15%" alt="TspeScript logo" />
+</a><br />
+<a href="https://www.typescriptlang.org">TypeScript’s</a>
+claim is “TypeScript” is JavaScript with syntax for types.
+So you have to master JavaScript and then <strong>learn some more</strong> to benefit from
+the additional features of TypeScript.
+</span></p>
+
+<p><a href="https://www.typescriptlang.org"><em>TypeScript</em></a>.</p>
+
+<p>I do believe that “frontend code” should stay <em>simple and stupid</em>. Especially in web apps
+most of the complicated number wrangling should be done in the backend anyway. And there you
+are free to use any language you want.</p>
+
+<p>(I do think the idea that having the same language is highly overrated, but that topic makes
+for a complete separate blog post).</p>
+
+<h2 id="instant-gratification">Instant gratification</h2>
+
+<p>Another reason why I love to protoype experiments in Elm is that it easy to produce something
+anyone can interact with. 
+The usual way to learn general purpose languages is to start with command line applications,
+which are not accessible to regular users.
+By targeting the browser you can create something that’s <a href="https://elm-visualization.netlify.app/weatherradial/">colorful</a> 
+and/or <a href="https://elm-lang.org/examples/mario">interactive</a>
+with only a few lines of code.</p>
+
+<h2 id="a-tour-of-elm">A Tour of Elm</h2>
+
+<p>I’m thrilled to share “A Tour of Elm,” a beginner course tailored for those
+with no prior experience in functional programming or SPAs. In this
+journey, we’ll first quickly go over with the basics, covering essential concepts
+like HTML, CSS, and JavaScript that lay the foundation for SPA development. The
+course seamlessly progresses with interactive lessons, providing a hands-on Elm
+experience in digestible portions. What’s even better? You can dive right in
+without the hassle of installing any software – it’s all accessible directly in
+your browser.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Elm isn’t just a language; it’s a delightful experience waiting to be explored. 
+Whether you’re new to functional programming or eager to master SPAs, Elm’s
+simplicity and focus make it the perfect companion. Embrace the joy of coding
+with Elm today!</p>
+
+<p><a href="https://a-tour-of-elm.axelerator.de">Check out “A Tour of Elm”</a> and start building SPAs with confidence.</p>
+
+<hr />]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[If you’ve been eyeing functional programming or diving into Single Page Application (SPA) development I think no other tool is better suited for you than Elm. It stands out as a language that not only makes development delightful but also serves as the perfect gateway to the world of functional programming.]]></summary></entry><entry xml:lang="en"><title type="html">Dynamic Diagrams</title><link href="https://blog.axelerator.de/development/en/liquid-diagrams" rel="alternate" type="text/html" title="Dynamic Diagrams" /><published>2023-11-15T15:00:00-05:00</published><updated>2023-11-15T15:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/liquid-diagrams-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/liquid-diagrams"><![CDATA[<p><img src="/assets/posts/liquid-diagrams/ld.webp" width="130" style="float:right; margin: 5px 10px 10px 0" />
 Static images, videos, and SVG animations come each with their own challenges when it comes to 
 visualize complex systems through diagrams.
 I’ve developed a mini language and web component to add a narrative element to diagrams.</p>
@@ -1182,212 +1465,4 @@ im Aufbau dieses Ein-Mann-Unternehmens zu teilen (mehr Blog-Artikel, Instragram,
     node: document.getElementById('subscribe'),
     flags: { kind: "Subscribe" }
   });
-</script>]]></content><author><name></name></author><summary type="html"><![CDATA[Begleite mich wie ich meinen digitalen Aktenschrank und mein 1-Mann-Startup darum in der Öffentlichkeit baue. Mit langjähriged Erfahrungen in der Softwareentwicklung strebe ich an, eine Lösung zu schaffen, die die Lücke zwischen Bequemlichkeit und Datensicherheit schließt, während ich jeden Schritt des Prozesses mit Dir teile.]]></summary></entry><entry xml:lang="en"><title type="html">Episode 12 &amp;amp; 13: Fade out and clean up</title><link href="https://blog.axelerator.de/elm/en/tetris-fade-out" rel="alternate" type="text/html" title="Episode 12 &amp;amp; 13: Fade out and clean up" /><published>2021-10-16T18:00:00-04:00</published><updated>2021-10-16T18:00:00-04:00</updated><id>https://blog.axelerator.de/elm/en/tetris-fade-out-clean-up-en</id><content type="html" xml:base="https://blog.axelerator.de/elm/en/tetris-fade-out"><![CDATA[<p><img src="/assets/posts/tetris-fade-out/fade.gif" style="float:left; margin: 5px 10px 10px 0" />
-In <a href="https://www.youtube.com/watch?v=7HhOdCNfEj4">episode 12(1h:25m)</a> I started with building a simple score tracker. Adding gradual fading became a bit of a cliffhanger, because I introduced a gnarly bug that I was only able to resolve in <a href="https://www.youtube.com/watch?v=OfNkjrJGtyc">episode 13 (1h:20)</a>.
-I used this as motivation to clean up and reorganize the code with the help of the glorious <a href="https://github.com/neoclide/coc.nvim"><em>Conquer of Completion</em></a> Vim plugin.</p>
-
-<p>For episode 12 I created a single <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6">commit</a> as before. It’s the head of the <a href="https://github.com/axelerator/elm-tetris/tree/episode12">episode12 branch</a>.</p>
-
-<p>For the changes of episode 13, I went with a different approach. Since I reorganized the code a lot a large number of lines changed. To keep them comprehensible I separated them into multiple smaller commits. Of course, there is still also the <a href="https://github.com/axelerator/elm-tetris/tree/episode13">episode13 branch</a> that represents the state of the code after that episode. To see only the steps I did in that episode you can check out this <a href="https://github.com/axelerator/elm-tetris/pull/1/commits"><em>pull request</em></a>.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/7HhOdCNfEj4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/OfNkjrJGtyc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-
-<hr />
-
-<p>Content:</p>
-
-<ul>
-  <li><a href="#scoring">Score tracking</a></li>
-  <li><a href="#fading">Fading cleared lines</a></li>
-  <li><a href="#cleanup">Clean up</a></li>
-</ul>
-
-<hr />
-
-<h3 id="-score-tracking"><a name="scoring"></a> Score tracking</h3>
-
-<p>To be able to keep score I added a new <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R39">type <code class="language-plaintext highlighter-rouge">Score</code></a> that I use in the <code class="language-plaintext highlighter-rouge">GameDetails</code>.
-I implemented it in the most simple way: Clearing 1 row = 1 Point. The real Tetris has a much more sophisticated scoring algorithm (Source: <a href="https://tetris.fandom.com/wiki/Scoring">Tetris Wiki</a>)</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center">Level</th>
-      <th style="text-align: center">Points for 1 line</th>
-      <th style="text-align: center">2 lines</th>
-      <th style="text-align: center">3 lines</th>
-      <th style="text-align: center">4 lines</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">40</td>
-      <td style="text-align: center">100</td>
-      <td style="text-align: center">300</td>
-      <td style="text-align: center">1200</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">80</td>
-      <td style="text-align: center">200</td>
-      <td style="text-align: center">600</td>
-      <td style="text-align: center">2400</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">120</td>
-      <td style="text-align: center">300</td>
-      <td style="text-align: center">900</td>
-      <td style="text-align: center">3600</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">9</td>
-      <td style="text-align: center">400</td>
-      <td style="text-align: center">1000</td>
-      <td style="text-align: center">3000</td>
-      <td style="text-align: center">12000</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><code class="language-plaintext highlighter-rouge">level(n) =  40 * (n + 1) 100 * (n + 1) 300 * (n + 1) 1200 * (n + 1)</code></p>
-
-<hr />
-
-<h3 id="-fading-cleared-lines"><a name="fading"></a> Fading cleared lines</h3>
-
-<p>To be able to fade a row I <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R82">added a new variant <code class="language-plaintext highlighter-rouge">FadingRow</code></a> to the <code class="language-plaintext highlighter-rouge">Row</code> type.</p>
-
-<pre><code class="language-Elm">type Row
-    = Row (List Field)
-    | FadingRow (List Field) Opacity
-</code></pre>
-<p>A fading row represents a row that was logically removed but is visually still present.
-Next to the tile information it also contains a value for the opacity.</p>
-
-<p>To be able to progress the fading out in the speed I desire I need to update our model more often. To achieve that we’re now firing the <code class="language-plaintext highlighter-rouge">GravityTick</code> every <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R548"><em>30</em> instead of every <em>100</em></a> milliseconds.
-For every tick we decrease the opacity of all fading rows a bit with the <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R462"><code class="language-plaintext highlighter-rouge">progressFading</code> function</a> until they’ve completely vanished.</p>
-
-<p>It was when I tried to integrate <code class="language-plaintext highlighter-rouge">progressFading</code> in all the right places that I introduced the error that eventually made me give up that day. As part of updating the <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R531"><code class="language-plaintext highlighter-rouge">eraseCompleteRows</code> function</a> I reset the <code class="language-plaintext highlighter-rouge">currentPiece</code>.
-The <a href="https://github.com/axelerator/elm-tetris/commit/4bac5a1f167b593b9f949ff66a8868b8f7c5e5b2">first change in episode 13</a> resolves the error and finally the fading works as expected.</p>
-
-<hr />
-
-<h3 id="-clean-up"><a name="cleanup"></a> Clean up</h3>
-
-<p>The rest of that episode I spend separating the general application from the ‘pure’ game logic. Though I wouldn’t go as far as calling it a <em>refactoring</em> since I’ve been mainly moving functions from one module to another.</p>
-
-<p>For that task, I put a new tool of my development environment to use. <a href="https://github.com/neoclide/coc.nvim">Conquer of Completion</a> (short <em>CoC</em>) is a Vim plugin that uses the <a href="https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/">Language Server Protocol</a> to support the developer with language-specific hints. The same protocol is used in Visual Studio Code for many languages for autocompletion and other features like organizing inputs.</p>
-
-<p>With the help of <em>CoC</em> execution operations like moving functions to a different module can be executed much more efficiently. Tedious subtasks like updating imports and removing unused code are reduced to executing the actions proposed by the plugin inline.</p>
-
-<p>Most of the significant steps to set up <em>CoC</em> with Elm for Vim are outlined in the  <a href="https://github.com/elm-tooling/elm-language-server">Elm Language Server project</a>.</p>
-
-<p>I think I’ll do a special episode soon showing how to set up a complete Elm development environment with Vim from scratch.</p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[In episode 12(1h:25m) I started with building a simple score tracker. Adding gradual fading became a bit of a cliffhanger, because I introduced a gnarly bug that I was only able to resolve in episode 13 (1h:20). I used this as motivation to clean up and reorganize the code with the help of the glorious Conquer of Completion Vim plugin.]]></summary></entry><entry xml:lang="de"><title type="html">Episode 12 &amp;amp; 13: Ausblenden und Aufräumen</title><link href="https://blog.axelerator.de/elm/de/tetris-fade-out" rel="alternate" type="text/html" title="Episode 12 &amp;amp; 13: Ausblenden und Aufräumen" /><published>2021-10-16T18:00:00-04:00</published><updated>2021-10-16T18:00:00-04:00</updated><id>https://blog.axelerator.de/elm/de/tetris-fade-out-clean-up-de</id><content type="html" xml:base="https://blog.axelerator.de/elm/de/tetris-fade-out"><![CDATA[<p><img src="/assets/posts/tetris-fade-out/fade.gif" style="float:left; margin: 5px 10px 10px 0" />
-In <a href="https://www.youtube.com/watch?v=7HhOdCNfEj4">Episode 12(1h:25m)</a> habe ich zunächst einen einfachen Zähler für die entfernten Reihen gebaut. Das graduelle Ausblenden ist zu einen Cliffhanger geworden, da ich dort einen Fehler eingebaut hab, den ich erst in <a href="https://www.youtube.com/watch?v=OfNkjrJGtyc">Episode 13 (1h:20)</a> auflöse. Das nehme ich zum Anlass den Code mit Hilfe des großartigen <a href="https://github.com/neoclide/coc.nvim"><em>Conquer of Completion</em></a> etwas aufzuräumen.</p>
-
-<p>Für Episode 12 habe ich wie bisher einen einzelnen <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6">Commit</a> erzeugt und einen <a href="https://github.com/axelerator/elm-tetris/tree/episode12">Branch</a> der den Code am Ende der Episode enthält.</p>
-
-<p>Die Codeänderungen für Episode 13 habe ich etwas anders organisiert. Da ich den Code großzügig umorganisiert habe betreffen die Änderungen viele Zeilen.
-Damit die Git Historie trotzdem übersichtlich bleibt habe ich mehrere kleine Commits erzeugt.
-Es gibt natürlich trotzdem einen <a href="https://github.com/axelerator/elm-tetris/tree/episode13"><code class="language-plaintext highlighter-rouge">episode13</code> Branch</a> der den Endzustand enthält. Die Entwicklung zwischen den Episoden 12 und 13 habe ich aber diesmal in einem <a href="https://github.com/axelerator/elm-tetris/pull/1/commits"><strong>Pull-Request</strong></a> zusammengefasst.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/7HhOdCNfEj4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/OfNkjrJGtyc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-
-<hr />
-
-<p>Inhalt:</p>
-
-<ul>
-  <li><a href="#scoring">Punktestand</a></li>
-  <li><a href="#fading">Ausblenden</a></li>
-  <li><a href="#cleanup">Aufräumen</a></li>
-</ul>
-
-<hr />
-
-<h3 id="-punktestand"><a name="scoring"></a> Punktestand</h3>
-
-<p>Um sich vergleichen zu können habe ich dem Spiel einen <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R39">Typen <code class="language-plaintext highlighter-rouge">Score</code> für den Punktestand</a> hinzugefügt.
-Ich habe die einfachst mögliche Implementierung gewählt: 1 Zeile = 1 Punkt. Das echte Punktesystem von Tetris is um einiges komplizierter (Quelle: <a href="https://tetris.fandom.com/wiki/Scoring">Tetris Wiki</a>)</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center">Level</th>
-      <th style="text-align: center">Points for 1 line</th>
-      <th style="text-align: center">2 lines</th>
-      <th style="text-align: center">3 lines</th>
-      <th style="text-align: center">4 lines</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">40</td>
-      <td style="text-align: center">100</td>
-      <td style="text-align: center">300</td>
-      <td style="text-align: center">1200</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">80</td>
-      <td style="text-align: center">200</td>
-      <td style="text-align: center">600</td>
-      <td style="text-align: center">2400</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">120</td>
-      <td style="text-align: center">300</td>
-      <td style="text-align: center">900</td>
-      <td style="text-align: center">3600</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">9</td>
-      <td style="text-align: center">400</td>
-      <td style="text-align: center">1000</td>
-      <td style="text-align: center">3000</td>
-      <td style="text-align: center">12000</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><code class="language-plaintext highlighter-rouge">level(n) =  40 * (n + 1) 100 * (n + 1) 300 * (n + 1) 1200 * (n + 1)</code></p>
-
-<hr />
-
-<h3 id="-ausblenden"><a name="fading"></a> Ausblenden</h3>
-
-<p>Für das Ausblenden habe ich eine <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R82">neue ‘Zeilenvariante’ hinzugefügt</a>:</p>
-
-<pre><code class="language-Elm">type Row
-    = Row (List Field)
-    | FadingRow (List Field) Opacity
-</code></pre>
-
-<p>Die <code class="language-plaintext highlighter-rouge">FadingRow</code> stellt eine Zeile dar die logisch entfernt wurde aber visuell noch teilweise sichtbar ist.
-Neben den einzelnen Spalten enthält sie auch einen Transparenzwert.
-Um das Ausblenden in einer optisch ansprechenden Geschwindigkeit zu erreichen feuern wir jetzt unseren <code class="language-plaintext highlighter-rouge">GravityTick</code> alle <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R548"><em>30</em> anstatt <em>100</em> Millisekunden</a> und erhöhen die Transparenz der ‘ausblendenden’ Reihen bei jedem Tick mit der <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R462"><code class="language-plaintext highlighter-rouge">progressFading</code> Funktion</a>.</p>
-
-<p>Bei dem Versuch <code class="language-plaintext highlighter-rouge">progressFading</code> an all den richtigen Stellen aufzurufen habe ich dann auch den Fehler eingebaut. Als Teil von <code class="language-plaintext highlighter-rouge">eraseCompleteRows</code> habe ich <a href="https://github.com/axelerator/elm-tetris/commit/bcb5e904ecdc7127bb379a836ecfdf874d1552f6#diff-2dd82f159d96fbfcd26fb7d885d25e0d54efde9e19a42494b416fa84a5aca568R531">das aktuelle Teil zurückgesetzt</a>.
-Der <a href="https://github.com/axelerator/elm-tetris/commit/4bac5a1f167b593b9f949ff66a8868b8f7c5e5b2">erste Commit</a> von Episode 13 behebt diesen Fehler und alles funktioniert wie erwartet.</p>
-
-<hr />
-
-<h3 id="-aufräumen"><a name="cleanup"></a> Aufräumen</h3>
-
-<p>Den Rest dieser Episode verbringe ich damit die allgemeine Anwendungslogik von der ‘reinen’ Spiellogik zu trennen. Ich würde es allerdings noch nicht als eine Rafaktorisierung bezeichnen denn die Änderungen sind alle recht ‘mechanisch’. Damit meine ich, dass die Funktionen sich fast nicht geändert haben sondern lediglich den Ort gewechselt haben wo sie gespeichert sind.</p>
-
-<p>Dabei habe ich mir ein neues Werkzeug in meiner Entwicklungsumgebung zu Nutze gemacht. <a href="https://github.com/neoclide/coc.nvim">Conquer of Completion</a> kur <em>CoC</em> ist ein Vim Plugin, dass das <a href="https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/">Language Server Protocol</a> nutzt um den Entwickler mit Sprachspezifischen Hinweisen zu unterstützen. Es ist das gleiche Protokoll das auch in VS Code für viele Sprachen verwendet wird um Autovervollständigung und andere Funktionen wie das Organisieren von Imports zu unterstützen.</p>
-
-<p>Mit Hilfe des <em>CoC</em> lassen sich Operationen wie das Verschieben von Funktionen deutlich effizienter ausführen, da das Plugin lästige Tätigkeiten, wie das importieren von Modulen und entfernen von ungenutztem Code automatisiert.</p>
-
-<p>Ein paar entscheidende Hinweise wie dieses Setup einzurichten ist habe ich in dem Projekt für den <a href="https://github.com/elm-tooling/elm-language-server">Elm Language Server</a> gefunden.</p>
-
-<p>Ich denke ich werde in naher Zukunft nochmal eine dedizierte Episode zur Einrichtung eine Elm Entwicklungsumgebung machen.</p>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[In Episode 12(1h:25m) habe ich zunächst einen einfachen Zähler für die entfernten Reihen gebaut. Das graduelle Ausblenden ist zu einen Cliffhanger geworden, da ich dort einen Fehler eingebaut hab, den ich erst in Episode 13 (1h:20) auflöse. Das nehme ich zum Anlass den Code mit Hilfe des großartigen Conquer of Completion etwas aufzuräumen.]]></summary></entry></feed>
+</script>]]></content><author><name></name></author><summary type="html"><![CDATA[Begleite mich wie ich meinen digitalen Aktenschrank und mein 1-Mann-Startup darum in der Öffentlichkeit baue. Mit langjähriged Erfahrungen in der Softwareentwicklung strebe ich an, eine Lösung zu schaffen, die die Lücke zwischen Bequemlichkeit und Datensicherheit schließt, während ich jeden Schritt des Prozesses mit Dir teile.]]></summary></entry></feed>

@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung</title>
+  </head>
+  <body class="language-monogamy">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a rel="me" href="https://hachyderm.io/@axelerator"><span class="fediverse"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/development/en/language-monogamy" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung</h1>
+       <div class="meta"> 
+  <div title="Lesedauer">5 Minuten</div>
+  <div>
+  
+    
+    <a href="/tags#elm">#elm</a>
+  
+    
+    <a href="/tags#rust">#rust</a>
+  
+  </div>
+  <div>2 January 2024</div>
+</div>
+
+
+<section>
+<p><img src="/assets/posts/language-monogamy/handshake.webp" width="230" style="float:right; margin: 5px 10px 10px 0" />
+In der sich ständig wandelnden Welt der Webentwicklung streben viele nach dem
+Ideal, die gleiche Programmiersprache sowohl im Frontend als auch im Backend zu
+verwenden. Wenn wir uns aber auf gemeinsame Daten anstatt auf eine gemeinsame Sprache 
+Sprache konzentrieren, können wir das Beste aus beiden Welten rausholen ohne auf 
+signifikante Synergien verzichten zu müssen.
+—</p>
+
+<p>Content:</p>
+
+<ul>
+  <li><a href="#dream">Der Traum von der einzigen Programmiersprache</a></li>
+  <li><a href="#illusion">Entzauberung der Illusion</a></li>
+  <li><a href="#data">Gemeinsame Datendefinition vs. gemeinsame Sprache</a></li>
+  <li><a href="#ruelm">Ein Praxisbeispiel: Das Zusammenspiel von Rust und Elm</a></li>
+</ul>
+
+<hr />
+
+<h2 id="-der-traum-von-der-einzigen-programmiersprache"><a name="dream"></a> Der Traum von der einzigen Programmiersprache</h2>
+
+<p>Viele sind von der Idee angetan, eine einzige Programmiersprache für Frontend und Backend zu verwenden.
+<label for="def-nodejs" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-nodejs" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://nodejs.org/en/about"><img src="/assets/posts/language-monogamy/nodejs-logo.svg" style="background-color:#333" /></a><br />
+<a href="https://nodejs.org/en/about">Node.js</a> ist eine Laufzeitumgebung, mit der Entwickler JavaScript-Code serverseitig ausführen können.
+</span></p>
+
+<p>Ein Grund dafür ist der Reiz, nur eine einzige Sprache beherrschen zu müssen.
+<a href="https://nodejs.org/en">NodeJS</a> beispielsweise bietet JavaScript-Entwicklern
+die Möglichkeit, ihr Backend in der gleichen Sprache zu schreiben, die der
+Browser versteht.</p>
+
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
+<span class="marginnote">
+<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 40%" /><br />
+<a href="https://htmx.org/docs/">htmx</a> ist eine Bibliothek, die es Ihnen ermöglicht, auf moderne Browserfunktionen direkt von HTML aus zuzugreifen, anstatt Javascript zu verwenden.
+</span></p>
+
+<p><a href="https://htmx.org/docs/">htmx</a> bietet Backend-Entwicklern mehr Möglichkeiten,
+da sie nur HTML in ihrer Backend-Sprache schreiben müssen, um eine dynamische
+UX zu erstellen.</p>
+
+<p>Ein zweites Argument ist die Idee, bestimmte Funktionalitäten nur einmal zu schreiben und sie sowohl im Front- als auch im Backend verwenden zu können. Halten wir jedoch inne und überlegen wir, ob diese Gründe ein vollständiges Bild ergeben oder lediglich eine Optimierung für ein lokales Maximum darstellen.</p>
+
+<h2 id="-entzauberung-der-illusion"><a name="illusion"></a> Entzauberung der Illusion</h2>
+
+<p>Meiner Meinung nach wird die Menge an Codes/Funktionalität, die tatsächlich
+zwischen dem Frontend und dem Backend geteilt werden kann, oft überschätzt
+wird. Das Backend und der Browser arbeiten in sehr unterschiedlichen
+Laufzeitumgebungen, die unterschiedliche Programmiermuster erfordern. Im
+Browser programmieren wir eine interaktive grafische Benutzeroberfläche. Im
+Backend ist die effiziente Verwaltung der Businessdaten unser primäres Ziel</p>
+
+<p>Weiter würde ich behaupten, dass man in den meisten Fällen mindestens genauso
+viel (wenn nicht sogar mehr) Aufwand in das Erlernen des <strong>Frameworks</strong> (und des
+damit gelösten Problems) investieren muss wie in das Erlernen der
+Programmiersprache.</p>
+
+<p>Zum Beispiel gibt es kaum Synergien zwischen dem Erlernen von, sagen wir,
+<strong>“React”</strong> und <strong>“Ruby on Rails”</strong>. Der Grund ist nicht so sehr, dass sie in
+unterschiedlichen Sprachen geschrieben sind, sonder die Tatsache, dass sie
+völlig unterschiedliche Probleme lösen.</p>
+
+<h2 id="-gemeinsame-datendefinition-vs-gemeinsame-sprache"><a name="data"></a> Gemeinsame Datendefinition vs. gemeinsame Sprache</h2>
+
+<p>Das überwiegende Potenzial für Wiederverwendung von Code ist die 
+Nutzung <strong>gemeinsamer Datenstrukturen</strong>!</p>
+
+<p><label for="def-gql" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-gql" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://graphql.org"><img src="/assets/posts/language-monogamy/graphql-logo.svg" style="width: 2em" /> GraphQL</a><br />
+ermöglicht es ein Schema für Datentypen und -beziehungen einer API definieren, das als Vertrag zwischen dem Client und dem Server dient und eine strukturierte und konsistente Kommunikation gewährleistet.</span></p>
+
+<p>Um dies zu erreichen setzen viele Firmen <a href="https://graphql.org">GraphQL</a> ein. 
+Die Verwaltung einer <strong>“GraphQL-Schicht”</strong> ist jedoch mit erheblichen Kosten verbunden.
+Oft haben Unternehmen ganze Teams, die sich ausschließlich um die Integrität der GraphQL API kümmern. 
+Darüber hinaus verfügt GraphQL über eine eigene (Schema-/Abfrage-)Sprache, die die Entwickler ebenfalls erlernen müssen.</p>
+
+<p>Wenn man sich auf das richtige Problem <strong>- die gemeinsame Datendefinition -</strong> konzentriert und die Herausforderung, eine neue Sprache zu erlernen, ins richtige Verhältnis setzt, tun sich eine Menge interessanter Möglichkeiten auf.</p>
+
+<p>Anstatt sich auf die Homogenität der Programmiersprache zu fixieren, bietet die Konzentration auf ein gemeinsames Verständnis von Datenstrukturen einen pragmatischeren und effektiveren Ansatz, um die Wiederverwendung von Code dort zu erreichen, wo es zählt.</p>
+
+<h2 id="ein-praxisbeispiel-das-zusammenspiel-von-rust-und-elm"><a name="ruelm"></a>Ein Praxisbeispiel: Das Zusammenspiel von Rust und Elm</h2>
+
+<p><label for="def-elm" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-elm" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://elm-lang.org"><img src="/assets/posts/language-monogamy/elm-logo.svg" style="width: 4em" /> Elm</a>
+ist eine kleine Programmiersprache für die Front-End-Webentwicklung mit Fokus auf Einfachheit.
+In meinem <a href="../a-tour-of-elm">vorherigen Blogpost</a> schildere ich im Detail warum jeder Entwickler
+Elm ausprobieren sollte.
+</span></p>
+
+<p>Elm ist eine funktionale Programmiersprache für die Front-End-Webentwicklung,
+die für ihr starkes Typensystem und ihren Fokus auf Einfachheit, Korrektheit
+und Zuverlässigkeit bei der Erstellung interaktiver Benutzeroberflächen bekannt
+ist.</p>
+
+<p>Rust zeichnet sich im Backend durch seinen Fokus auf Sicherheit, Leistung und
+Gleichzeitigkeit aus und bietet eine robuste und effiziente
+Entwicklungserfahrung.</p>
+
+<p>Die Wahl von Elm als Frontend-Sprache und Rust im Backend bietet uns das Beste
+aus beiden Welten. Da beide Sprachen statisch getypt sind, können wir die
+Typinformationen aus unseren Rust-Datenstrukturen verwenden, um automatiesiert Elm-Typen und
+(De-)Serialisierer zu erzeugen.</p>
+
+<p><label for="def-elmrs" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-elmrs" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://crates.io/crates/elm-rs">elm_rs</a> ist eine Rust Crate die
+automatisch Typdefinitionen und Funktionen für Elm aus Rust-Backend-Typen generiert, so dass es einfach ist, die beiden auf dem gleichen Stand zu halten.</span></p>
+
+<p>Das Backend ist die natürliche erste Wahl für die “Quelle der Wahrheit” wenn es 
+um die Defintion der gemeinsamen Datentypen geht. 
+Die elm_rs-Crate übersetzt diese Rust-Datentypen dann in die
+entsprechenden Elm-Typen (und De-/Serialisierer).</p>
+
+<p>Anstatt die Komplexität der Anwengung durch eine dedizierte API-Schicht zu erhöhen,
+definieren wir zwei Datentypen <code class="language-plaintext highlighter-rouge">ToBackend</code> und <code class="language-plaintext highlighter-rouge">ToFrontend</code>, die jeweils die
+Nachrichten repräsentieren, die entweder zum Backend oder zum Frontend fließen.
+Diese Art der Kommunikation ist stark von <a href="https://dashboard.lamdera.app/docs/overview">Lamdera</a> inspiriert.
+<label for="def-lamdera" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-lamdera" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://dashboard.lamdera.app/docs/overview"><img src="/assets/posts/language-monogamy/lamdera-logo.png" style="width: 10em" /></a><br />
+Lamdera ist eine Full-Stack-Web-Plattform, die Elm sowohl im Frontend als auch im Backend verwendet.
+Allerdings kommt sie mit erhebliche Einschränkungen, wie sich Code im Backend ausführen lässt.
+</span></p>
+
+<p>Auf diese Weise können wir Elm dafür einsetzen wofür es geschaffen wurde: Sicheres Arbeiten
+mit der Brwoser API ohne auf ansprchsvolle UI verzichten zu müssen.
+Im Gegenzug müssen wir uns im Backend <strong>überhaupt nicht</strong> mit HTML und dem
+Zustand der Benutzeroberfläche befassen.</p>
+
+<p>Mein <a href="https://github.com/axelerator/ruelm">Startertemplate <em>“Rülm”</em></a> zeigt das
+so eine Architektur abseits von den populären Web-Frameworks nicht kompliziert
+sein muss. In weniger als <code class="language-plaintext highlighter-rouge">400</code> Zeilen Code bekommen wir eine Webanwendung die
+typsicher und effizient Daten in beide Richtungen austauschen kann. Und das
+alles ohne externe Build-Tools!</p>
+
+
+</section>
+
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+
