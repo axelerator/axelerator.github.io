@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Wenn Kent Beck dein Doktor ist, ist Elm deine Apotheke</title>
+  </head>
+  <body class="kent-beck-prescriptions">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a rel="me" href="https://hachyderm.io/@axelerator"><span class="fediverse"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/development/en/kent-beck-prescriptions" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Wenn Kent Beck dein Doktor ist, ist Elm deine Apotheke</h1>
+       <div class="meta"> 
+  <div title="Lesedauer">8 Minuten</div>
+  <div>
+  
+    
+    <a href="/tags#elm">#elm</a>
+  
+  </div>
+  <div>24 August 2024</div>
+</div>
+
+
+<section>
+<p><img src="/assets/posts/kent-beck-prescriptions/doctor_square.jpg" width="230" style="float:right; margin: 5px 10px 10px 0" />
+<a href="https://www.kentbeck.com">Kent Beck</a> ist bekannt für seinen pragmatischen Ansatz im Softwaredesign sowie seinen Fokus auf die Verbesserung der Codequalität und Effizienz von Entwicklungsprozessen. 
+In einem seiner Artikel <em>“verschreibt”</em> er eine Liste von “Rezepten”, um weniger fehleranfälligen Code zu schreiben. Und jetzt habe ich eine konkrete Liste von Gründen, warum ich es so sehr mag in Elm zu programmieren.</p>
+
+<hr />
+
+<ul>
+  <li><a href="#How">Wie Elm liefert, was Kent verschreibt</a>
+    <ul>
+      <li><a href="#Improve">Verbessere die Kohäsion durch Reduzierung der Elementgröße</a></li>
+      <li><a href="#Unify">Vereinheitliche duplizierte Logik</a></li>
+      <li><a href="#Replace">Ersetze duplizierte Bedingungen durch Polymorphismus</a></li>
+      <li><a href="#Use">Verwende unveränderliche Datenstrukturen, wo möglich, um Aliasfehler zu eliminieren</a></li>
+      <li><a href="#Simplify">Vereinfache Kontrollflüsse wo möglich</a></li>
+      <li><a href="#Eliminate">Eliminiere toten Code</a></li>
+      <li><a href="#Rationalize">Rationalisiere die Namensgebung, damit die richtigen Namen eher erraten werden können</a></li>
+    </ul>
+  </li>
+  <li><a href="#Conclusion">Fazit</a></li>
+</ul>
+
+<hr />
+
+<p><label for="elm-lang" class="margin-toggle">⊕</label>
+<input type="checkbox" id="elm-lang" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://elm-lang.org/">Elm</a> ist eine funktionale Sprache, die nach JavaScript kompiliert wird. Sie hilft dir, Websites und Web-Apps zu erstellen. Sie legt großen Wert auf Einfachheit und qualitativ hochwertige Werkzeuge.
+</span></p>
+
+<p>Das folgende Kent Beck-Zitat <a href="https://elmlang.slack.com/archives/C0CJ671HU/p1724423084869659">tauchte neulich</a> im Elm Slack auf:</p>
+
+<blockquote>
+  <p>“Du hast keine Bugs, weil du keine Tests hast. Du hast Bugs, weil du Code schreibst, der es leicht macht, Bugs zu haben.”</p>
+</blockquote>
+
+<p>Es stammt aus Kent Becks Artikel <a href="https://tidyfirst.substack.com/p/scrape-then-paint">Scrape Then Paint</a>, und ich empfehle jedem, ihn zu lesen. <a href="https://mastodon.world/@jhbrown">Jeremy</a>, der das Zitat gepostet hat, sagte auch: “Das hat mich daran erinnert, wie schön es ist, in Elm zu programmieren.”
+Ich stimme dem instinktiv zu, wollte aber etwas tiefer graben <em>warum</em> wir so über Elm empfinden, aber nicht, oder weniger über andere Programmiersprachen.</p>
+
+<p>Wenn du jemandem eine alternative Programmiersprache vorschlägst, ist die Antwort oft, dass der- oder diejeninge  “ja bereits alles in der Sprache machen könne”, mit der er oder sie vertraut sind.
+Letztendlich kannst du fast jedes Problem, das du in einer Sprache lösen kannst, auch in jeder anderen Sprache lösen. 
+Die Frage sollte also eher sein, wie effizient (mit wie viel <em>Aufwand</em>) kann ich das Problem lösen?</p>
+
+<p>Wenn du den Aufwand des “Erlernens einer neuen Programmiersprache” zu einer Programmieraufgabe hinzufügst, wird die neue Sprache natürlich immer gegen die Lösung des Problems in der vertrauten Umgebung verlieren.</p>
+
+<p>Wenn du nicht kurz vor der Rente stehst, würde ich argumentieren, dass dies eine kurzsichtige Sichtweise ist.</p>
+
+<p>Verschiedene Sprachen, Frameworks und Bibliotheken machen unterschiedliche Kompromisse. Nur einen Weg zu kennen, um alle Programmierprobleme zu lösen, macht dich zu einem “One trick Pony”. Und selbst wenn du nicht <em>alle</em> Werkzeuge in deinem Werkzeuggürtel <em>ständig</em> benutzt, wird die Auseinandersetzung mit verschiedenen Ansätzen in einer Sprache deinen Horizont für Lösungen in anderen Sprachen erweitern.</p>
+
+<h2 id="-wie-elm-liefert-was-kent-verschreibt"><a name="How"></a> Wie Elm liefert, was Kent verschreibt</h2>
+
+<p>Deshalb werbe ich weiterhin für die Programmiersprache Elm bei den Leuten.</p>
+
+<p>Die meisten “Rezepte” die Kent Beck in seinem Artikel verschreibt löst Elm bereits <em>auf der Sprachebene</em>. 
+Lass uns einen Blick darauf werfen welche Maßnahmen er vorschlägt:</p>
+
+<ul>
+  <li>Verbessere die Kohäsion durch Reduzierung der Elementgröße</li>
+  <li>Vereinheitliche duplizierte Logik</li>
+  <li>Ersetze duplizierte Bedingungen durch Polymorphismus</li>
+  <li>Verwende unveränderliche Datenstrukturen, wo möglich, um Aliasfehler zu eliminieren</li>
+  <li>Vereinfache Kontrollflüsse wo möglich</li>
+  <li>Eliminiere toten Code</li>
+  <li>Rationalisiere die Namensgebung, damit die richtigen Namen eher erraten werden können</li>
+</ul>
+
+<h3 id="--verbessere-die-kohäsion-durch-reduzierung-der-elementgröße"><a name="&lt;a"></a> <a name="Improve"></a> Verbessere die Kohäsion durch Reduzierung der Elementgröße</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+Das Kapitel über Module im Elm-Leitfaden enthält einen Link zu diesem sehr <a href="https://youtu.be/XpDsk374LDE">aufschlussreichen Vortrag</a> darüber, wie man Module um Datentypen herum organisiert.
+</span></p>
+
+<p>Elm hat ein einfaches, aber leistungsfähiges Modulsystem. Es ermöglicht die Kapselung von Datenstrukturen und den Funktionen, die auf ihnen operieren, ohne auf die komplizierten Semantiken vieler objektorientierter Sprachen zurückzugreifen.</p>
+
+<p>Abhöngigkeiten zwischen Modulen können effektiv begrenzt werden, indem explizit ausgewählt wird, welche Teile eines Moduls veröffentlicht werden.</p>
+
+<h3 id="--vereinheitliche-duplizierte-logik"><a name="&lt;a"></a> <a name="Unify"></a> Vereinheitliche duplizierte Logik</h3>
+
+<p>Es gibt nichts Eingebautes in Elm, das dich davon abhält, Logik zu duplizieren. Da Elm jedoch eine <em>rein</em> funktionale Sprache ist, ist es einfacher, Duplikationen zu erkennen und zu vereinheitlichen.</p>
+
+<p>In imperativen Sprachen mischt man oft “Berechnen” und “Dinge tun” - zum Beispiel den Zugriff auf einige Felder in einem Objekt und das Schreiben in die Datenbank. In diesen Fällen muss ich das mentale “Pattern Matching” auf “halbe” Methoden durchführen, um einen Teil der Logik zu erkennen und zu extrahieren, um sie wiederzuverwenden.</p>
+
+<p>In Elm ist es viel einfacher Funktionen zu extrahieren. Wegen der genauen Typüberprüfung und der Tatsache das man in Funktionen nicht mehr als “neue Werte” berechnen kann, sind Refaktoriesierungen einfacher.</p>
+
+<h3 id="-ersetze-duplizierte-bedingungen-durch-polymorphismus"><a name="Replace"></a> Ersetze duplizierte Bedingungen durch Polymorphismus</h3>
+
+<p>Ich war mir zunächst nicht sicher, was er damit meinte, also habe ich das “Prinzip” gegoogelt und <a href="https://bitbytebit.substack.com/p/2019-07-23/refactoring-replace-conditional-with-polymorphism">einen Artikel</a> gefunden, der meinen Punkt wunderbar belegt. Disclaimer: Ich will kein schlechtes Licht auf diese spezielle Lösung werfen, aber der Umfang der objektorientierten Lösung hier sieht für wahrscheinlich jeden Elm-Entwickler überwältigend kompliziert aus.</p>
+
+<p>In Elm ist es sehr natürlich, <strong><em>zuerst</em></strong> in <em>Typen</em> zu denken - nicht in Bedingungen. Eine wahrscheinliche Lösung wäre also, mit einen Datentyp <code class="language-plaintext highlighter-rouge">type Role = Admin | Subscriber | Other</code> zu beginnen.</p>
+
+<p>Jetzt können wir ein <code class="language-plaintext highlighter-rouge">case</code> (<code class="language-plaintext highlighter-rouge">switch</code> oder <code class="language-plaintext highlighter-rouge">match</code> in anderen Sprachen) verwenden, um zu entscheiden, was wir in unseren <code class="language-plaintext highlighter-rouge">views</code> anzeigen.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>case user.role of
+	Admin -&gt; ..show admin stuff..
+	Subscriber -&gt; ..show subscriber stuff..
+	Other -&gt; ..
+</code></pre></div></div>
+<p>Elm hat <em>exhaustiveness checking</em> eingebaut. Das bedeutet, dass das Programm solange nicht kompiliert, bis du alle Varianten behandelt wurden. 
+Das wiederum bedeuted, dass jedesmal wenn wir einen neue Variante hinzufügen oder entfernen, wird der Compiler uns genau die 
+Stellen markieren die wir anpassen müssen.</p>
+
+<h3 id="verwende-unveränderliche-datenstrukturen-wo-möglich-um-aliasfehler-zu-eliminieren"><a name="use"></a>Verwende unveränderliche Datenstrukturen, wo möglich, um Aliasfehler zu eliminieren</h3>
+
+<p>Dies ist die einfachste Umsetzung eines “Rezepts”: <strong>Alles</strong> ist in Elm unveränderlich (immutable).
+Dies macht die Entscheidung wo unveränderliche Datenstrukturen zu verwenden sind vollständig überflüssig.</p>
+
+<p>Das Einzige, was in einer Webanwendung veränderlich sein muss, ist der Zustand der Benutzeroberfläche, also der DOM.
+Der Zustand des DOMs wird vollständig von der Elm-Laufzeitumgebung verwaltet. In einer Elm-App haben wir eine <code class="language-plaintext highlighter-rouge">view</code> <em>Funktion</em>, die den aktuellen <strong>Anwendungszustand</strong> nimmt und Elm mitteilt, wie wir <strong>wollen</strong>, dass der DOM aussieht.</p>
+
+<p>“Aber wie ändern wir den Zustand?” fragst du dich?. Darauf werden wir im nächsten Rezept eingehen.</p>
+
+<h3 id="-vereinfache-kontrollflüsse-wo-möglich"><a name="Simplify"></a> Vereinfache Kontrollflüsse wo möglich</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+Alle Elm-Apps folgen <a href="https://guide.elm-lang.org/architecture/">“der Elm Architektur”</a>. Jede App hat eine <code class="language-plaintext highlighter-rouge">View</code>-Funktion, die den aktuellen Zustand (Model) nimmt und HTML zusammen mit potenziellen Benutzerinteraktionen generiert, die als <code class="language-plaintext highlighter-rouge">Msg</code> (Nachrichten) dargestellt werden. Wenn eine <code class="language-plaintext highlighter-rouge">Msg</code> ausgelöst wird, verarbeitet die <code class="language-plaintext highlighter-rouge">Update</code>-Funktion sie, um einen neuen Zustand zu produzieren, der dann eine aktualisierte Ansicht generiert und den Zyklus des unidirektionalen Datenflusses aufrechterhält.
+</span></p>
+
+<p>Hier vermischt sich Elm zwischen Sprache und Framework. Der beste Vergleich, den ich hier machen kann, ist React. Elm hat einen strengen unidirektionalen Informationsfluss. In Elm kannst den Zustand von <strong>nichts</strong> selbst ändern. Stattdessen sendet du <code class="language-plaintext highlighter-rouge">Messages</code> aus deiner View. Und dann ruft die <em>Elm-Laufzeitumgebung</em> die Update-Funktion auf, die du ebenfalls bereitstellst. Sie erhält die <code class="language-plaintext highlighter-rouge">Message</code>, und du kannst einen <em>neuen</em> Zustand deiner Anwendung zurückgeben. Das was in der React-Welt am nächsten an diese Architektur kommt ist die Verwendung von <a href="https://react-redux.js.org">Redux</a>. 
+Der große Unterschied in Elm ist, dass es Teil der (streng prüfenden) Sprache ist und du es nicht (versehentlich) umgehen kannst.</p>
+
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
+<span class="marginnote">
+Lies: <a href="https://languageimperfect.com/2023/04/29/avoid-this-common-react-use-effect-use-state-hook-antipattern.html">Vermeide dieses häufige React Hook Antipattern</a>
+darüber, warum die Verwendung von <code class="language-plaintext highlighter-rouge">useState</code> und <code class="language-plaintext highlighter-rouge">useEffect</code> zur Berechnung synchroner Werte zu einer suboptimalen Benutzererfahrung und subtilen Bugs führt, die schwer zu debuggen sein können.
+</span></p>
+
+<p>Aufgrund der Einfachheit der Sprache und der Strenge des Compilers gibt es <em>weniger</em> Möglichkeiten, dasselbe auf unterschiedlichen Wegen zu tun. 
+Da React JavaScript (oder TypeScript) verwendet, hat es weniger Kontrolle über die Umgebung, in der es läuft, und hat folglich <em>viel</em> mehr “Fußfallen”, wie zum Beispiel die gemeinsame Verwendung von <code class="language-plaintext highlighter-rouge">useEffect</code> und <code class="language-plaintext highlighter-rouge">useState</code>.</p>
+
+<p>Kurz gesagt: Weil es <em>weniger</em> Möglichkeiten gibt, “das Falsche zu tun”, ist es einfacher, das Richtige zu tun. Und weil es <em>weniger</em> Möglichkeiten gibt, den Kontrollfluss zu steuern, werden dieser meistens auch einfacher.</p>
+
+<h3 id="-eliminiere-toten-code"><a name="Eliminate"></a> Eliminiere toten Code</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://package.elm-lang.org/packages/jfmengels/elm-review/latest/">elm-review</a> ist ein Elm-Paket, das dein Elm-Projekt analysiert, um Fehler zu finden, bevor deine Benutzer sie finden.
+</span></p>
+
+<p>Der Elm-Compiler selbst hilft dir nicht viel dabei, unbenutzten Code zu erkennen. Aber es gibt ein ausgezeichnetes Tool namens <a href="https://package.elm-lang.org/packages/jfmengels/elm-review/latest/">elm-review</a>, das dank des strengen Typsystems von Elm sehr effizient unbenutzten Code erkennen und entfernen kann.</p>
+
+<p><a href="https://jfmengels.net/safe-dead-code-removal/">Lies mehr</a> darüber, wie Leute mühelos Tausende von Codezeilen entfernt haben und wie das Elm-Typsystem eine großartige statische Code-Analyse ermöglicht, um alle möglichen Arten von Optimierungen vorzunehmen.</p>
+
+<h3 id="-rationalisiere-die-namensgebung-damit-die-richtigen-namen-eher-erraten-werden-können"><a name="Rationalize"></a> Rationalisiere die Namensgebung, damit die richtigen Namen eher erraten werden können</h3>
+
+<p>Auch hier gibt der Elm-Compiler nur wenig Hilfe in Form von Regeln darüber, wie Bezeichner der verschiedenen syntaktischen Elemente (Typen, Funktionen, Variablen) formatiert werden können. Aber ich wüsste auch, wie die eigentliche Namensgebung von der Sprache selbst unterstützt werden kann. Vielleicht werden LLMs dies eines Tages für uns alle lösen 🙈.</p>
+
+<h2 id="-fazit"><a name="Conclusion"></a> Fazit</h2>
+
+<p>Elm ist nicht geeignet, um <em>jedes</em> Programmierproblem zu lösen, aber es ist die angenehmste Art für Frontend-Arbeit die ich je hatte. Und dieser Artikel kratzt nur an der Oberfläche der Liste von Funktionen, die es angenehm zu benutzen machen. 
+Viele der Techniken, die ich für Elm lernen <em>musste</em> habe ich in Projekte in anderen Sprachen angwendet, um von den “Rezepten”  die Kent Beck vorschlägt zu profitieren ohne dass ich davon wusste.</p>
+
+<p>Hier ist eine Liste von Ressourcen, die du dir ansehen kannst, wenn du Elm mal etwas genauer ansehen willst:</p>
+
+<ul>
+  <li><a href="https://guide.elm-lang.org/">Der offizielle Elm-Leitfaden</a></li>
+  <li><a href="https://elm-lang.org/examples">Live-Beispiele</a></li>
+  <li><a href="https://ellie-app.com/new">Ellie: eine browserbasierte Elm-IDE</a></li>
+  <li><a href="https://a-tour-of-elm.axelerator.de">A tour of Elm: Ein interaktives Tutorial</a></li>
+  <li><a href="https://youtu.be/WgJ2FUW1miA?si=ukwOl36y9rLTyOEn">Videoserie: Welcome to Elm</a></li>
+</ul>
+
+</section>
+
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

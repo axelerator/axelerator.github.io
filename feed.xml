@@ -1,4 +1,465 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://blog.axelerator.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.axelerator.de/" rel="alternate" type="text/html" /><updated>2024-01-02T14:00:34-05:00</updated><id>https://blog.axelerator.de/feed.xml</id><title type="html">Rants &amp;amp; ramblings of yours truly</title><subtitle>Mostly posts about how to make getting started with Elm easy and the general joys of functional programming.</subtitle><entry xml:lang="de"><title type="html">Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung</title><link href="https://blog.axelerator.de/development/de/language-monogamy" rel="alternate" type="text/html" title="Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung" /><published>2024-01-02T13:00:00-05:00</published><updated>2024-01-02T13:00:00-05:00</updated><id>https://blog.axelerator.de/development/de/language-monogamy-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/language-monogamy"><![CDATA[<p><img src="/assets/posts/language-monogamy/handshake.webp" width="230" style="float:right; margin: 5px 10px 10px 0" />
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://blog.axelerator.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.axelerator.de/" rel="alternate" type="text/html" /><updated>2024-08-24T20:54:41-04:00</updated><id>https://blog.axelerator.de/feed.xml</id><title type="html">Rants &amp;amp; ramblings of yours truly</title><subtitle>Mostly posts about how to make getting started with Elm easy and the general joys of functional programming.</subtitle><entry xml:lang="en"><title type="html">If Kent Beck is your doctor, Elm is your pharmacy</title><link href="https://blog.axelerator.de/development/en/kent-beck-prescriptions" rel="alternate" type="text/html" title="If Kent Beck is your doctor, Elm is your pharmacy" /><published>2024-08-24T14:00:00-04:00</published><updated>2024-08-24T14:00:00-04:00</updated><id>https://blog.axelerator.de/development/en/kent-beck-prescriptions-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/kent-beck-prescriptions"><![CDATA[<p><img src="/assets/posts/kent-beck-prescriptions/doctor_square.jpg" width="230" style="float:right; margin: 5px 10px 10px 0" />
+<a href="https://www.kentbeck.com">Kent Beck</a> is known for his pragmatic approach to software design and his focus on improving the quality of code and the efficiency of development processes. In one of his articles he gives a list of “prescriptions” to write less bug prone code. And now I have a concrete list of reasons why I like writing code in Elm so much.</p>
+
+<hr />
+
+<ul>
+  <li><a href="#How">How Elm Delivers What Kent Prescribes</a>
+    <ul>
+      <li><a href="#Improve">Improve cohesion by reducing the size of elements</a></li>
+      <li><a href="#Unify">Unify duplicated logic</a></li>
+      <li><a href="#Replace">Replace duplicated conditionals with polymorphism</a></li>
+      <li><a href="#Use">Use immutable data structures where feasible to eliminate aliasing errors</a></li>
+      <li><a href="#Simplify">Simplify control flows where possible</a></li>
+      <li><a href="#Eliminate">Eliminate dead code</a></li>
+      <li><a href="#Rationalize">Rationalize naming so the right names are likelier to be guessed</a></li>
+    </ul>
+  </li>
+  <li><a href="#Conclusion">Conclusion</a></li>
+</ul>
+
+<hr />
+
+<p><label for="elm-lang" class="margin-toggle">⊕</label>
+<input type="checkbox" id="elm-lang" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://elm-lang.org/">Elm</a> is a functional language that compiles to JavaScript. It helps you make websites and web apps. It has a strong emphasis on simplicity and quality tooling.
+</span></p>
+
+<p>The following Kent Beck quote <a href="https://elmlang.slack.com/archives/C0CJ671HU/p1724423084869659">came up</a> on the Elm Slack the other day:</p>
+
+<blockquote>
+  <p>“You don’t have bugs because you don’t have tests. You have bugs because you write code that makes it easy to have bugs.”</p>
+</blockquote>
+
+<p>It’s from Kent Beck’s article <a href="https://tidyfirst.substack.com/p/scrape-then-paint">Scrape Then Paint</a>, and I recommend everyone to read it. <a href="https://mastodon.world/@jhbrown">Jeremy</a>, who posted it, also said, “This made me think of how nice it is to code in Elm.”
+I instinctively agree with that but wanted to dig a bit deeper as to <em>why</em> we feel this way about Elm but not, or less, about other programming languages.</p>
+
+<p>When you pitch an alternative programming language to someone, the response is often that they can “already do everything” in the language they’re familiar with.
+Ultimately, you can solve nearly any problem that you can solve in one language in any other language as well. 
+So the conversation is about how efficiently (with how much <em>effort</em>) can I solve the problem?</p>
+
+<p>If you add the effort of “learning a new programming language” to any programming task, the new language will, of course, always lose against solving the problem in the familiar environment.</p>
+
+<p>Unless you’re right about to retire, I would argue that this is a short-sighted view that suffers gravely from the <a href="https://en.wikipedia.org/wiki/Sunk_cost#Fallacy_effect">sunk cost fallacy</a>.</p>
+
+<p>Different languages, frameworks, and libraries make different tradeoffs. Knowing only one way to solve all programming problems makes you a one-trick pony. And even if you don’t use <em>all</em> the tools in your tool belt <em>all</em> the time, being exposed to different approaches in one language will actually widen your horizon in other languages as well.</p>
+
+<h2 id="-how-elm-delivers-what-kent-prescribes"><a name="How"></a> How Elm Delivers What Kent Prescribes</h2>
+
+<p>This is why I continue to pitch the Elm programming language to people. It addresses most of the “prescriptions” that Kent Beck gives in his article <em>at the language level</em>. Let’s take a look at them:</p>
+
+<ul>
+  <li>Improve cohesion by reducing the size of elements</li>
+  <li>Unify duplicated logic</li>
+  <li>Replace duplicated conditionals with polymorphism</li>
+  <li>Use immutable data structures where feasible to eliminate aliasing errors</li>
+  <li>Simplify control flows where possible</li>
+  <li>Eliminate dead code</li>
+  <li>Rationalize naming so the right names are likelier to be guessed</li>
+</ul>
+
+<h3 id="--improve-cohesion-by-reducing-the-size-of-elements"><a name="&lt;a"></a> <a name="Improve"></a> Improve Cohesion by Reducing the Size of Elements</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+The Elm guide’s <a href="https://guide.elm-lang.org/webapps/modules">chapter on modules</a> contains a link to this very <a href="https://youtu.be/XpDsk374LDE">enlightening talk</a> on how to organize your modules around data types.
+</span></p>
+
+<p>Elm has a simple yet powerful module system. It allows pairing data structures with the functions that operate on them without the complicated semantics of many object-oriented languages.</p>
+
+<p>Coupling can be limited easily by explicitly selecting which parts of a module are exposed.</p>
+
+<h3 id="--unify-duplicated-logic"><a name="&lt;a"></a> <a name="Unify"></a> Unify Duplicated Logic</h3>
+
+<p>There is nothing inherent to Elm that keeps you from duplicating logic. However, with Elm being a <em>pure</em> functional language, it’s easier to spot and unify duplication.</p>
+
+<p>In imperative languages, you often mix “calculating” and “doing things”—for example, accessing some members in an object and then writing it to the database. In these cases, I have to do the mental pattern matching on “partial” methods to spot and extract some of the logic to be reused.</p>
+
+<p>In Elm, it is a lot more straightforward to extract functions because of the strict types the extracted functions have to follow.</p>
+
+<h3 id="-replace-duplicated-conditionals-with-polymorphism"><a name="Replace"></a> Replace Duplicated Conditionals with Polymorphism</h3>
+
+<p>I initially wasn’t sure what he meant by that, so I googled the “principle” and found <a href="https://bitbytebit.substack.com/p/2019-07-23/refactoring-replace-conditional-with-polymorphism">an article</a> that wonderfully proves my point. Disclaimer: I’m not throwing shade on that particular solution, but the verbosity of the object-oriented solution here looks overwhelmingly complicated to probably any Elm developer.</p>
+
+<p>In Elm, it’s very natural to think in <em>types</em> <strong>first</strong>—not in conditionals. So a likely solution would be to create a data type <code class="language-plaintext highlighter-rouge">type Role = Admin | Subscriber | Other</code>.</p>
+
+<p>Now we can use a <code class="language-plaintext highlighter-rouge">case</code> (<code class="language-plaintext highlighter-rouge">switch</code> or <code class="language-plaintext highlighter-rouge">match</code> in other languages) to decide what to surface in our views.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>case user.role of
+	Admin -&gt; ..show admin stuff..
+	Subscriber -&gt; ..show subscriber stuff..
+	Other -&gt; ..
+</code></pre></div></div>
+
+<p>Elm has built-in <em>exhaustiveness checking</em>. That means the program will not compile until you handle <em>all</em> cases. So every time we add or remove a “role,” the compiler will point us to <em>all</em> places we have to touch.</p>
+
+<h3 id="use-immutable-data-structures-where-feasible-to-eliminate-aliasing-errors"><a name="use"></a>Use immutable data structures where feasible to eliminate aliasing errors</h3>
+
+<p>This one is the most straightforward implementation of a “prescription”: <strong>Everything</strong> is immutable in Elm.
+This removes the decision on where to use immutable data structures entirely.</p>
+
+<p>The only thing that needs to be mutable in a web application is the state of the user interface aka the DOM.
+The state of the DOM is completely managed by the Elm runtime. In an Elm app we have one <code class="language-plaintext highlighter-rouge">view</code> <em>function</em> that takes
+the current <strong>application state</strong> and tells Elm what we <strong>want</strong> the DOM to look like.</p>
+
+<p>“But how do we change the state?” you ask. We’re going to touch on this in how Elm implments the next <em>prescription</em>.</p>
+
+<h3 id="-simplify-control-flows-where-possible"><a name="Simplify"></a> Simplify Control Flows Where Possible</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+All Elm apps follow <a href="https://guide.elm-lang.org/architecture/">“The Elm Architecture”</a>. Each app has a <code class="language-plaintext highlighter-rouge">View</code> function that takes the current state (Model) and generates HTML along with potential user interactions, represented as Msg (messages). When a Msg is triggered, the Update function processes it to produce a new state, which then generates an updated view, maintaining the cycle of unidirectional data flow.
+</span></p>
+
+<p>This is where Elm blends between language and framework. The best comparison I can make here is React. Elm has a strict unidirectional information flow. You can’t change the state of anything in Elm yourself. Instead, you emit <code class="language-plaintext highlighter-rouge">Messages</code> from your view. And then the <em>Elm runtime</em> calls the update function that you provide as well. It receives the <code class="language-plaintext highlighter-rouge">Message</code>, and you can return a <em>new</em> state of your application. The most similar to this pattern in a React world is the use of <a href="https://react-redux.js.org">Redux</a>. The big difference is that it’s part of the language, and you cannot (accidentally) circumvent it.</p>
+
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
+<span class="marginnote">
+Read: <a href="https://languageimperfect.com/2023/04/29/avoid-this-common-react-use-effect-use-state-hook-antipattern.html">Avoid This Common React Hook Antipattern</a>
+about why using <code class="language-plaintext highlighter-rouge">useState</code> and <code class="language-plaintext highlighter-rouge">useEffect</code> to compute synchronous values will lead to a sub-optimal user experience and subtle bugs that can be hard to debug.
+</span></p>
+
+<p>Due to the simplicity of the language and the strictness of the compiler, there are <em>fewer</em> ways to do the same thing. Since React uses JavaScript (or TypeScript), it has less control over the environment it runs in and consequently has <em>a lot</em> more “foot guns,” like, for example, using <code class="language-plaintext highlighter-rouge">useEffect</code> and <code class="language-plaintext highlighter-rouge">useState</code> together.</p>
+
+<p>In short: Because there are <em>fewer</em> ways to do “the wrong thing,” it’s easier to do the right thing. And because there are <em>fewer</em> ways to control flow, they will most of the time also end up being simpler.</p>
+
+<h3 id="-eliminate-dead-code"><a name="Eliminate"></a> Eliminate Dead Code</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://package.elm-lang.org/packages/jfmengels/elm-review/latest/">elm-review</a> is an Elm packages that analyzes your Elm project, to help find mistakes before your users find them.
+</span></p>
+
+<p>The Elm compiler itself does not assist you in detecting unused code. But there is an excellent tool called <a href="https://package.elm-lang.org/packages/jfmengels/elm-review/latest/">elm-review</a> that, thanks to the strict type system, can very efficiently detect and remove unused code.</p>
+
+<p><a href="https://jfmengels.net/safe-dead-code-removal/">Read more</a> about how people removed thousands of lines of code effortlessly and how Elm type system enables great static analysis to make all kinds of optimizations.</p>
+
+<h3 id="-rationalize-naming-so-the-right-names-are-likelier-to-be-guessed"><a name="Rationalize"></a> Rationalize Naming So the Right Names Are Likelier to Be Guessed</h3>
+
+<p>Here again, the Elm compiler only gives a little help in the form of rules about how identifiers of the different syntactic elements (types, functions, variables) can be formatted, but I can’t see how the actual naming can be supported by the language itself. Maybe LLMs will solve this once and for all for us 🙈.</p>
+
+<h2 id="-conclusion"><a name="Conclusion"></a> Conclusion</h2>
+
+<p>Elm is not suited to solve <em>every</em> programming problem, but it’s the most delightful development experience I’ve had for frontend work. This article only scrapes the list of features that make it nice to use. I’ve taken many of the techniques I was forced to learn for Elm into projects in other languages to benefit from the “prescriptions” Kent Beck proposes.</p>
+
+<p>Here is a list of resources to check out if you want to give it a try:</p>
+
+<ul>
+  <li><a href="https://guide.elm-lang.org/">The official Elm guide</a></li>
+  <li><a href="https://elm-lang.org/examples">Live examples</a></li>
+  <li><a href="https://ellie-app.com/new">Ellie: a browser based Elm IDE</a></li>
+  <li><a href="https://a-tour-of-elm.axelerator.de">A tour of Elm: An interactive tutorial</a></li>
+  <li><a href="https://youtu.be/WgJ2FUW1miA?si=ukwOl36y9rLTyOEn">Video series: Welcome to Elm</a></li>
+</ul>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Kent Beck is known for his pragmatic approach to software design and his focus on improving the quality of code and the efficiency of development processes. In one of his articles he gives a list of “prescriptions” to write less bug prone code. And now I have a concrete list of reasons why I like writing code in Elm so much.]]></summary></entry><entry xml:lang="de"><title type="html">Wenn Kent Beck dein Doktor ist, ist Elm deine Apotheke</title><link href="https://blog.axelerator.de/development/de/kent-beck-prescriptions" rel="alternate" type="text/html" title="Wenn Kent Beck dein Doktor ist, ist Elm deine Apotheke" /><published>2024-08-24T14:00:00-04:00</published><updated>2024-08-24T14:00:00-04:00</updated><id>https://blog.axelerator.de/development/de/kent-beck-prescriptions-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/kent-beck-prescriptions"><![CDATA[<p><img src="/assets/posts/kent-beck-prescriptions/doctor_square.jpg" width="230" style="float:right; margin: 5px 10px 10px 0" />
+<a href="https://www.kentbeck.com">Kent Beck</a> ist bekannt für seinen pragmatischen Ansatz im Softwaredesign sowie seinen Fokus auf die Verbesserung der Codequalität und Effizienz von Entwicklungsprozessen. 
+In einem seiner Artikel <em>“verschreibt”</em> er eine Liste von “Rezepten”, um weniger fehleranfälligen Code zu schreiben. Und jetzt habe ich eine konkrete Liste von Gründen, warum ich es so sehr mag in Elm zu programmieren.</p>
+
+<hr />
+
+<ul>
+  <li><a href="#How">Wie Elm liefert, was Kent verschreibt</a>
+    <ul>
+      <li><a href="#Improve">Verbessere die Kohäsion durch Reduzierung der Elementgröße</a></li>
+      <li><a href="#Unify">Vereinheitliche duplizierte Logik</a></li>
+      <li><a href="#Replace">Ersetze duplizierte Bedingungen durch Polymorphismus</a></li>
+      <li><a href="#Use">Verwende unveränderliche Datenstrukturen, wo möglich, um Aliasfehler zu eliminieren</a></li>
+      <li><a href="#Simplify">Vereinfache Kontrollflüsse wo möglich</a></li>
+      <li><a href="#Eliminate">Eliminiere toten Code</a></li>
+      <li><a href="#Rationalize">Rationalisiere die Namensgebung, damit die richtigen Namen eher erraten werden können</a></li>
+    </ul>
+  </li>
+  <li><a href="#Conclusion">Fazit</a></li>
+</ul>
+
+<hr />
+
+<p><label for="elm-lang" class="margin-toggle">⊕</label>
+<input type="checkbox" id="elm-lang" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://elm-lang.org/">Elm</a> ist eine funktionale Sprache, die nach JavaScript kompiliert wird. Sie hilft dir, Websites und Web-Apps zu erstellen. Sie legt großen Wert auf Einfachheit und qualitativ hochwertige Werkzeuge.
+</span></p>
+
+<p>Das folgende Kent Beck-Zitat <a href="https://elmlang.slack.com/archives/C0CJ671HU/p1724423084869659">tauchte neulich</a> im Elm Slack auf:</p>
+
+<blockquote>
+  <p>“Du hast keine Bugs, weil du keine Tests hast. Du hast Bugs, weil du Code schreibst, der es leicht macht, Bugs zu haben.”</p>
+</blockquote>
+
+<p>Es stammt aus Kent Becks Artikel <a href="https://tidyfirst.substack.com/p/scrape-then-paint">Scrape Then Paint</a>, und ich empfehle jedem, ihn zu lesen. <a href="https://mastodon.world/@jhbrown">Jeremy</a>, der das Zitat gepostet hat, sagte auch: “Das hat mich daran erinnert, wie schön es ist, in Elm zu programmieren.”
+Ich stimme dem instinktiv zu, wollte aber etwas tiefer graben <em>warum</em> wir so über Elm empfinden, aber nicht, oder weniger über andere Programmiersprachen.</p>
+
+<p>Wenn du jemandem eine alternative Programmiersprache vorschlägst, ist die Antwort oft, dass der- oder diejeninge  “ja bereits alles in der Sprache machen könne”, mit der er oder sie vertraut sind.
+Letztendlich kannst du fast jedes Problem, das du in einer Sprache lösen kannst, auch in jeder anderen Sprache lösen. 
+Die Frage sollte also eher sein, wie effizient (mit wie viel <em>Aufwand</em>) kann ich das Problem lösen?</p>
+
+<p>Wenn du den Aufwand des “Erlernens einer neuen Programmiersprache” zu einer Programmieraufgabe hinzufügst, wird die neue Sprache natürlich immer gegen die Lösung des Problems in der vertrauten Umgebung verlieren.</p>
+
+<p>Wenn du nicht kurz vor der Rente stehst, würde ich argumentieren, dass dies eine kurzsichtige Sichtweise ist.</p>
+
+<p>Verschiedene Sprachen, Frameworks und Bibliotheken machen unterschiedliche Kompromisse. Nur einen Weg zu kennen, um alle Programmierprobleme zu lösen, macht dich zu einem “One trick Pony”. Und selbst wenn du nicht <em>alle</em> Werkzeuge in deinem Werkzeuggürtel <em>ständig</em> benutzt, wird die Auseinandersetzung mit verschiedenen Ansätzen in einer Sprache deinen Horizont für Lösungen in anderen Sprachen erweitern.</p>
+
+<h2 id="-wie-elm-liefert-was-kent-verschreibt"><a name="How"></a> Wie Elm liefert, was Kent verschreibt</h2>
+
+<p>Deshalb werbe ich weiterhin für die Programmiersprache Elm bei den Leuten.</p>
+
+<p>Die meisten “Rezepte” die Kent Beck in seinem Artikel verschreibt löst Elm bereits <em>auf der Sprachebene</em>. 
+Lass uns einen Blick darauf werfen welche Maßnahmen er vorschlägt:</p>
+
+<ul>
+  <li>Verbessere die Kohäsion durch Reduzierung der Elementgröße</li>
+  <li>Vereinheitliche duplizierte Logik</li>
+  <li>Ersetze duplizierte Bedingungen durch Polymorphismus</li>
+  <li>Verwende unveränderliche Datenstrukturen, wo möglich, um Aliasfehler zu eliminieren</li>
+  <li>Vereinfache Kontrollflüsse wo möglich</li>
+  <li>Eliminiere toten Code</li>
+  <li>Rationalisiere die Namensgebung, damit die richtigen Namen eher erraten werden können</li>
+</ul>
+
+<h3 id="--verbessere-die-kohäsion-durch-reduzierung-der-elementgröße"><a name="&lt;a"></a> <a name="Improve"></a> Verbessere die Kohäsion durch Reduzierung der Elementgröße</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+Das Kapitel über Module im Elm-Leitfaden enthält einen Link zu diesem sehr <a href="https://youtu.be/XpDsk374LDE">aufschlussreichen Vortrag</a> darüber, wie man Module um Datentypen herum organisiert.
+</span></p>
+
+<p>Elm hat ein einfaches, aber leistungsfähiges Modulsystem. Es ermöglicht die Kapselung von Datenstrukturen und den Funktionen, die auf ihnen operieren, ohne auf die komplizierten Semantiken vieler objektorientierter Sprachen zurückzugreifen.</p>
+
+<p>Abhöngigkeiten zwischen Modulen können effektiv begrenzt werden, indem explizit ausgewählt wird, welche Teile eines Moduls veröffentlicht werden.</p>
+
+<h3 id="--vereinheitliche-duplizierte-logik"><a name="&lt;a"></a> <a name="Unify"></a> Vereinheitliche duplizierte Logik</h3>
+
+<p>Es gibt nichts Eingebautes in Elm, das dich davon abhält, Logik zu duplizieren. Da Elm jedoch eine <em>rein</em> funktionale Sprache ist, ist es einfacher, Duplikationen zu erkennen und zu vereinheitlichen.</p>
+
+<p>In imperativen Sprachen mischt man oft “Berechnen” und “Dinge tun” - zum Beispiel den Zugriff auf einige Felder in einem Objekt und das Schreiben in die Datenbank. In diesen Fällen muss ich das mentale “Pattern Matching” auf “halbe” Methoden durchführen, um einen Teil der Logik zu erkennen und zu extrahieren, um sie wiederzuverwenden.</p>
+
+<p>In Elm ist es viel einfacher Funktionen zu extrahieren. Wegen der genauen Typüberprüfung und der Tatsache das man in Funktionen nicht mehr als “neue Werte” berechnen kann, sind Refaktoriesierungen einfacher.</p>
+
+<h3 id="-ersetze-duplizierte-bedingungen-durch-polymorphismus"><a name="Replace"></a> Ersetze duplizierte Bedingungen durch Polymorphismus</h3>
+
+<p>Ich war mir zunächst nicht sicher, was er damit meinte, also habe ich das “Prinzip” gegoogelt und <a href="https://bitbytebit.substack.com/p/2019-07-23/refactoring-replace-conditional-with-polymorphism">einen Artikel</a> gefunden, der meinen Punkt wunderbar belegt. Disclaimer: Ich will kein schlechtes Licht auf diese spezielle Lösung werfen, aber der Umfang der objektorientierten Lösung hier sieht für wahrscheinlich jeden Elm-Entwickler überwältigend kompliziert aus.</p>
+
+<p>In Elm ist es sehr natürlich, <strong><em>zuerst</em></strong> in <em>Typen</em> zu denken - nicht in Bedingungen. Eine wahrscheinliche Lösung wäre also, mit einen Datentyp <code class="language-plaintext highlighter-rouge">type Role = Admin | Subscriber | Other</code> zu beginnen.</p>
+
+<p>Jetzt können wir ein <code class="language-plaintext highlighter-rouge">case</code> (<code class="language-plaintext highlighter-rouge">switch</code> oder <code class="language-plaintext highlighter-rouge">match</code> in anderen Sprachen) verwenden, um zu entscheiden, was wir in unseren <code class="language-plaintext highlighter-rouge">views</code> anzeigen.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>case user.role of
+	Admin -&gt; ..show admin stuff..
+	Subscriber -&gt; ..show subscriber stuff..
+	Other -&gt; ..
+</code></pre></div></div>
+<p>Elm hat <em>exhaustiveness checking</em> eingebaut. Das bedeutet, dass das Programm solange nicht kompiliert, bis du alle Varianten behandelt wurden. 
+Das wiederum bedeuted, dass jedesmal wenn wir einen neue Variante hinzufügen oder entfernen, wird der Compiler uns genau die 
+Stellen markieren die wir anpassen müssen.</p>
+
+<h3 id="verwende-unveränderliche-datenstrukturen-wo-möglich-um-aliasfehler-zu-eliminieren"><a name="use"></a>Verwende unveränderliche Datenstrukturen, wo möglich, um Aliasfehler zu eliminieren</h3>
+
+<p>Dies ist die einfachste Umsetzung eines “Rezepts”: <strong>Alles</strong> ist in Elm unveränderlich (immutable).
+Dies macht die Entscheidung wo unveränderliche Datenstrukturen zu verwenden sind vollständig überflüssig.</p>
+
+<p>Das Einzige, was in einer Webanwendung veränderlich sein muss, ist der Zustand der Benutzeroberfläche, also der DOM.
+Der Zustand des DOMs wird vollständig von der Elm-Laufzeitumgebung verwaltet. In einer Elm-App haben wir eine <code class="language-plaintext highlighter-rouge">view</code> <em>Funktion</em>, die den aktuellen <strong>Anwendungszustand</strong> nimmt und Elm mitteilt, wie wir <strong>wollen</strong>, dass der DOM aussieht.</p>
+
+<p>“Aber wie ändern wir den Zustand?” fragst du dich?. Darauf werden wir im nächsten Rezept eingehen.</p>
+
+<h3 id="-vereinfache-kontrollflüsse-wo-möglich"><a name="Simplify"></a> Vereinfache Kontrollflüsse wo möglich</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+Alle Elm-Apps folgen <a href="https://guide.elm-lang.org/architecture/">“der Elm Architektur”</a>. Jede App hat eine <code class="language-plaintext highlighter-rouge">View</code>-Funktion, die den aktuellen Zustand (Model) nimmt und HTML zusammen mit potenziellen Benutzerinteraktionen generiert, die als <code class="language-plaintext highlighter-rouge">Msg</code> (Nachrichten) dargestellt werden. Wenn eine <code class="language-plaintext highlighter-rouge">Msg</code> ausgelöst wird, verarbeitet die <code class="language-plaintext highlighter-rouge">Update</code>-Funktion sie, um einen neuen Zustand zu produzieren, der dann eine aktualisierte Ansicht generiert und den Zyklus des unidirektionalen Datenflusses aufrechterhält.
+</span></p>
+
+<p>Hier vermischt sich Elm zwischen Sprache und Framework. Der beste Vergleich, den ich hier machen kann, ist React. Elm hat einen strengen unidirektionalen Informationsfluss. In Elm kannst den Zustand von <strong>nichts</strong> selbst ändern. Stattdessen sendet du <code class="language-plaintext highlighter-rouge">Messages</code> aus deiner View. Und dann ruft die <em>Elm-Laufzeitumgebung</em> die Update-Funktion auf, die du ebenfalls bereitstellst. Sie erhält die <code class="language-plaintext highlighter-rouge">Message</code>, und du kannst einen <em>neuen</em> Zustand deiner Anwendung zurückgeben. Das was in der React-Welt am nächsten an diese Architektur kommt ist die Verwendung von <a href="https://react-redux.js.org">Redux</a>. 
+Der große Unterschied in Elm ist, dass es Teil der (streng prüfenden) Sprache ist und du es nicht (versehentlich) umgehen kannst.</p>
+
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
+<span class="marginnote">
+Lies: <a href="https://languageimperfect.com/2023/04/29/avoid-this-common-react-use-effect-use-state-hook-antipattern.html">Vermeide dieses häufige React Hook Antipattern</a>
+darüber, warum die Verwendung von <code class="language-plaintext highlighter-rouge">useState</code> und <code class="language-plaintext highlighter-rouge">useEffect</code> zur Berechnung synchroner Werte zu einer suboptimalen Benutzererfahrung und subtilen Bugs führt, die schwer zu debuggen sein können.
+</span></p>
+
+<p>Aufgrund der Einfachheit der Sprache und der Strenge des Compilers gibt es <em>weniger</em> Möglichkeiten, dasselbe auf unterschiedlichen Wegen zu tun. 
+Da React JavaScript (oder TypeScript) verwendet, hat es weniger Kontrolle über die Umgebung, in der es läuft, und hat folglich <em>viel</em> mehr “Fußfallen”, wie zum Beispiel die gemeinsame Verwendung von <code class="language-plaintext highlighter-rouge">useEffect</code> und <code class="language-plaintext highlighter-rouge">useState</code>.</p>
+
+<p>Kurz gesagt: Weil es <em>weniger</em> Möglichkeiten gibt, “das Falsche zu tun”, ist es einfacher, das Richtige zu tun. Und weil es <em>weniger</em> Möglichkeiten gibt, den Kontrollfluss zu steuern, werden dieser meistens auch einfacher.</p>
+
+<h3 id="-eliminiere-toten-code"><a name="Eliminate"></a> Eliminiere toten Code</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://package.elm-lang.org/packages/jfmengels/elm-review/latest/">elm-review</a> ist ein Elm-Paket, das dein Elm-Projekt analysiert, um Fehler zu finden, bevor deine Benutzer sie finden.
+</span></p>
+
+<p>Der Elm-Compiler selbst hilft dir nicht viel dabei, unbenutzten Code zu erkennen. Aber es gibt ein ausgezeichnetes Tool namens <a href="https://package.elm-lang.org/packages/jfmengels/elm-review/latest/">elm-review</a>, das dank des strengen Typsystems von Elm sehr effizient unbenutzten Code erkennen und entfernen kann.</p>
+
+<p><a href="https://jfmengels.net/safe-dead-code-removal/">Lies mehr</a> darüber, wie Leute mühelos Tausende von Codezeilen entfernt haben und wie das Elm-Typsystem eine großartige statische Code-Analyse ermöglicht, um alle möglichen Arten von Optimierungen vorzunehmen.</p>
+
+<h3 id="-rationalisiere-die-namensgebung-damit-die-richtigen-namen-eher-erraten-werden-können"><a name="Rationalize"></a> Rationalisiere die Namensgebung, damit die richtigen Namen eher erraten werden können</h3>
+
+<p>Auch hier gibt der Elm-Compiler nur wenig Hilfe in Form von Regeln darüber, wie Bezeichner der verschiedenen syntaktischen Elemente (Typen, Funktionen, Variablen) formatiert werden können. Aber ich wüsste auch, wie die eigentliche Namensgebung von der Sprache selbst unterstützt werden kann. Vielleicht werden LLMs dies eines Tages für uns alle lösen 🙈.</p>
+
+<h2 id="-fazit"><a name="Conclusion"></a> Fazit</h2>
+
+<p>Elm ist nicht geeignet, um <em>jedes</em> Programmierproblem zu lösen, aber es ist die angenehmste Art für Frontend-Arbeit die ich je hatte. Und dieser Artikel kratzt nur an der Oberfläche der Liste von Funktionen, die es angenehm zu benutzen machen. 
+Viele der Techniken, die ich für Elm lernen <em>musste</em> habe ich in Projekte in anderen Sprachen angwendet, um von den “Rezepten”  die Kent Beck vorschlägt zu profitieren ohne dass ich davon wusste.</p>
+
+<p>Hier ist eine Liste von Ressourcen, die du dir ansehen kannst, wenn du Elm mal etwas genauer ansehen willst:</p>
+
+<ul>
+  <li><a href="https://guide.elm-lang.org/">Der offizielle Elm-Leitfaden</a></li>
+  <li><a href="https://elm-lang.org/examples">Live-Beispiele</a></li>
+  <li><a href="https://ellie-app.com/new">Ellie: eine browserbasierte Elm-IDE</a></li>
+  <li><a href="https://a-tour-of-elm.axelerator.de">A tour of Elm: Ein interaktives Tutorial</a></li>
+  <li><a href="https://youtu.be/WgJ2FUW1miA?si=ukwOl36y9rLTyOEn">Videoserie: Welcome to Elm</a></li>
+</ul>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Kent Beck ist bekannt für seinen pragmatischen Ansatz im Softwaredesign sowie seinen Fokus auf die Verbesserung der Codequalität und Effizienz von Entwicklungsprozessen. In einem seiner Artikel “verschreibt” er eine Liste von “Rezepten”, um weniger fehleranfälligen Code zu schreiben. Und jetzt habe ich eine konkrete Liste von Gründen, warum ich es so sehr mag in Elm zu programmieren.]]></summary></entry><entry xml:lang="en"><title type="html">The misguided dream of language monogamy in web development</title><link href="https://blog.axelerator.de/development/en/language-monogamy" rel="alternate" type="text/html" title="The misguided dream of language monogamy in web development" /><published>2024-01-02T13:00:00-05:00</published><updated>2024-01-02T13:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/language-monogamy-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/language-monogamy"><![CDATA[<p><img src="/assets/posts/language-monogamy/handshake.webp" width="230" style="float:right; margin: 5px 10px 10px 0" />
+In the ever-changing world of web development, many seek the ideal of using one
+language for both frontend and backend.
+But if we focus on common data instead of a common language, 
+we can get the best out of both worlds without having to sacrifice 
+significant synergies.
+—</p>
+
+<p>Content:</p>
+
+<ul>
+  <li><a href="#dream">Exploring the One-Language Dream</a></li>
+  <li><a href="#illusion">Unraveling the Illusion</a></li>
+  <li><a href="#data">Shared Data Definition vs. Language Uniformity</a></li>
+  <li><a href="#ruelm">A Real-world Example: Rust and Elm Collaboration</a></li>
+</ul>
+
+<hr />
+
+<h2 id="-exploring-the-one-language-dream"><a name="dream"></a> Exploring the One-Language Dream:</h2>
+
+<p>Many are drawn to the idea of sticking to a single programming language for both frontend and backend.
+<label for="def-nodejs" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-nodejs" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://nodejs.org/en/about"><img src="/assets/posts/language-monogamy/nodejs-logo.svg" style="background-color:#333" /></a><br />
+<a href="https://nodejs.org/en/about">Node.js</a> is a runtime environment that allows developers to execute JavaScript code server-side
+</span></p>
+
+<p>One reason is the appeal of having to master just a single language 
+For example <a href="https://nodejs.org/en">NodeJS</a>
+offers JavaScript developers to write their backend in
+the same language that the browser understands.</p>
+
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
+<span class="marginnote">
+<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 40%" /><br />
+<a href="https://htmx.org/docs/">htmx</a> is a library that allows you to access modern browser features directly from HTML, rather than using javascript.
+</span></p>
+
+<p><a href="https://htmx.org/docs/">htmx</a> advertises more to backend developers by having to only produce HTML in their backend language 
+to create a dynamic UX.</p>
+
+<p>A second argument, is the idea of writing certain functionalities only <em>once</em>
+and being able to use them both on front- and backend. However, let’s pause and
+consider whether these reasons paint the complete picture or merely optimize
+for a local maximum.</p>
+
+<h2 id="unraveling-the-illusion"><a name="illusion"></a>Unraveling the Illusion</h2>
+
+<p>I would argue that the <em>surface area</em> of code/functionality that can <strong>genuinely be
+reused</strong> between the frontend and the backend is often overestimated. 
+The backend and the browser, operate in vastly different runtime environments,
+demanding distinct programming patterns. 
+In the browser, we run an interactive, graphical user interface.
+Our primary goal in the backend is the correct and efficient management of business data.</p>
+
+<p>I would further argue that in most cases you will spend at least as much (if not
+more) effort learning the <strong>framework</strong> (and the problem they’re solving) as you
+spend learning the programming language.</p>
+
+<p>The reason that there are little synergies between learning let’s say <em>React</em> and
+<em>Ruby on Rails</em> is not so much that they are written in different languages. It’s the
+fact that they solve completely disparate problems.</p>
+
+<h2 id="shared-data-definition-vs-language-uniformity"><a name="data"></a>Shared Data Definition vs. Language Uniformity</h2>
+
+<p>The main potential for code reuse is the use of <strong>shared data structures</strong>!</p>
+
+<p><label for="def-gql" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-gql" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://graphql.org"><img src="/assets/posts/language-monogamy/graphql-logo.svg" style="width: 2em" /> GraphQL</a><br />
+lets you define a schema for the types and relationships of data in an API, serving as a contract between the client and the server, ensuring structured and consistent communication.
+</span></p>
+
+<p>To achieve this, many companies use <a href="https://graphql.org">GraphQL</a>. 
+However, managing a <strong>“GraphQL layer”</strong> is associated with considerable costs.
+Companies often have entire teams dedicated solely to the integrity of the GraphQL API. 
+On top of that GraphQL comes with its own (schema/query) language that developers have to learn as well.</p>
+
+<p>If you focus on the right problem <strong>- “the common data definition” -</strong> and put the challenge of learning a new language in the right perspective, a lot of interesting possibilities open up.
+Rather than fixating on the homogeneity of programming languages, focusing on a
+shared understanding of data structures provides a more pragmatic and effective
+approach to achieving code reuse <em>where it matters the most</em>.</p>
+
+<h2 id="a-real-world-example-rust-and-elm-collaboration"><a name="ruelm"></a>A Real-world Example: Rust and Elm Collaboration</h2>
+
+<p><label for="def-elm" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-elm" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://elm-lang.org"><img src="/assets/posts/language-monogamy/elm-logo.svg" style="width: 4em" /> Elm</a>
+is a <strong>small</strong> programming language focused on simplicity. In my 
+<a href="../a-tour-of-elm">previous post</a>,
+I go into detail why I think everyone should give it a try.
+</span></p>
+
+<p>Elm is a functional programming language for front-end web development,
+known for its strong type system and focus on simplicity, correctness,
+and reliability in building interactive user interfaces.</p>
+
+<p>Rust excels in the backend with its focus on safety, performance, and concurrency,
+offering a robust and efficient development experience.</p>
+
+<p>Choosing Elm as the frontend language and Rust in the backend gives us the best
+of both worlds.
+Since both are statically typed we can use the type information from our Rust 
+data structures to generate Elm types and (de-)serializers.</p>
+
+<p><label for="def-elmrs" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-elmrs" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://crates.io/crates/elm-rs">elm_rs</a> is a Rust crate that
+automatically generates type definitions and functions for your Elm frontend from your Rust backend types, making it easy to keep the two in sync. 
+</span></p>
+
+<p>The backend makes the natural candidate for the <em>“source of truth”</em> of the shared
+data type. The <code class="language-plaintext highlighter-rouge">elm_rs</code> crate translates the Rust data types into the
+corresponding Elm types (and de-/serializers).</p>
+
+<p>Instead of adding complexity through a dedicated API layer we define 
+two data types <code class="language-plaintext highlighter-rouge">ToBackend</code> or <code class="language-plaintext highlighter-rouge">ToFrontend</code>, each representing messages flowing
+either to the backend or to the frontend.
+This way of communication is highly inspired by <a href="https://dashboard.lamdera.app/docs/overview">Lamdera</a>.
+<label for="def-lamdera" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-lamdera" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://dashboard.lamdera.app/docs/overview"><img src="/assets/posts/language-monogamy/lamdera-logo.png" style="width: 10em" /></a><br />
+Lamdera is a full-stack platform that actually <strong>does</strong> use Elm in both the frontend and the backend.
+But it also imposes significant restrictions on how you can run code in the backend.
+</span></p>
+
+<p>In this way, we can use Elm for what it was created for: Working 
+with the Brwoser API in a safe and delightful way without having to sacrifice a responsive UI.
+In return, we don’t have to deal with HTML and the state of the user interface in the backend <strong>at all</strong>.</p>
+
+<p>My <a href="https://github.com/axelerator/ruelm">starter template <em>“Rülm”</em></a> shows that such an architecture beyond the popular web frameworks
+does not have to be complicated. In less than <code class="language-plaintext highlighter-rouge">400</code> lines of code we get a web application that is type-safe
+and efficiently exchange data in both directions.
+And all this without external build tools!</p>]]></content><author><name></name></author><category term="elm" /><category term="rust" /><summary type="html"><![CDATA[In the ever-changing world of web development, many seek the ideal of using one language for both frontend and backend. But if we focus on common data instead of a common language, we can get the best out of both worlds without having to sacrifice significant synergies. —]]></summary></entry><entry xml:lang="de"><title type="html">Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung</title><link href="https://blog.axelerator.de/development/de/language-monogamy" rel="alternate" type="text/html" title="Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung" /><published>2024-01-02T13:00:00-05:00</published><updated>2024-01-02T13:00:00-05:00</updated><id>https://blog.axelerator.de/development/de/language-monogamy-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/language-monogamy"><![CDATA[<p><img src="/assets/posts/language-monogamy/handshake.webp" width="230" style="float:right; margin: 5px 10px 10px 0" />
 In der sich ständig wandelnden Welt der Webentwicklung streben viele nach dem
 Ideal, die gleiche Programmiersprache sowohl im Frontend als auch im Backend zu
 verwenden. Wenn wir uns aber auf gemeinsame Daten anstatt auf eine gemeinsame Sprache 
@@ -141,262 +602,7 @@ Zustand der Benutzeroberfläche befassen.</p>
 so eine Architektur abseits von den populären Web-Frameworks nicht kompliziert
 sein muss. In weniger als <code class="language-plaintext highlighter-rouge">400</code> Zeilen Code bekommen wir eine Webanwendung die
 typsicher und effizient Daten in beide Richtungen austauschen kann. Und das
-alles ohne externe Build-Tools!</p>]]></content><author><name></name></author><category term="elm" /><category term="rust" /><summary type="html"><![CDATA[In der sich ständig wandelnden Welt der Webentwicklung streben viele nach dem Ideal, die gleiche Programmiersprache sowohl im Frontend als auch im Backend zu verwenden. Wenn wir uns aber auf gemeinsame Daten anstatt auf eine gemeinsame Sprache Sprache konzentrieren, können wir das Beste aus beiden Welten rausholen ohne auf signifikante Synergien verzichten zu müssen. —]]></summary></entry><entry xml:lang="en"><title type="html">The misguided dream of language monogamy in web development</title><link href="https://blog.axelerator.de/development/en/language-monogamy" rel="alternate" type="text/html" title="The misguided dream of language monogamy in web development" /><published>2024-01-02T13:00:00-05:00</published><updated>2024-01-02T13:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/language-monogamy-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/language-monogamy"><![CDATA[<p><img src="/assets/posts/language-monogamy/handshake.webp" width="230" style="float:right; margin: 5px 10px 10px 0" />
-In the ever-changing world of web development, many seek the ideal of using one
-language for both frontend and backend.
-But if we focus on common data instead of a common language, 
-we can get the best out of both worlds without having to sacrifice 
-significant synergies.
-—</p>
-
-<p>Content:</p>
-
-<ul>
-  <li><a href="#dream">Exploring the One-Language Dream</a></li>
-  <li><a href="#illusion">Unraveling the Illusion</a></li>
-  <li><a href="#data">Shared Data Definition vs. Language Uniformity</a></li>
-  <li><a href="#ruelm">A Real-world Example: Rust and Elm Collaboration</a></li>
-</ul>
-
-<hr />
-
-<h2 id="-exploring-the-one-language-dream"><a name="dream"></a> Exploring the One-Language Dream:</h2>
-
-<p>Many are drawn to the idea of sticking to a single programming language for both frontend and backend.
-<label for="def-nodejs" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-nodejs" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://nodejs.org/en/about"><img src="/assets/posts/language-monogamy/nodejs-logo.svg" style="background-color:#333" /></a><br />
-<a href="https://nodejs.org/en/about">Node.js</a> is a runtime environment that allows developers to execute JavaScript code server-side
-</span></p>
-
-<p>One reason is the appeal of having to master just a single language 
-For example <a href="https://nodejs.org/en">NodeJS</a>
-offers JavaScript developers to write their backend in
-the same language that the browser understands.</p>
-
-<p><label for="def-htmx" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-htmx" class="margin-toggle" />
-<span class="marginnote">
-<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 40%" /><br />
-<a href="https://htmx.org/docs/">htmx</a> is a library that allows you to access modern browser features directly from HTML, rather than using javascript.
-</span></p>
-
-<p><a href="https://htmx.org/docs/">htmx</a> advertises more to backend developers by having to only produce HTML in their backend language 
-to create a dynamic UX.</p>
-
-<p>A second argument, is the idea of writing certain functionalities only <em>once</em>
-and being able to use them both on front- and backend. However, let’s pause and
-consider whether these reasons paint the complete picture or merely optimize
-for a local maximum.</p>
-
-<h2 id="unraveling-the-illusion"><a name="illusion"></a>Unraveling the Illusion</h2>
-
-<p>I would argue that the <em>surface area</em> of code/functionality that can <strong>genuinely be
-reused</strong> between the frontend and the backend is often overestimated. 
-The backend and the browser, operate in vastly different runtime environments,
-demanding distinct programming patterns. 
-In the browser, we run an interactive, graphical user interface.
-Our primary goal in the backend is the correct and efficient management of business data.</p>
-
-<p>I would further argue that in most cases you will spend at least as much (if not
-more) effort learning the <strong>framework</strong> (and the problem they’re solving) as you
-spend learning the programming language.</p>
-
-<p>The reason that there are little synergies between learning let’s say <em>React</em> and
-<em>Ruby on Rails</em> is not so much that they are written in different languages. It’s the
-fact that they solve completely disparate problems.</p>
-
-<h2 id="shared-data-definition-vs-language-uniformity"><a name="data"></a>Shared Data Definition vs. Language Uniformity</h2>
-
-<p>The main potential for code reuse is the use of <strong>shared data structures</strong>!</p>
-
-<p><label for="def-gql" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-gql" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://graphql.org"><img src="/assets/posts/language-monogamy/graphql-logo.svg" style="width: 2em" /> GraphQL</a><br />
-lets you define a schema for the types and relationships of data in an API, serving as a contract between the client and the server, ensuring structured and consistent communication.
-</span></p>
-
-<p>To achieve this, many companies use <a href="https://graphql.org">GraphQL</a>. 
-However, managing a <strong>“GraphQL layer”</strong> is associated with considerable costs.
-Companies often have entire teams dedicated solely to the integrity of the GraphQL API. 
-On top of that GraphQL comes with its own (schema/query) language that developers have to learn as well.</p>
-
-<p>If you focus on the right problem <strong>- “the common data definition” -</strong> and put the challenge of learning a new language in the right perspective, a lot of interesting possibilities open up.
-Rather than fixating on the homogeneity of programming languages, focusing on a
-shared understanding of data structures provides a more pragmatic and effective
-approach to achieving code reuse <em>where it matters the most</em>.</p>
-
-<h2 id="a-real-world-example-rust-and-elm-collaboration"><a name="ruelm"></a>A Real-world Example: Rust and Elm Collaboration</h2>
-
-<p><label for="def-elm" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-elm" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://elm-lang.org"><img src="/assets/posts/language-monogamy/elm-logo.svg" style="width: 4em" /> Elm</a>
-is a <strong>small</strong> programming language focused on simplicity. In my 
-<a href="../a-tour-of-elm">previous post</a>,
-I go into detail why I think everyone should give it a try.
-</span></p>
-
-<p>Elm is a functional programming language for front-end web development,
-known for its strong type system and focus on simplicity, correctness,
-and reliability in building interactive user interfaces.</p>
-
-<p>Rust excels in the backend with its focus on safety, performance, and concurrency,
-offering a robust and efficient development experience.</p>
-
-<p>Choosing Elm as the frontend language and Rust in the backend gives us the best
-of both worlds.
-Since both are statically typed we can use the type information from our Rust 
-data structures to generate Elm types and (de-)serializers.</p>
-
-<p><label for="def-elmrs" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-elmrs" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://crates.io/crates/elm-rs">elm_rs</a> is a Rust crate that
-automatically generates type definitions and functions for your Elm frontend from your Rust backend types, making it easy to keep the two in sync. 
-</span></p>
-
-<p>The backend makes the natural candidate for the <em>“source of truth”</em> of the shared
-data type. The <code class="language-plaintext highlighter-rouge">elm_rs</code> crate translates the Rust data types into the
-corresponding Elm types (and de-/serializers).</p>
-
-<p>Instead of adding complexity through a dedicated API layer we define 
-two data types <code class="language-plaintext highlighter-rouge">ToBackend</code> or <code class="language-plaintext highlighter-rouge">ToFrontend</code>, each representing messages flowing
-either to the backend or to the frontend.
-This way of communication is highly inspired by <a href="https://dashboard.lamdera.app/docs/overview">Lamdera</a>.
-<label for="def-lamdera" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-lamdera" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://dashboard.lamdera.app/docs/overview"><img src="/assets/posts/language-monogamy/lamdera-logo.png" style="width: 10em" /></a><br />
-Lamdera is a full-stack platform that actually <strong>does</strong> use Elm in both the frontend and the backend.
-But it also imposes significant restrictions on how you can run code in the backend.
-</span></p>
-
-<p>In this way, we can use Elm for what it was created for: Working 
-with the Brwoser API in a safe and delightful way without having to sacrifice a responsive UI.
-In return, we don’t have to deal with HTML and the state of the user interface in the backend <strong>at all</strong>.</p>
-
-<p>My <a href="https://github.com/axelerator/ruelm">starter template <em>“Rülm”</em></a> shows that such an architecture beyond the popular web frameworks
-does not have to be complicated. In less than <code class="language-plaintext highlighter-rouge">400</code> lines of code we get a web application that is type-safe
-and efficiently exchange data in both directions.
-And all this without external build tools!</p>]]></content><author><name></name></author><category term="elm" /><category term="rust" /><summary type="html"><![CDATA[In the ever-changing world of web development, many seek the ideal of using one language for both frontend and backend. But if we focus on common data instead of a common language, we can get the best out of both worlds without having to sacrifice significant synergies. —]]></summary></entry><entry xml:lang="de"><title type="html">Entdecke funktionale Programmierung mit Elm</title><link href="https://blog.axelerator.de/development/de/a-tour-of-elm" rel="alternate" type="text/html" title="Entdecke funktionale Programmierung mit Elm" /><published>2023-12-09T14:00:00-05:00</published><updated>2023-12-09T14:00:00-05:00</updated><id>https://blog.axelerator.de/development/de/a-tour-of-elm-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/a-tour-of-elm"><![CDATA[<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
-Wenn Du mit funktionaler Programmierung liebäugelst oder in die Entwicklung von
-Single Page Applications (SPA) einsteigen willst, gibt es kein besseres
-Tool als Elm. Elm zeichnet sich als eine Sprache aus, die nicht nur die
-Entwicklung angenehm macht, sondern auch als perfekter Einstieg in die Welt der
-funktionalen Programmierung dient.</p>
-
-<hr />
-
-<h2 id="statisch-getypte-glückseligkeit">Statisch getypte Glückseligkeit</h2>
-
-<p>Einer der wichtigsten Vorzüge von Elm ist, man mag es kaum glauben, die statische Typisierung.
-Im Vergleich zu JavaScript bietet das entscheidende Vorteile. Der Compiler
-fungiert als treuer Helfer und fängt Fehler ab, bevor sie zur Laufzeit
-Schaden anrichten können. 
-Was Elm auszeichnet, ist nicht nur die Typisierung selbst, sondern auch die unglaubliche Klarheit der Compiler-Meldungen.</p>
-
-<p>Elm ist nicht nur eine weitere funktionale Sprache, sondern eine komplettes
-Werkstatt für die Erstellung von SPAs. 
-Wenn wir in “React-Begriffen” denken, kombiniert sie:</p>
-
-<ul>
-  <li><em>TypeScript</em> (Sprache)</li>
-  <li><em>NPM</em> (Paket manager)</li>
-  <li><em>React</em> (Rendering)</li>
-  <li><em>Redux</em> (State Management)</li>
-</ul>
-
-<p>Alles in <strong>einem einzigen</strong> Werkzeug.</p>
-
-<p><label for="def-haskell" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-haskell" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://www.haskell.org">
-<img src="/assets/posts/a-tour-of-elm/haskell-logo.svg" style="width: 35%" alt="Haskell logo" /></a>
-Haskell wurde als Forschungssprache entwickelt und war als solche ausdrücklich dafür ausgelegt
-um experimentelle Funktionen und Syntax zu enthalten.<br />
-Das führt zu vielen verschiedenen “Stilen”, die es schwer machen, die Sprache schnell zu lernen.
-</span></p>
-
-<p>Durch die Konzentration auf eine einzige Zielplattform (den Browser) ist Elm
-einfacher als seine funktionalen Allzweck-Pendants wie <a href="https://www.haskell.org">Haskell</a>.</p>
-
-<p>Im Vergleich zu anderen Sprachen, die funktionale Muster <em>zusätzlich</em> zu
-imperativen und/oder objektorientierten Mustern anbieten,</p>
-
-<p><label for="def-imperative" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-imperative" class="margin-toggle" />
-<span class="marginnote">
-Lanugages like Ruby and JavaScript also <em>allow</em> but don’t enforce
-the functional style. Leading to the majority of code in these languages
-being in imperative.
-</span></p>
-
-<p>zeichnet sich Elm dadurch aus, dass es durchgehend dem funktionalen Programmierstil treu bleibt.
-Das macht Sie zu einem idealen Kandidaten für Entwickler, die bereits mit
-konventionelleren Programmiersprachen vertraut sind vertraut sind und sich auf das Erlernen des
-<strong>funktionalen Ansatzes</strong> konzentrieren wollen.</p>
-
-<h2 id="einfachheit">Einfachheit</h2>
-<p>Die Eleganz von Elm liegt in seiner Einfachheit. Es ist eine vergleichsweise <em>kleine</em> Sprache. Konkret
-bedeutet das, dass es <em>weniger Schlüsselwörter</em> und weniger <em>Konzepte</em> gibt (keine Objektorientierung).
-Das bedeutet ganz allgemein <em>weniger Wege, um dasselbe zu erreichen</em>.</p>
-
-<p>Natürlich hat das seinen Preis, und es gibt bestimmte <em>“Meta-Konzepte”</em>, 
-die nicht so <em>elegant</em> abstrahiert werden können wie z.B. in Haskell (Elm hat z.B. keine Typklassen).</p>
-
-<p><label for="def-ts" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-ts" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://www.typescriptlang.org">
-    <img src="/assets/posts/a-tour-of-elm/ts.svg" style="width: 15%" alt="TspeScript logo" />
-</a><br />
-<a href="https://www.typescriptlang.org">TypeScript’s</a>
-TypeScript Motto lautet: “TypeScript” ist JavaScript mit einer Syntax für Typen.”
-Du musst also JavaScript beherrschen und dann <strong>noch mehr</strong> lernen, um von den
-die zusätzlichen Funktionen von TypeScript zu nutzen können.
-</span></p>
-
-<p>Aber im Gegenzug ist es viel einfacher, <em>“die ganze”</em> Sprache zu lernen als andere Sprachen wie 
-<a href="https://www.typescriptlang.org"><em>TypeScript</em></a>.</p>
-
-<p>Ich glaube, dass “Frontend-Code” <em>einfach und dumm</em> bleiben sollte. Besonders in Webanwendungen
-sollte die meiste komplizierte Zahlenspielerei sowieso im Backend erledigt werden. Und dort 
-ist man frei, jede beliebige Sprache zu verwenden.</p>
-
-<p>(Ich halte Vorstellung, das die gleiche Sprache im Front- und Backend das Non-plus-Ultra ist für überbewertet,
-aber das Thema reicht für einen separaten Blogbeitrag).</p>
-
-<h2 id="unmittelbare-belohnung">Unmittelbare Belohnung</h2>
-<p>Ein weiterer Grund, warum ich Experimente gerne in Elm protoype, ist, dass es einfach ist, etwas zu produzieren
-mit dem jeder interagieren kann. 
-Der übliche Weg, Allzwecksprachen zu lernen, ist, mit Kommandozeilenanwendungen zu beginnen,
-die für normale Benutzer nicht zugänglich sind.
-Durch die Ausrichtung auf den Browser kannst Du mit nur ein paar Zeilen Code etwas bauen, das <a href="https://elm-visualization.netlify.app/weatherradial/">bunt</a> 
-und/oder <a href="https://elm-lang.org/examples/mario">interaktiv</a> ist.</p>
-
-<h2 id="a-tour-of-elm">A Tour of Elm</h2>
-
-<p>Ich freue mich sehr “A Tour of Elm” vorzustellen. Ein Einsteigerkurs für diejenigen
-die noch keine Erfahrung mit funktionaler Programmierung oder SPAs haben. 
-Am Anfang werden zunächst schnell die Grundlagen durchgehen und wesentliche Konzepte
-wie HTML, CSS und JavaScript, die die Grundlage für die SPA-Entwicklung vorgestellt.
-Der Kurs geht nahtlos in interaktive Lektionen über und bietet praktische Lektionen 
-in verdaulichen Portionen. Und was noch besser ist, Du kannst sofort loslegen
-ohne lästige Software-Installation - alles ist direkt im Browser.</p>
-
-<h2 id="fazit">Fazit</h2>
-
-<p>Elm ist nicht nur eine Sprache, sondern auch eine spannende Erfahrung, die darauf wartet, erkundet zu werden. 
-Egal, ob Du neu in der funktionalen Programmierung bist oder SPAs meistern willst, die Einfachheit und der Fokus von Elm
-machen Elm zum perfekten Begleiter.</p>
-
-<p><a href="https://a-tour-of-elm.axelerator.de">Probier “A Tour of Elm”</a> aus und fange an SPAs mit Spass und Sicherheit zu bauen.</p>
-
-<hr />]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Wenn Du mit funktionaler Programmierung liebäugelst oder in die Entwicklung von Single Page Applications (SPA) einsteigen willst, gibt es kein besseres Tool als Elm. Elm zeichnet sich als eine Sprache aus, die nicht nur die Entwicklung angenehm macht, sondern auch als perfekter Einstieg in die Welt der funktionalen Programmierung dient.]]></summary></entry><entry xml:lang="en"><title type="html">Discover Functional Programming with Elm</title><link href="https://blog.axelerator.de/development/en/a-tour-of-elm" rel="alternate" type="text/html" title="Discover Functional Programming with Elm" /><published>2023-12-09T14:00:00-05:00</published><updated>2023-12-09T14:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/a-tour-of-elm-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/a-tour-of-elm"><![CDATA[<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
+alles ohne externe Build-Tools!</p>]]></content><author><name></name></author><category term="elm" /><category term="rust" /><summary type="html"><![CDATA[In der sich ständig wandelnden Welt der Webentwicklung streben viele nach dem Ideal, die gleiche Programmiersprache sowohl im Frontend als auch im Backend zu verwenden. Wenn wir uns aber auf gemeinsame Daten anstatt auf eine gemeinsame Sprache Sprache konzentrieren, können wir das Beste aus beiden Welten rausholen ohne auf signifikante Synergien verzichten zu müssen. —]]></summary></entry><entry xml:lang="en"><title type="html">Discover Functional Programming with Elm</title><link href="https://blog.axelerator.de/development/en/a-tour-of-elm" rel="alternate" type="text/html" title="Discover Functional Programming with Elm" /><published>2023-12-09T14:00:00-05:00</published><updated>2023-12-09T14:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/a-tour-of-elm-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/a-tour-of-elm"><![CDATA[<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
 If you’ve been eyeing functional programming or diving into Single Page
 Application (SPA) development I think no other tool is better suited for you than
 <a href="https://elm-lang.org">Elm</a>. It stands out as a language that not only makes development
@@ -513,7 +719,122 @@ with Elm today!</p>
 
 <p><a href="https://a-tour-of-elm.axelerator.de">Check out “A Tour of Elm”</a> and start building SPAs with confidence.</p>
 
-<hr />]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[If you’ve been eyeing functional programming or diving into Single Page Application (SPA) development I think no other tool is better suited for you than Elm. It stands out as a language that not only makes development delightful but also serves as the perfect gateway to the world of functional programming.]]></summary></entry><entry xml:lang="en"><title type="html">Dynamic Diagrams</title><link href="https://blog.axelerator.de/development/en/liquid-diagrams" rel="alternate" type="text/html" title="Dynamic Diagrams" /><published>2023-11-15T15:00:00-05:00</published><updated>2023-11-15T15:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/liquid-diagrams-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/liquid-diagrams"><![CDATA[<p><img src="/assets/posts/liquid-diagrams/ld.webp" width="130" style="float:right; margin: 5px 10px 10px 0" />
+<hr />]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[If you’ve been eyeing functional programming or diving into Single Page Application (SPA) development I think no other tool is better suited for you than Elm. It stands out as a language that not only makes development delightful but also serves as the perfect gateway to the world of functional programming.]]></summary></entry><entry xml:lang="de"><title type="html">Entdecke funktionale Programmierung mit Elm</title><link href="https://blog.axelerator.de/development/de/a-tour-of-elm" rel="alternate" type="text/html" title="Entdecke funktionale Programmierung mit Elm" /><published>2023-12-09T14:00:00-05:00</published><updated>2023-12-09T14:00:00-05:00</updated><id>https://blog.axelerator.de/development/de/a-tour-of-elm-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/a-tour-of-elm"><![CDATA[<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
+Wenn Du mit funktionaler Programmierung liebäugelst oder in die Entwicklung von
+Single Page Applications (SPA) einsteigen willst, gibt es kein besseres
+Tool als Elm. Elm zeichnet sich als eine Sprache aus, die nicht nur die
+Entwicklung angenehm macht, sondern auch als perfekter Einstieg in die Welt der
+funktionalen Programmierung dient.</p>
+
+<hr />
+
+<h2 id="statisch-getypte-glückseligkeit">Statisch getypte Glückseligkeit</h2>
+
+<p>Einer der wichtigsten Vorzüge von Elm ist, man mag es kaum glauben, die statische Typisierung.
+Im Vergleich zu JavaScript bietet das entscheidende Vorteile. Der Compiler
+fungiert als treuer Helfer und fängt Fehler ab, bevor sie zur Laufzeit
+Schaden anrichten können. 
+Was Elm auszeichnet, ist nicht nur die Typisierung selbst, sondern auch die unglaubliche Klarheit der Compiler-Meldungen.</p>
+
+<p>Elm ist nicht nur eine weitere funktionale Sprache, sondern eine komplettes
+Werkstatt für die Erstellung von SPAs. 
+Wenn wir in “React-Begriffen” denken, kombiniert sie:</p>
+
+<ul>
+  <li><em>TypeScript</em> (Sprache)</li>
+  <li><em>NPM</em> (Paket manager)</li>
+  <li><em>React</em> (Rendering)</li>
+  <li><em>Redux</em> (State Management)</li>
+</ul>
+
+<p>Alles in <strong>einem einzigen</strong> Werkzeug.</p>
+
+<p><label for="def-haskell" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-haskell" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://www.haskell.org">
+<img src="/assets/posts/a-tour-of-elm/haskell-logo.svg" style="width: 35%" alt="Haskell logo" /></a>
+Haskell wurde als Forschungssprache entwickelt und war als solche ausdrücklich dafür ausgelegt
+um experimentelle Funktionen und Syntax zu enthalten.<br />
+Das führt zu vielen verschiedenen “Stilen”, die es schwer machen, die Sprache schnell zu lernen.
+</span></p>
+
+<p>Durch die Konzentration auf eine einzige Zielplattform (den Browser) ist Elm
+einfacher als seine funktionalen Allzweck-Pendants wie <a href="https://www.haskell.org">Haskell</a>.</p>
+
+<p>Im Vergleich zu anderen Sprachen, die funktionale Muster <em>zusätzlich</em> zu
+imperativen und/oder objektorientierten Mustern anbieten,</p>
+
+<p><label for="def-imperative" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-imperative" class="margin-toggle" />
+<span class="marginnote">
+Lanugages like Ruby and JavaScript also <em>allow</em> but don’t enforce
+the functional style. Leading to the majority of code in these languages
+being in imperative.
+</span></p>
+
+<p>zeichnet sich Elm dadurch aus, dass es durchgehend dem funktionalen Programmierstil treu bleibt.
+Das macht Sie zu einem idealen Kandidaten für Entwickler, die bereits mit
+konventionelleren Programmiersprachen vertraut sind vertraut sind und sich auf das Erlernen des
+<strong>funktionalen Ansatzes</strong> konzentrieren wollen.</p>
+
+<h2 id="einfachheit">Einfachheit</h2>
+<p>Die Eleganz von Elm liegt in seiner Einfachheit. Es ist eine vergleichsweise <em>kleine</em> Sprache. Konkret
+bedeutet das, dass es <em>weniger Schlüsselwörter</em> und weniger <em>Konzepte</em> gibt (keine Objektorientierung).
+Das bedeutet ganz allgemein <em>weniger Wege, um dasselbe zu erreichen</em>.</p>
+
+<p>Natürlich hat das seinen Preis, und es gibt bestimmte <em>“Meta-Konzepte”</em>, 
+die nicht so <em>elegant</em> abstrahiert werden können wie z.B. in Haskell (Elm hat z.B. keine Typklassen).</p>
+
+<p><label for="def-ts" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-ts" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://www.typescriptlang.org">
+    <img src="/assets/posts/a-tour-of-elm/ts.svg" style="width: 15%" alt="TspeScript logo" />
+</a><br />
+<a href="https://www.typescriptlang.org">TypeScript’s</a>
+TypeScript Motto lautet: “TypeScript” ist JavaScript mit einer Syntax für Typen.”
+Du musst also JavaScript beherrschen und dann <strong>noch mehr</strong> lernen, um von den
+die zusätzlichen Funktionen von TypeScript zu nutzen können.
+</span></p>
+
+<p>Aber im Gegenzug ist es viel einfacher, <em>“die ganze”</em> Sprache zu lernen als andere Sprachen wie 
+<a href="https://www.typescriptlang.org"><em>TypeScript</em></a>.</p>
+
+<p>Ich glaube, dass “Frontend-Code” <em>einfach und dumm</em> bleiben sollte. Besonders in Webanwendungen
+sollte die meiste komplizierte Zahlenspielerei sowieso im Backend erledigt werden. Und dort 
+ist man frei, jede beliebige Sprache zu verwenden.</p>
+
+<p>(Ich halte Vorstellung, das die gleiche Sprache im Front- und Backend das Non-plus-Ultra ist für überbewertet,
+aber das Thema reicht für einen separaten Blogbeitrag).</p>
+
+<h2 id="unmittelbare-belohnung">Unmittelbare Belohnung</h2>
+<p>Ein weiterer Grund, warum ich Experimente gerne in Elm protoype, ist, dass es einfach ist, etwas zu produzieren
+mit dem jeder interagieren kann. 
+Der übliche Weg, Allzwecksprachen zu lernen, ist, mit Kommandozeilenanwendungen zu beginnen,
+die für normale Benutzer nicht zugänglich sind.
+Durch die Ausrichtung auf den Browser kannst Du mit nur ein paar Zeilen Code etwas bauen, das <a href="https://elm-visualization.netlify.app/weatherradial/">bunt</a> 
+und/oder <a href="https://elm-lang.org/examples/mario">interaktiv</a> ist.</p>
+
+<h2 id="a-tour-of-elm">A Tour of Elm</h2>
+
+<p>Ich freue mich sehr “A Tour of Elm” vorzustellen. Ein Einsteigerkurs für diejenigen
+die noch keine Erfahrung mit funktionaler Programmierung oder SPAs haben. 
+Am Anfang werden zunächst schnell die Grundlagen durchgehen und wesentliche Konzepte
+wie HTML, CSS und JavaScript, die die Grundlage für die SPA-Entwicklung vorgestellt.
+Der Kurs geht nahtlos in interaktive Lektionen über und bietet praktische Lektionen 
+in verdaulichen Portionen. Und was noch besser ist, Du kannst sofort loslegen
+ohne lästige Software-Installation - alles ist direkt im Browser.</p>
+
+<h2 id="fazit">Fazit</h2>
+
+<p>Elm ist nicht nur eine Sprache, sondern auch eine spannende Erfahrung, die darauf wartet, erkundet zu werden. 
+Egal, ob Du neu in der funktionalen Programmierung bist oder SPAs meistern willst, die Einfachheit und der Fokus von Elm
+machen Elm zum perfekten Begleiter.</p>
+
+<p><a href="https://a-tour-of-elm.axelerator.de">Probier “A Tour of Elm”</a> aus und fange an SPAs mit Spass und Sicherheit zu bauen.</p>
+
+<hr />]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Wenn Du mit funktionaler Programmierung liebäugelst oder in die Entwicklung von Single Page Applications (SPA) einsteigen willst, gibt es kein besseres Tool als Elm. Elm zeichnet sich als eine Sprache aus, die nicht nur die Entwicklung angenehm macht, sondern auch als perfekter Einstieg in die Welt der funktionalen Programmierung dient.]]></summary></entry><entry xml:lang="en"><title type="html">Dynamic Diagrams</title><link href="https://blog.axelerator.de/development/en/liquid-diagrams" rel="alternate" type="text/html" title="Dynamic Diagrams" /><published>2023-11-15T15:00:00-05:00</published><updated>2023-11-15T15:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/liquid-diagrams-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/liquid-diagrams"><![CDATA[<p><img src="/assets/posts/liquid-diagrams/ld.webp" width="130" style="float:right; margin: 5px 10px 10px 0" />
 Static images, videos, and SVG animations come each with their own challenges when it comes to 
 visualize complex systems through diagrams.
 I’ve developed a mini language and web component to add a narrative element to diagrams.</p>
@@ -1076,393 +1397,4 @@ ist, bietet der SPA-Ansatz, insbesondere mit Frameworks wie Elm, eine zuverläss
 ich wie man inerhalb weniger Minuten ein SPA setup aufsetzen kann, ganz ohne <em>NPM</em>, <em>Webpack</em>
 und eigentlich sogar ohne JavaScript.</p>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/xLUpTaI1oE0?si=M0CGBqFvMQOOMzoy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>]]></content><author><name></name></author><category term="webdevelopment" /><category term="htmx" /><category term="spa" /><category term="elm" /><summary type="html"><![CDATA[Als Webentwickler liegt es in unserer Verantwortung, das beste Werkzeug für die jeweilige Aufgabe zu finden. htmx vereinfacht in der Tat den technischen Stack und senkt die Einstiegshürde für angehende Entwickler oder einfachere Projekte. Für komplizierte Benutzeroberflächen, die eine konsistente Darstellung der Daten erfordern, bietet der SPA-Ansatz jedoch eine bessere Unterstützung. Anstatt sich von Trends beeinflussen zu lassen, sollten wir die Nuancen in diesen Diskussionen anerkennen und unsere Tools mit Bedacht auswählen.]]></summary></entry><entry xml:lang="en"><title type="html">Building in the open</title><link href="https://blog.axelerator.de/business/en/building-in-the-open" rel="alternate" type="text/html" title="Building in the open" /><published>2023-10-19T18:00:00-04:00</published><updated>2023-10-19T18:00:00-04:00</updated><id>https://blog.axelerator.de/business/en/building-in-the-open-en</id><content type="html" xml:base="https://blog.axelerator.de/business/en/building-in-the-open"><![CDATA[<p><img src="/assets/posts/building-in-the-open/features.svg" width="130" height="130" style="float:right; margin: 5px 10px 10px 0" />
-Join me as I embark on a transparent journey to develop a digital filing cabinet that prioritizes your privacy.
-Using my years of experience in web development, I aim to craft a solution that bridges the gap between convenience and data security, 
-all while sharing each step of the process with you. 
-Follow along for live coding sessions, insights, and the chance to shape a product designed for individuals, families, and SMEs alike.</p>
-
-<hr />
-
-<p>Content:</p>
-
-<ul>
-  <li><a href="#intro">Intro</a></li>
-  <li><a href="#who">Who is this for?</a></li>
-  <li><a href="#usp">This is what I’m building</a></li>
-  <li><a href="#building">If you build it, <del>they will come</del> nobody cares</a></li>
-</ul>
-
-<hr />
-
-<p><a name="intro"></a></p>
-
-<p>I started web development in the last millennium with the help of a website called 
-<label for="selfhtml" class="margin-toggle">⊕</label>
-<input type="checkbox" id="selfhtml" class="margin-toggle" />
-<span class="marginnote">
-    <img src="/assets/posts/building-in-the-open/selfhtml.jpg" alt="Selfhtml.de in 1998" /><br />
-    Screenshot of SelfHtml.de from 1998 taken with the 
-    <a href="https://web.archive.org/web/20000915151937/http://www.netzwelt.com/selfhtml/tcab.htm">WaybackMachine</a>
-</span>
- <a href="https://wiki.selfhtml.org/">SELFHTML</a></p>
-
-<p>I ran my own <a href="https://www.fortytools.com/">software company</a> with two friends in Germany for nearly a decade. 
-And then, five years ago, after I moved to Canada to work for Shopify.
-I’m currently enjoying some free time between jobs and want to use these months to 
-spin up a product/business as a solo entrepreneur with an idea I’ve been thinking about for nearly ten years.</p>
-
-<p>Here is the problem I want to solve with my software:</p>
-
-<p><label for="unread" class="margin-toggle">⊕</label>
-<input type="checkbox" id="unread" class="margin-toggle" />
-<span class="marginnote">
-    <img src="/assets/posts/building-in-the-open/unread.svg" style="width: 5em" alt="Mail logo indicating a lot of unreal e-mails" />
-</span></p>
-
-<blockquote>
-  <p>You get a notification about an new e-mail. You open it and at a glance you can tell it’s important and have to <strong>act</strong> on it.</p>
-
-  <p>But you don’t have the time to do it <strong>right now</strong>.</p>
-
-  <p>So you leave it marked as <em>unread</em>.</p>
-</blockquote>
-
-<p>I do this with physical mail too – And it is a nightmare. I end up with stacks of unopened letters scattered through my apartment. Some of them urgent, some of them
-important, some of them both, some of them none of it.</p>
-
-<p>And then comes the dreaded moment where I have to find that <strong>one letter</strong>.</p>
-
-<p>I never committed to an existing software because these days this most likely means I have to give a very complete 
-picture of my personal life. Additionally</p>
-
-<ul>
-  <li>I can only maintain access to my data as long as I pay them a monthly fee</li>
-  <li>They will potentially use/sell my data</li>
-  <li>They might give generous access to government(s) agencies</li>
-  <li>Might be accessed by third parties through a data leak</li>
-</ul>
-
-<p>While there are alternatives like <em>Paperless</em> <label for="paperless" class="margin-toggle">⊕</label>
-<input type="checkbox" id="paperless" class="margin-toggle" />
-<span class="marginnote">
-    <img src="/assets/posts/building-in-the-open/paperless.png" style="width: 5em" alt="Mail logo indicating a lot of unreal e-mails" /><br />
-    <a href="https://github.com/paperless-ngx/paperless-ngx">Paperless</a> is a self hosted open-source document management system.
-</span>
- it is only accessible to people who are already well versed in
-hosting their own servers.</p>
-
-<p>I want to solve this problem for myself as well as non-technical people. Hitting the right spot between ease-of-use, level of privacy and cost to operate is 
-always an trade off based on ones current situation. Knowing this I will be building a software that allows users to choose a compromise that suits <em>their</em> needs
-and change their mind over time.</p>
-
-<h3 id="-who-is-this-for"><a name="who"></a> Who is this for?</h3>
-
-<p>I’ve talked to a lot of friends and family and a lot of people struggle with <em>document management</em> in similar ways. Not surprisingly the amount of important 
-mail multiplies once you start a family and you receive documents that you have to manage on behalf of your children.</p>
-
-<p>So while the <em>MVP</em> <label for="mvp-def" class="margin-toggle">⊕</label>
-<input type="checkbox" id="mvp-def" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://en.wikipedia.org/wiki/Minimum_viable_product" title="Check out the definition on Wikipedia">MVP</a> stands for <em>“Minimum Viable Product”</em>
-</span>
- that I will build in the beginning
-will focus on individuals a <strong>multiuser</strong> concept will be part of the foundations software design.</p>
-
-<p>To some degree a solution of this problem could be even applied to SMEs <label for="sme-def" class="margin-toggle">⊕</label>
-<input type="checkbox" id="sme-def" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://en.wikipedia.org/wiki/Small_and_medium-sized_enterprises" title="Check out the definition on Wikipedia">SME</a> stands for <em>“Small and medium-sized enterprises”</em>
-</span>
-.
-For example at Fortytools we were between 15-20 people and had a lot going on between our own SaaS and our contracting business. We had enough <em>paperwork</em> to deal
-with to employ someone. And documents often had to retrieved, processed and shared with other users.</p>
-
-<h3 id="-this-is-what-im-building"><a name="usp"></a> This is what I’m building</h3>
-
-<p>The core of the software I am going to build can best be described as a digital filing cabinet. That in itself is not especially novel, but I was surprised at
-how few solutions there are that do not satisfy my personal requirements for such a solution.</p>
-
-<p><em>“Data privacy”</em> is the least interesting feature in any software until someone 
-gets access to you data who is not supposed to. Which happens a lot more often than you think!</p>
-
-<p><img src="/assets/posts/building-in-the-open/breaches23.svg" alt="data breaches" /></p>
-
-<p>Giving your data to a <em>SaaS</em> <label for="saas-def" class="margin-toggle">⊕</label>
-<input type="checkbox" id="saas-def" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://en.wikipedia.org/wiki/Software_as_a_service">SaaS</a> Software as a service is a software licensing and delivery model in which software is licensed on a subscription basis and is centrally hosted.
-</span>
- provider is certainly the most convenient. It’s also arguably likely to loose your data when you rely
-on the backup tools of a cloud provider than managing external disks and thumb drives.</p>
-
-<p>However not all SaaS providers are set up equally and there are a lot of data breaches each year. Larger companies are usually good
-at protecting your data against unauthorized access. However if your are <em>not</em> paying a significant price tag, for example for Google Drive,
-the provider will use your data in one way or another to monetize their project. Yes they will look <strong>into</strong> files. If you create
-a comparison Google Sheet for Baby strollers, you <strong>will</strong> get ads of baby products.</p>
-
-<p>So I want to make <strong>privacy</strong> a major concern and allow you to run the software without any connection to the internet.
-<strong>But</strong> I also want to make the software as easily accessible as possible.
-So I will launch the software in different <em>variants</em> that allows you to pick your sweet sweet spot between <em>privacy</em> and <em>comfort</em>.</p>
-<div id="variants"></div>
-
-<p>And most importantly I will make it <strong>easy to switch</strong> between these. One of the main technical ingredients to achieve this is to store
-everything in <em>files</em>. Documents will be stored <em>by year</em> and <em>by month</em>. An extremely simple scheme that will be manageable even if you
-stop using the software altogether.</p>
-
-<div id="features"></div>
-
-<h3 id="-if-you-build-it-they-will-come-nobody-cares"><a name="building"></a> If you build it, <del>they will come</del> nobody cares</h3>
-
-<p>There is this platitude about how it’s not enough to just build a good product.
-The gist is that you should start starting marketing &amp; sales activities as soon as you start building.</p>
-
-<p>And the reason this is still being told is that especially solo developers are likely to fall into this trap.
-There is a high temptation wanting the first release to be perfect, wanting to add just one more feature..
-Another catalyst for this line of thinking/feeling is that it’s better to start with a “big bang”.</p>
-
-<p>It’s been proven over and over again that this is <strong>not</strong> the case.
-So to avoid falling into this trap I decided to <strong>“build in the open”</strong> from the start.</p>
-
-<p>Practically that means I’m going to stream live on Twitch as I write the first lines of code.
-I’ll be happy to answer questions and will be talking in more detail about some of technical
-decisions for this project.</p>
-
-<p>Watching live coding sessions is not always most captivating and I also want to share non-technical challenges
-along the way. So I will also build other channels (more blog posts Instagram, Youtube, Podcast, Newsletter). I’m also 
-interested in learning from other peoples journey.</p>
-
-<p>So if you’re interested in following my journey I’d love to send you my weekly newsletter where I share recent progress.</p>
-
-<div id="subscribe"></div>
-
-<link rel="stylesheet" href="/assets/interactive/styles.css" />
-
-<script src="/assets/interactive/interactive.js"></script>
-
-<script>
-  var variants = Elm.Interactive.init({
-    node: document.getElementById('variants'),
-    flags: { kind: "Variants", lang: "en" }
-  });
-
-  var features = Elm.Interactive.init({
-    node: document.getElementById('features'),
-    flags: { kind: "Features" , lang: "en" }
-  });
-
-  var subscribe = Elm.Interactive.init({
-    node: document.getElementById('subscribe'),
-    flags: { kind: "Subscribe" }
-  });
-</script>]]></content><author><name></name></author><category term="solopreneur" /><category term="business" /><summary type="html"><![CDATA[Join me as I embark on a transparent journey to develop a digital filing cabinet that prioritizes your privacy. Using my years of experience in web development, I aim to craft a solution that bridges the gap between convenience and data security, all while sharing each step of the process with you. Follow along for live coding sessions, insights, and the chance to shape a product designed for individuals, families, and SMEs alike.]]></summary></entry><entry xml:lang="de"><title type="html">Bauen im Freien</title><link href="https://blog.axelerator.de/business/de/building-in-the-open" rel="alternate" type="text/html" title="Bauen im Freien" /><published>2023-10-19T18:00:00-04:00</published><updated>2023-10-19T18:00:00-04:00</updated><id>https://blog.axelerator.de/business/de/building-in-the-open-de</id><content type="html" xml:base="https://blog.axelerator.de/business/de/building-in-the-open"><![CDATA[<p><img src="/assets/posts/building-in-the-open/features.svg" width="130" height="130" style="float:right; margin: 5px 10px 10px 0" />
-Begleite mich wie ich meinen <em>digitalen Aktenschrank</em> und mein 1-Mann-Startup darum in der Öffentlichkeit baue.
-Mit langjähriged Erfahrungen in der Softwareentwicklung strebe ich an, eine Lösung zu schaffen, die die Lücke zwischen Bequemlichkeit und Datensicherheit schließt,
-während ich jeden Schritt des Prozesses mit Dir teile.</p>
-
-<p>Verfolge Livecoding Sessions, Erkenntnisse und die Möglichkeit, ein Produkt mitzugestalten, das für Einzelpersonen,
-Familien und KMUs gleichermaßen konzipiert ist.</p>
-
-<hr />
-
-<p>Content:</p>
-
-<ul>
-  <li><a href="#intro">Intro</a></li>
-  <li><a href="#who">Für wen?</a></li>
-  <li><a href="#usp">Das wird gebaut</a></li>
-  <li><a href="#building">If you build it, <del>they will come</del> nobody cares</a></li>
-</ul>
-
-<hr />
-
-<p><a name="intro"></a></p>
-
-<p>Ich habe mit der Webentwicklung im letzten Jahrtausend begonnen,
-und zwar mit Hilfe einer Website namens <label for="selfhtml" class="margin-toggle">⊕</label>
-<input type="checkbox" id="selfhtml" class="margin-toggle" />
-<span class="marginnote">
-    <img src="/assets/posts/building-in-the-open/selfhtml.jpg" alt="Selfhtml.de in 1998" /><br />
-    Screenshot of SelfHtml.de from 1998 taken with the 
-    <a href="https://web.archive.org/web/20000915151937/http://www.netzwelt.com/selfhtml/tcab.htm">WaybackMachine</a>
-</span>
- <a href="https://wiki.selfhtml.org/">SELFHTML</a> im Jahr 1998.</p>
-
-<p>Fast ein Jahrzehnt lang habe ich in Deutschland gemeinsam mit zwei Freunden mein eigenes <a href="(https://www.fortytools.com/)">Softwareunternehmen</a> geführt.
-Vor fünf Jahren bin ich dann nach Kanada gezogen, 
-um bei Shopify zu arbeiten. 
-Derzeit genieße ich etwas Freizeit zwischen den Jobs und möchte diese Monate nutzen,
-um als Solo-Unternehmer ein Produkt/Geschäft aufzubauen - eine Idee, über die ich seit fast zehn Jahren nachdenke.</p>
-
-<p>Hier ist das Problem, das ich mit meiner Software lösen möchte:</p>
-
-<p><label for="unread" class="margin-toggle">⊕</label>
-<input type="checkbox" id="unread" class="margin-toggle" />
-<span class="marginnote">
-    <img src="/assets/posts/building-in-the-open/unread.svg" style="width: 5em" alt="Mail logo mit einer hohen Anzahl ungelesener E-Mails" />
-</span></p>
-
-<blockquote>
-  <p>De bekommst eine Benachrichtigung über eine neue E-Mail. Du öffnest sie und erkennst sofort, 
-dass sie wichtig ist und Du darauf reagieren musst.</p>
-
-  <p>Aber Du hast jetzt keine Zeit dafür.</p>
-
-  <p>Also läst Du sie als ungelesen markiert.</p>
-</blockquote>
-
-<p>Mir geht es mit physischer Post genauso – und es ist ein Albtraum. 
-Ich habe Stapel ungeöffneter Briefe in meiner Wohnung.
-Einige davon sind dringend, andere wichtig, manche beides, manche keins von beidem.</p>
-
-<p>Und dann kommt der gefürchtete Moment, in dem ich diesen <strong>einen</strong> Brief finden muss.</p>
-
-<p>Ich konnte mich nie für eine bestehende Software entscheiden, 
-weil dies heutzutage höchstwahrscheinlich bedeutet, dass ich einem Cloud-Software-Anbieter 
-ein sehr vollständiges Bild meines persönlichen Lebens geben muss.</p>
-
-<p>Dazu kommt:</p>
-
-<ul>
-  <li>ich muss einen monatlichen Beitrag zahlen um weiter auf meine Daten zugreifen zu können</li>
-  <li>der Anbieter verkauft Teile meiner Daten für zusätzlichen Profit</li>
-  <li>der Anbieter teilt Daten großzügig mit Behörden im In- und Ausland</li>
-  <li>der Anbieter wird Ziel eines Hackerangriffs und meine Daten gelangen in die Hände Unbefugter</li>
-</ul>
-
-<p>While there are alternatives like <em>Paperless</em>  it is only accessible to people who are already well versed in
-hosting their own servers.</p>
-
-<p>Es gibt zwar Open-Source Alternativen wie <label for="paperless" class="margin-toggle">⊕</label>
-<input type="checkbox" id="paperless" class="margin-toggle" />
-<span class="marginnote">
-    <img src="/assets/posts/building-in-the-open/paperless.png" style="width: 5em" alt="Mail logo indicating a lot of unreal e-mails" /><br />
-    <a href="https://github.com/paperless-ngx/paperless-ngx">Paperless</a> ist eine selbst gehostete Dokumenten Management Lösung.
-</span>
- <em>Paperless</em>,
-diese sind aber häufig nur für Leute zugänglich die sich im Betrieb von Server auskennen.</p>
-
-<p>Ich möchte dieses Problem für mich selbst sowie für technisch weniger versierte Personen lösen.
-Es ist immer ein Kompromiss zwischen Benutzerfreundlichkeit, Datenschutz und Betriebskosten. 
-Mein Ziel ist es eine Software entwickeln, die es den Benutzern ermöglicht, einen Kompromiss zu wählen,
-der ihren Bedürfnissen entspricht, und im Laufe der Zeit ihre Meinung zu ändern.</p>
-
-<h3 id="-für-wen"><a name="who"></a> Für wen?</h3>
-
-<p>Ich habe mit vielen Freunden und Familienmitgliedern gesprochen,
-und die meisten haben ähnliche Probleme mit der Dokumentenverwaltung.
-Und sobald man eine Familie gründet kommt eine Menge an wichtiger Post steigt,
-, die man im Namen seiner Kinder verwalten muss dazu.</p>
-
-<p>Der <label for="mvp-def" class="margin-toggle">⊕</label>
-<input type="checkbox" id="mvp-def" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://de.wikipedia.org/wiki/Minimum_Viable_Product">MVP</a> steht für <em>“Minimum Viable Product”</em>
-</span>
- MVP, den ich zu Beginn entwickeln werde,
-wird sich also auf Einzelpersonen konzentrieren, aber ein Multiuser-Konzept wird Teil des Software-Designs sein.</p>
-
-<p>In gewissem Maße könnte eine Lösung dieses Problems sogar auf <label for="sme-def" class="margin-toggle">⊕</label>
-<input type="checkbox" id="sme-def" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://de.wikipedia.org/wiki/Kleine_und_mittlere_Unternehmen">KMU</a> steht für r <em>“Kleine und mittlere Unternehmen”</em>
-</span>
-KMU angewendet werden.
-Zum Beispiel waren wir bei Fortytools zwischen 15-20 Personen und hatten mit unserem 
-eigenen Produkt und Entwicklungsarbeit für andere Unternehmen viel zu tun. 
-Wir hatten genug Papierkram zu erledigen, um jemanden einzustellen. 
-Dokumente mussten oft abgerufen, verarbeitet und mit anderen Benutzern geteilt werden.</p>
-
-<h3 id="-this-is-what-im-building"><a name="usp"></a> This is what I’m building</h3>
-
-<p>Das Herzstück der Software, die ich entwickeln werde,
-lässt sich am besten als digitales Aktenschrank beschreiben.
-Das ist an sich nichts Neues, aber ich war überrascht,
-wie wenige Lösungen es gibt, die meinen persönlichen Anforderungen an eine solche Lösung nicht gerecht werden.</p>
-
-<p>“Datenschutz” ist ein Feature in jeder Software, aber normalerweise nicht eines über das irgendjemand aufgeregt ist.</p>
-
-<p>Bis jemand Zugriff auf Daten erhält, der das nicht sollte. 
-Und das passiert viel häufiger, als man denkt!</p>
-
-<p><img src="/assets/posts/building-in-the-open/breaches23.svg" alt="Datatenpannen 2023" /></p>
-
-<p>Deine Daten einem SaaS <label for="saas-def" class="margin-toggle">⊕</label>
-<input type="checkbox" id="saas-def" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://en.wikipedia.org/wiki/Software_as_a_service">SaaS</a> Software und die bei einem externen IT-Dienstleister betrieben und vom Kunden als Dienstleistung genutzt werden kann.
-</span>
- Anbieter zu geben, ist sicherlich am bequemsten.
-Dort sind sie vermutlich auch besser gegen Verlust geschützt als sich auf manuelle Backups zu verlassen.</p>
-
-<p>Allerdings sind nicht alle SaaS-Anbieter gleich aufgestellt und es gibt jedes Jahr viele Datenverletzungen. 
-Größere Unternehmen sind in der Regel gut darin, Ihre Daten vor unbefugtem Zugriff zu schützen. 
-Bei günstigen Lösungen, zum Beispiel Google Drive, wird der Anbieter Deine Daten auf die eine oder andere Weise nutzen, 
-um ihr Projekt zu monetarisieren. Ja, sie werden in Deine Dateien schauen. 
-Wenn Du zum Beispiel eine Tabelle in Google Sheets zum Vergleich für Kinderwagen hast, 
-wurst Du in den nächsten Tagen Werbung für Babyprodukte erhalten.</p>
-
-<p>Ich werde in meiner Lösung den Datenschutz zu einem zentralen Anliegen machen und 
-es ermöglichen, die Software ohne jegliche Internetverbindung zu betreiben.</p>
-
-<p>Aber ich möchte auch, dass die Software so zugänglich wie möglich ist. 
-Daher werde ich die Software in verschiedenen Varianten anbieten, die es ermöglichen, 
-den perfekten Mittelweg zwischen Datenschutz und Komfort zu wählen.</p>
-
-<div id="variants"></div>
-
-<p>Am wichtigsten für dieses Modell ist, dass es <strong>einfach</strong> ist zwischen diesen <strong>Varianten zu wechseln</strong>.
-Der Kernidee dieses zu ermöglichen ist alle Informationen in einfachen Dateien zu speichern anstatt auf 
-eine Datenbank zu setzen.</p>
-
-<p>Diese Dateien werden nach einem einfachen Schema (Jahr/Monat) in Ordern abgelegt. Diese ermöglichtes Dokumente
-wiederzufinden selbst wenn man aufgehört hat meine Anwendung zu benutzen.</p>
-
-<div id="features"></div>
-
-<h3 id="-if-you-build-it-they-will-come-nobody-cares"><a name="building"></a> If you build it, <del>they will come</del> nobody cares</h3>
-
-<p>Heißt so viel wie</p>
-
-<blockquote>
-  <p>Wenn du es baust,
-<del>werden sie schon kommen</del></p>
-
-  <p>interessiert es kein Schwein.</p>
-</blockquote>
-
-<p>Es spiegelt die, besonderns bei Entwicklern verbreitete, Idee wider, dass man lediglich ein gutes Produkt bauen muss und es
-sich dann schon rumspricht. Eine anderer Versuchung ist es das Produkt vor der Veröffentlichung zu perfektionieren, um
-mit einem <em>“Big Bang”</em> zu starten.</p>
-
-<p>Die Realität ist aber, dass das für die Mehrheit der digitalen Produkte nicht ausreicht. 
-Deswegen habe ich beschlossen meine Produkt von Anfang an ind der Öffentlichkeit zu bauen.</p>
-
-<p>Praktisch heißt das, dass ich regelmäßig live auf Twitch programmieren und dabei gerne auch Fragen beantworten werde. 
-Aber da das für viele nicht besonder spannend ist werde ich auch noch andere Wege erforschen meine Erfahrungen
-im Aufbau dieses Ein-Mann-Unternehmens zu teilen (mehr Blog-Artikel, Instragram, Youtube, Podcasts?).</p>
-
-<p>Falls sich das für dich spannend anhört freue ich mich wenn du dich für meinen wöchentlichen Newsletter einträgst.</p>
-
-<div id="subscribe"></div>
-
-<link rel="stylesheet" href="/assets/interactive/styles.css" />
-
-<script src="/assets/interactive/interactive.js"></script>
-
-<script>
-  var variants = Elm.Interactive.init({
-    node: document.getElementById('variants'),
-    flags: { kind: "Variants", lang: "de" }
-  });
-
-  var features = Elm.Interactive.init({
-    node: document.getElementById('features'),
-    flags: { kind: "Features", lang: "de"  }
-  });
-
-  var subscribe = Elm.Interactive.init({
-    node: document.getElementById('subscribe'),
-    flags: { kind: "Subscribe" }
-  });
-</script>]]></content><author><name></name></author><summary type="html"><![CDATA[Begleite mich wie ich meinen digitalen Aktenschrank und mein 1-Mann-Startup darum in der Öffentlichkeit baue. Mit langjähriged Erfahrungen in der Softwareentwicklung strebe ich an, eine Lösung zu schaffen, die die Lücke zwischen Bequemlichkeit und Datensicherheit schließt, während ich jeden Schritt des Prozesses mit Dir teile.]]></summary></entry></feed>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xLUpTaI1oE0?si=M0CGBqFvMQOOMzoy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>]]></content><author><name></name></author><category term="webdevelopment" /><category term="htmx" /><category term="spa" /><category term="elm" /><summary type="html"><![CDATA[Als Webentwickler liegt es in unserer Verantwortung, das beste Werkzeug für die jeweilige Aufgabe zu finden. htmx vereinfacht in der Tat den technischen Stack und senkt die Einstiegshürde für angehende Entwickler oder einfachere Projekte. Für komplizierte Benutzeroberflächen, die eine konsistente Darstellung der Daten erfordern, bietet der SPA-Ansatz jedoch eine bessere Unterstützung. Anstatt sich von Trends beeinflussen zu lassen, sollten wir die Nuancen in diesen Diskussionen anerkennen und unsere Tools mit Bedacht auswählen.]]></summary></entry></feed>

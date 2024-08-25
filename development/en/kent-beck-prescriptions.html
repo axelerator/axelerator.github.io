@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>If Kent Beck is your doctor, Elm is your pharmacy</title>
+  </head>
+  <body class="kent-beck-prescriptions">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/">Home</a></div>
+  
+    <div><a href="/about">About</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a rel="me" href="https://hachyderm.io/@axelerator"><span class="fediverse"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇺🇸</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+          <li>
+            <a href="/development/de/kent-beck-prescriptions" class="de">🇩🇪</a>
+          </li>
+        
+      
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>If Kent Beck is your doctor, Elm is your pharmacy</h1>
+       <div class="meta"> 
+  <div title="Reading time">8 minutes</div>
+  <div>
+  
+    
+    <a href="/tags#elm">#elm</a>
+  
+  </div>
+  <div>24 August 2024</div>
+</div>
+
+
+<section>
+<p><img src="/assets/posts/kent-beck-prescriptions/doctor_square.jpg" width="230" style="float:right; margin: 5px 10px 10px 0" />
+<a href="https://www.kentbeck.com">Kent Beck</a> is known for his pragmatic approach to software design and his focus on improving the quality of code and the efficiency of development processes. In one of his articles he gives a list of “prescriptions” to write less bug prone code. And now I have a concrete list of reasons why I like writing code in Elm so much.</p>
+
+<hr />
+
+<ul>
+  <li><a href="#How">How Elm Delivers What Kent Prescribes</a>
+    <ul>
+      <li><a href="#Improve">Improve cohesion by reducing the size of elements</a></li>
+      <li><a href="#Unify">Unify duplicated logic</a></li>
+      <li><a href="#Replace">Replace duplicated conditionals with polymorphism</a></li>
+      <li><a href="#Use">Use immutable data structures where feasible to eliminate aliasing errors</a></li>
+      <li><a href="#Simplify">Simplify control flows where possible</a></li>
+      <li><a href="#Eliminate">Eliminate dead code</a></li>
+      <li><a href="#Rationalize">Rationalize naming so the right names are likelier to be guessed</a></li>
+    </ul>
+  </li>
+  <li><a href="#Conclusion">Conclusion</a></li>
+</ul>
+
+<hr />
+
+<p><label for="elm-lang" class="margin-toggle">⊕</label>
+<input type="checkbox" id="elm-lang" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://elm-lang.org/">Elm</a> is a functional language that compiles to JavaScript. It helps you make websites and web apps. It has a strong emphasis on simplicity and quality tooling.
+</span></p>
+
+<p>The following Kent Beck quote <a href="https://elmlang.slack.com/archives/C0CJ671HU/p1724423084869659">came up</a> on the Elm Slack the other day:</p>
+
+<blockquote>
+  <p>“You don’t have bugs because you don’t have tests. You have bugs because you write code that makes it easy to have bugs.”</p>
+</blockquote>
+
+<p>It’s from Kent Beck’s article <a href="https://tidyfirst.substack.com/p/scrape-then-paint">Scrape Then Paint</a>, and I recommend everyone to read it. <a href="https://mastodon.world/@jhbrown">Jeremy</a>, who posted it, also said, “This made me think of how nice it is to code in Elm.”
+I instinctively agree with that but wanted to dig a bit deeper as to <em>why</em> we feel this way about Elm but not, or less, about other programming languages.</p>
+
+<p>When you pitch an alternative programming language to someone, the response is often that they can “already do everything” in the language they’re familiar with.
+Ultimately, you can solve nearly any problem that you can solve in one language in any other language as well. 
+So the conversation is about how efficiently (with how much <em>effort</em>) can I solve the problem?</p>
+
+<p>If you add the effort of “learning a new programming language” to any programming task, the new language will, of course, always lose against solving the problem in the familiar environment.</p>
+
+<p>Unless you’re right about to retire, I would argue that this is a short-sighted view that suffers gravely from the <a href="https://en.wikipedia.org/wiki/Sunk_cost#Fallacy_effect">sunk cost fallacy</a>.</p>
+
+<p>Different languages, frameworks, and libraries make different tradeoffs. Knowing only one way to solve all programming problems makes you a one-trick pony. And even if you don’t use <em>all</em> the tools in your tool belt <em>all</em> the time, being exposed to different approaches in one language will actually widen your horizon in other languages as well.</p>
+
+<h2 id="-how-elm-delivers-what-kent-prescribes"><a name="How"></a> How Elm Delivers What Kent Prescribes</h2>
+
+<p>This is why I continue to pitch the Elm programming language to people. It addresses most of the “prescriptions” that Kent Beck gives in his article <em>at the language level</em>. Let’s take a look at them:</p>
+
+<ul>
+  <li>Improve cohesion by reducing the size of elements</li>
+  <li>Unify duplicated logic</li>
+  <li>Replace duplicated conditionals with polymorphism</li>
+  <li>Use immutable data structures where feasible to eliminate aliasing errors</li>
+  <li>Simplify control flows where possible</li>
+  <li>Eliminate dead code</li>
+  <li>Rationalize naming so the right names are likelier to be guessed</li>
+</ul>
+
+<h3 id="--improve-cohesion-by-reducing-the-size-of-elements"><a name="&lt;a"></a> <a name="Improve"></a> Improve Cohesion by Reducing the Size of Elements</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+The Elm guide’s <a href="https://guide.elm-lang.org/webapps/modules">chapter on modules</a> contains a link to this very <a href="https://youtu.be/XpDsk374LDE">enlightening talk</a> on how to organize your modules around data types.
+</span></p>
+
+<p>Elm has a simple yet powerful module system. It allows pairing data structures with the functions that operate on them without the complicated semantics of many object-oriented languages.</p>
+
+<p>Coupling can be limited easily by explicitly selecting which parts of a module are exposed.</p>
+
+<h3 id="--unify-duplicated-logic"><a name="&lt;a"></a> <a name="Unify"></a> Unify Duplicated Logic</h3>
+
+<p>There is nothing inherent to Elm that keeps you from duplicating logic. However, with Elm being a <em>pure</em> functional language, it’s easier to spot and unify duplication.</p>
+
+<p>In imperative languages, you often mix “calculating” and “doing things”—for example, accessing some members in an object and then writing it to the database. In these cases, I have to do the mental pattern matching on “partial” methods to spot and extract some of the logic to be reused.</p>
+
+<p>In Elm, it is a lot more straightforward to extract functions because of the strict types the extracted functions have to follow.</p>
+
+<h3 id="-replace-duplicated-conditionals-with-polymorphism"><a name="Replace"></a> Replace Duplicated Conditionals with Polymorphism</h3>
+
+<p>I initially wasn’t sure what he meant by that, so I googled the “principle” and found <a href="https://bitbytebit.substack.com/p/2019-07-23/refactoring-replace-conditional-with-polymorphism">an article</a> that wonderfully proves my point. Disclaimer: I’m not throwing shade on that particular solution, but the verbosity of the object-oriented solution here looks overwhelmingly complicated to probably any Elm developer.</p>
+
+<p>In Elm, it’s very natural to think in <em>types</em> <strong>first</strong>—not in conditionals. So a likely solution would be to create a data type <code class="language-plaintext highlighter-rouge">type Role = Admin | Subscriber | Other</code>.</p>
+
+<p>Now we can use a <code class="language-plaintext highlighter-rouge">case</code> (<code class="language-plaintext highlighter-rouge">switch</code> or <code class="language-plaintext highlighter-rouge">match</code> in other languages) to decide what to surface in our views.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>case user.role of
+	Admin -&gt; ..show admin stuff..
+	Subscriber -&gt; ..show subscriber stuff..
+	Other -&gt; ..
+</code></pre></div></div>
+
+<p>Elm has built-in <em>exhaustiveness checking</em>. That means the program will not compile until you handle <em>all</em> cases. So every time we add or remove a “role,” the compiler will point us to <em>all</em> places we have to touch.</p>
+
+<h3 id="use-immutable-data-structures-where-feasible-to-eliminate-aliasing-errors"><a name="use"></a>Use immutable data structures where feasible to eliminate aliasing errors</h3>
+
+<p>This one is the most straightforward implementation of a “prescription”: <strong>Everything</strong> is immutable in Elm.
+This removes the decision on where to use immutable data structures entirely.</p>
+
+<p>The only thing that needs to be mutable in a web application is the state of the user interface aka the DOM.
+The state of the DOM is completely managed by the Elm runtime. In an Elm app we have one <code class="language-plaintext highlighter-rouge">view</code> <em>function</em> that takes
+the current <strong>application state</strong> and tells Elm what we <strong>want</strong> the DOM to look like.</p>
+
+<p>“But how do we change the state?” you ask. We’re going to touch on this in how Elm implments the next <em>prescription</em>.</p>
+
+<h3 id="-simplify-control-flows-where-possible"><a name="Simplify"></a> Simplify Control Flows Where Possible</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+All Elm apps follow <a href="https://guide.elm-lang.org/architecture/">“The Elm Architecture”</a>. Each app has a <code class="language-plaintext highlighter-rouge">View</code> function that takes the current state (Model) and generates HTML along with potential user interactions, represented as Msg (messages). When a Msg is triggered, the Update function processes it to produce a new state, which then generates an updated view, maintaining the cycle of unidirectional data flow.
+</span></p>
+
+<p>This is where Elm blends between language and framework. The best comparison I can make here is React. Elm has a strict unidirectional information flow. You can’t change the state of anything in Elm yourself. Instead, you emit <code class="language-plaintext highlighter-rouge">Messages</code> from your view. And then the <em>Elm runtime</em> calls the update function that you provide as well. It receives the <code class="language-plaintext highlighter-rouge">Message</code>, and you can return a <em>new</em> state of your application. The most similar to this pattern in a React world is the use of <a href="https://react-redux.js.org">Redux</a>. The big difference is that it’s part of the language, and you cannot (accidentally) circumvent it.</p>
+
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
+<span class="marginnote">
+Read: <a href="https://languageimperfect.com/2023/04/29/avoid-this-common-react-use-effect-use-state-hook-antipattern.html">Avoid This Common React Hook Antipattern</a>
+about why using <code class="language-plaintext highlighter-rouge">useState</code> and <code class="language-plaintext highlighter-rouge">useEffect</code> to compute synchronous values will lead to a sub-optimal user experience and subtle bugs that can be hard to debug.
+</span></p>
+
+<p>Due to the simplicity of the language and the strictness of the compiler, there are <em>fewer</em> ways to do the same thing. Since React uses JavaScript (or TypeScript), it has less control over the environment it runs in and consequently has <em>a lot</em> more “foot guns,” like, for example, using <code class="language-plaintext highlighter-rouge">useEffect</code> and <code class="language-plaintext highlighter-rouge">useState</code> together.</p>
+
+<p>In short: Because there are <em>fewer</em> ways to do “the wrong thing,” it’s easier to do the right thing. And because there are <em>fewer</em> ways to control flow, they will most of the time also end up being simpler.</p>
+
+<h3 id="-eliminate-dead-code"><a name="Eliminate"></a> Eliminate Dead Code</h3>
+
+<p><label for="modules" class="margin-toggle">⊕</label>
+<input type="checkbox" id="modules" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://package.elm-lang.org/packages/jfmengels/elm-review/latest/">elm-review</a> is an Elm packages that analyzes your Elm project, to help find mistakes before your users find them.
+</span></p>
+
+<p>The Elm compiler itself does not assist you in detecting unused code. But there is an excellent tool called <a href="https://package.elm-lang.org/packages/jfmengels/elm-review/latest/">elm-review</a> that, thanks to the strict type system, can very efficiently detect and remove unused code.</p>
+
+<p><a href="https://jfmengels.net/safe-dead-code-removal/">Read more</a> about how people removed thousands of lines of code effortlessly and how Elm type system enables great static analysis to make all kinds of optimizations.</p>
+
+<h3 id="-rationalize-naming-so-the-right-names-are-likelier-to-be-guessed"><a name="Rationalize"></a> Rationalize Naming So the Right Names Are Likelier to Be Guessed</h3>
+
+<p>Here again, the Elm compiler only gives a little help in the form of rules about how identifiers of the different syntactic elements (types, functions, variables) can be formatted, but I can’t see how the actual naming can be supported by the language itself. Maybe LLMs will solve this once and for all for us 🙈.</p>
+
+<h2 id="-conclusion"><a name="Conclusion"></a> Conclusion</h2>
+
+<p>Elm is not suited to solve <em>every</em> programming problem, but it’s the most delightful development experience I’ve had for frontend work. This article only scrapes the list of features that make it nice to use. I’ve taken many of the techniques I was forced to learn for Elm into projects in other languages to benefit from the “prescriptions” Kent Beck proposes.</p>
+
+<p>Here is a list of resources to check out if you want to give it a try:</p>
+
+<ul>
+  <li><a href="https://guide.elm-lang.org/">The official Elm guide</a></li>
+  <li><a href="https://elm-lang.org/examples">Live examples</a></li>
+  <li><a href="https://ellie-app.com/new">Ellie: a browser based Elm IDE</a></li>
+  <li><a href="https://a-tour-of-elm.axelerator.de">A tour of Elm: An interactive tutorial</a></li>
+  <li><a href="https://youtu.be/WgJ2FUW1miA?si=ukwOl36y9rLTyOEn">Video series: Welcome to Elm</a></li>
+</ul>
+
+</section>
+
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+
