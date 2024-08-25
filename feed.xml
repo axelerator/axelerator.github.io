@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://blog.axelerator.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.axelerator.de/" rel="alternate" type="text/html" /><updated>2024-08-24T20:54:41-04:00</updated><id>https://blog.axelerator.de/feed.xml</id><title type="html">Rants &amp;amp; ramblings of yours truly</title><subtitle>Mostly posts about how to make getting started with Elm easy and the general joys of functional programming.</subtitle><entry xml:lang="en"><title type="html">If Kent Beck is your doctor, Elm is your pharmacy</title><link href="https://blog.axelerator.de/development/en/kent-beck-prescriptions" rel="alternate" type="text/html" title="If Kent Beck is your doctor, Elm is your pharmacy" /><published>2024-08-24T14:00:00-04:00</published><updated>2024-08-24T14:00:00-04:00</updated><id>https://blog.axelerator.de/development/en/kent-beck-prescriptions-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/kent-beck-prescriptions"><![CDATA[<p><img src="/assets/posts/kent-beck-prescriptions/doctor_square.jpg" width="230" style="float:right; margin: 5px 10px 10px 0" />
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://blog.axelerator.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.axelerator.de/" rel="alternate" type="text/html" /><updated>2024-08-25T15:19:20-04:00</updated><id>https://blog.axelerator.de/feed.xml</id><title type="html">Rants &amp;amp; ramblings of yours truly</title><subtitle>Mostly posts about how to make getting started with Elm easy and the general joys of functional programming.</subtitle><entry xml:lang="en"><title type="html">If Kent Beck is your doctor, Elm is your pharmacy</title><link href="https://blog.axelerator.de/development/en/kent-beck-prescriptions" rel="alternate" type="text/html" title="If Kent Beck is your doctor, Elm is your pharmacy" /><published>2024-08-24T14:00:00-04:00</published><updated>2024-08-24T14:00:00-04:00</updated><id>https://blog.axelerator.de/development/en/kent-beck-prescriptions-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/kent-beck-prescriptions"><![CDATA[<p><img src="/assets/posts/kent-beck-prescriptions/doctor_square.jpg" width="230" style="float:right; margin: 5px 10px 10px 0" />
 <a href="https://www.kentbeck.com">Kent Beck</a> is known for his pragmatic approach to software design and his focus on improving the quality of code and the efficiency of development processes. In one of his articles he gives a list of “prescriptions” to write less bug prone code. And now I have a concrete list of reasons why I like writing code in Elm so much.</p>
 
 <hr />
@@ -104,7 +104,7 @@ This removes the decision on where to use immutable data structures entirely.</p
 The state of the DOM is completely managed by the Elm runtime. In an Elm app we have one <code class="language-plaintext highlighter-rouge">view</code> <em>function</em> that takes
 the current <strong>application state</strong> and tells Elm what we <strong>want</strong> the DOM to look like.</p>
 
-<p>“But how do we change the state?” you ask. We’re going to touch on this in how Elm implments the next <em>prescription</em>.</p>
+<p>“But how do we change the state?” you ask. We’re going to touch on this in how Elm implements the next <em>prescription</em>.</p>
 
 <h3 id="-simplify-control-flows-where-possible"><a name="Simplify"></a> Simplify Control Flows Where Possible</h3>
 
@@ -137,11 +137,13 @@ about why using <code class="language-plaintext highlighter-rouge">useState</cod
 
 <p>The Elm compiler itself does not assist you in detecting unused code. But there is an excellent tool called <a href="https://package.elm-lang.org/packages/jfmengels/elm-review/latest/">elm-review</a> that, thanks to the strict type system, can very efficiently detect and remove unused code.</p>
 
-<p><a href="https://jfmengels.net/safe-dead-code-removal/">Read more</a> about how people removed thousands of lines of code effortlessly and how Elm type system enables great static analysis to make all kinds of optimizations.</p>
+<p><a href="https://jfmengels.net/safe-dead-code-removal/">Read more</a> about how people removed thousands of lines of code effortlessly and how Elm’s type system enables great static analysis to make all kinds of optimizations.</p>
 
 <h3 id="-rationalize-naming-so-the-right-names-are-likelier-to-be-guessed"><a name="Rationalize"></a> Rationalize Naming So the Right Names Are Likelier to Be Guessed</h3>
 
 <p>Here again, the Elm compiler only gives a little help in the form of rules about how identifiers of the different syntactic elements (types, functions, variables) can be formatted, but I can’t see how the actual naming can be supported by the language itself. Maybe LLMs will solve this once and for all for us 🙈.</p>
+
+<p><em>Edit</em>: <a href="https://twitter.com/jfmengels">Jeroen</a> just pointed out that <em>renaming</em> is a very safe operation in Elm since the compiler knows all the places where a function or variable is used. If you use the <a href="https://github.com/elm-tooling/elm-language-server">Elm language server</a> it’s basically free, which of course helps improving naming across your application.</p>
 
 <h2 id="-conclusion"><a name="Conclusion"></a> Conclusion</h2>
 
