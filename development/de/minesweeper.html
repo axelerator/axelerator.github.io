@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en" domain="blog.axelerator.de" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/js/highlight/styles/default.css">
+    <link rel="stylesheet" href="/assets/css/tufte.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Speed coding Minesweeper in a statically typed functional language</title>
+  </head>
+  <body class="minesweeper">
+    <header>
+      <div id="bg">axelerator.de</div>
+      <nav>
+  <div class="pages">
+  
+    <div><a href="/de">Home</a></div>
+  
+    <div><a href="/über">Über</a></div>
+  
+  </div>
+  <div class="links">
+    <a href="/feed.xml"><span class="rss"/></a>
+    <a href="https://twitter.com/TheAxelerator"><span class="twitter"/></a>
+    <a rel="me" href="https://hachyderm.io/@axelerator"><span class="fediverse"/></a>
+    <a href="https://github.com/axelerator"><span class="github"/></a>
+    <a href="https://www.linkedin.com/in/axel-tetzlaff"><span class="linkedin"/></a>
+    <a href="https://www.youtube.com/channel/UCQFzW6LFfreLOYI9-3QV2xg"><span class="youtube"/></a>
+    <a href="https://www.twitch.tv/programmingisfun"><span class="twitch"/></a>
+  </div>
+  <div id="lang-picker">
+    <label class="current" for="lang-toggle">🇩🇪</label>
+    <input type="checkbox" id="lang-toggle">
+    <ul>
+      
+      
+        
+      
+        
+          <li>
+            <a href="/development/en/minesweeper" class="en">🇺🇸</a>
+          </li>
+        
+      
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+
+    </header>
+    <main>
+     <article>
+       <h1>Speed coding Minesweeper in a statically typed functional language</h1>
+       <div class="meta"> 
+  <div title="Lesedauer">5 Minuten</div>
+  <div>
+  
+    
+    <a href="/tags#elm">#elm</a>
+  
+  </div>
+  <div>19 September 2024</div>
+</div>
+
+
+<section>
+<p><img src="/assets/posts/minesweeper/elmsweeper.svg" width="125px" style="float:left; margin: 5px 10px 10px 0" />
+Elm kann fürs Prototyping genauso produktiv sein wie dynamische Programmiersprachen! Ich habe mir selbst die Herausforderung gestellt, einen browserbasierten Minesweeper-Klon in weniger als 2,5 Stunden und mit weniger als 100 Codezeilen zu programmieren und zu deployen.</p>
+
+<hr />
+
+<h2 id="die-herausforderung-statisch-typisiertes-prototyping">Die Herausforderung: Statisch typisiertes Prototyping</h2>
+
+<p><label for="ruby-minesweeper" class="margin-toggle">⊕</label>
+<input type="checkbox" id="ruby-minesweeper" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://radanskoric.com/experiments/minesweeper-100-lines-of-clean-ruby"><img src="/assets/posts/minesweeper/ruby.jpg" alt="Screenshot von Radan Skorićs persönlicher Website" /></a>
+Lies den vollständigen Artikel <a href="https://radanskoric.com/experiments/minesweeper-100-lines-of-clean-ruby">“Exercise: Minesweeper in 100 lines of clean Ruby”</a> auf Radan Skorićs persönlicher Website. 
+</span></p>
+
+<p>Kürzlich bin ich auf einen Blogbeitrag mit dem Titel <a href="https://radanskoric.com/experiments/minesweeper-100-lines-of-clean-ruby">“Exercise: Minesweeper in 100 lines of clean Ruby”</a> gestoßen.</p>
+
+<p>Als Entwickler, der seit 2006 mit Ruby arbeitet, habe ich Ruby’s lesbare Syntax und umfangreiches Ökosystem immer geschätzt. Die Fähigkeit, mit Ruby schnell Prototypen zu erstellen, war ein Eckpfeiler meiner Karriere und diente sowohl Startups als auch Anwendungen mit Millionen von Nutzern. Aber es gab auch Schattenseiten, insbesondere mit Ruby on Rails. Die Grundannahme das alle Objekte immer verändert werden können und der Mangel an ordentlicher statischer Analyse führten oft dazu, dass komplexere Anwendungen schwer zu warten und zu erweitern sind.</p>
+
+<p>Beim Lesen des Artikels kam ich auf eine Idee. Kann ich das Gleiche in Elm erreich? Einer statisch typisierten, streng funktionalen Sprache, die oft als langsamer fürs Prototyping wahrgenommen wird?</p>
+
+<p>Ich stellte mir selbst eine Herausforderung:</p>
+
+<ol>
+  <li>Minesweeper in Elm nachbauen</li>
+  <li>Unter 100 Codezeilen bleiben</li>
+  <li>In weniger als 2,5 Stunden fertig werden</li>
+  <li>Live Deployment inklusive</li>
+</ol>
+
+<p>Und um den Einsatz zu erhöhen, beschloss ich, den gesamten Prozess auf <a href="https://www.twitch.tv/programmingisfun">Twitch</a> zu streamen.</p>
+
+<p>Ich habe die Aufnahme auch auf <a href="https://www.youtube.com/watch?v=v_WUxuwj5Mk">YouTube</a> hochgeladen, mit detaillierten Kapitel-Sprungpunkten in der Beschreibung.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v_WUxuwj5Mk?si=s5S2tM_RMjCnLXxs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+<h2 id="vorurteile-abbauen">Vorurteile abbauen</h2>
+
+<p>Bevor wir uns die Ergebnisse ansehen, möchte ich erst den Elefanten im Raum ansprechen. Funktionale und statisch typisierte Sprachen leiden oft unter Vorurteilen:</p>
+
+<ul>
+  <li>Sie gelten als langsam bei der Entwicklung</li>
+  <li>Prototyping wird als umständlich empfunden</li>
+  <li>Die Notwendigkeit, alles im Voraus zu definieren, wird als Hindernis gesehen</li>
+</ul>
+
+<p>Diese Annahmen könnten nicht weiter von der Wahrheit entfernt sein, und ich war dabei, das zu beweisen.</p>
+
+<h3 id="der-elm-vorteil">Der Elm-Vorteil</h3>
+
+<p><label for="inference" class="margin-toggle">⊕</label>
+<input type="checkbox" id="inference" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://guide.elm-lang.org/types/">Aus dem Elm-Guide</a>:
+<br /><em>Wenn ein Wert jemals auf ungültige Weise verwendet werden kann, teilt dir der Compiler das mit einer freundlichen Fehlermeldung mit. Das nennt man Typinferenz. Der Compiler ermittelt, welche Art von Werten in alle deine Funktionen hinein- und herausfließen.</em>
+</span></p>
+
+<p>Eine der herausragenden Eigenschaften von Elm ist die <em>Typinferenz</em>. Dies ermöglichte es mir, schnell zu arbeiten, ohne explizite Typsignaturen schreiben zu müssen, was einer großen Kritikpunkte der Befürworter dynamischer Sprachen ist.
+Während der gesamten Sitzung lieferte der Compiler hilfreiche Fehlermeldungen basierend auf abgeleiteten Typen und leitete meinen Entwicklungsprozess.</p>
+
+<h2 id="der-entwicklungsprozess">Der Entwicklungsprozess</h2>
+
+<p>Das Aufsetzen der Elm-App von Grund auf und die Konfiguration des kontinuierlichen Deployments mit GitHub Actions dauerte weniger als 15 Minuten. Von dort aus erweiterte ich schrittweise die Beispiel-App aus dem offiziellen Elm-Guide und verwandelte sie in einen voll funktionsfähigen Minesweeper-Klon.</p>
+
+<p>Eine der Stärken von Elm wurde früh deutlich: der Browser als Zielplattform. Im Gegensatz zur Ruby-Version, die auf Kommandozeileneingaben angewiesen war, bot unser Elm-Minesweeper eine klickbare Bedienelemente, was es erheblich einfacher machte, den Spielverlauf zu überprüfen.</p>
+
+<p>Ich bin ein großer Fan von Elms Ausdrucksstärke, möchte hier aber nicht zu sehr auf Implementierungsdetails eingehen. Hier ist nur ein kleiner Ausschnitt, der eine der vielen Aspekte demonstriert, die zu lesbarem Code beitragen.</p>
+
+<p>Dieser Code berechnet die Anzahl der umgebenden Bomben. Beachte, wie der <code class="language-plaintext highlighter-rouge">|&gt;</code> Operator es uns ermöglicht, pipeline-artige Operationen klar zu beschreiben, ein Markenzeichen der funktionalen Programmierung. Der <code class="language-plaintext highlighter-rouge">|&gt;</code> Operator übergibt im Grunde die Ausgabe einer Zeile als <strong>letztes</strong> Argument an den Funktionsaufruf in der folgenden Zeile.</p>
+
+<pre><code class="language-Elm">numBombs =
+  [(-1, -1), (0, -1), (1, -1) , (-1, 0),(1, 0) , (-1, 1), (0, 1), (1, 1)]
+  |&gt; List.map (\(x,y) -&gt; (tx + x, ty + y))
+  |&gt; List.filter (inBounds width height)
+  |&gt; List.filter isBomb
+  |&gt; List.length
+</code></pre>
+
+<h2 id="herausforderungen-und-lösungen">Herausforderungen und Lösungen</h2>
+
+<p>Das größte Hindernis kam nach etwa zwei Stunden bei der Implementierung der Rekursion zum Aufdecken leerer Felder. Dies wird normalerweise rekursiv gelöst, also habe ich natürlich eine Endlosschleife erstellt. Das fehlende Kriterium war, nicht auf Feldern zu rekursieren, die bereits aufgedeckt wurden. Elm ist sehr ausdrucksstark, und als Ergebnis passt die gesamte Funktion zum Reagieren auf einen Feldklick in <a href="https://github.com/axelerator/supreme-octo-lamp/blob/stream/src/Main.elm#L34">20 Zeilen</a>. Es brauchte also nur etwas stoisches Anstarren und Nachdenken, um die fehlende Bedingung zu identifizieren.</p>
+
+<h2 id="reflexionen-und-implikationen">Reflexionen und Implikationen</h2>
+
+<p>Ich war überrascht, wie sehr der Elm-Compiler mich unterstützte, selbst ohne benutzerdefinierte Typen und Annotationen. Diese Erfahrung bestärkte meine Überzeugung, dass in statisch typisierte Sprachen wie Elm Prototyping nicht nur möglich ist - sie sind tatsächlich besonders gut dafür geeignet!</p>
+
+<p>Die Herausforderung, unter 100 Zeilen zu bleiben, zwang mich dazu, Funktionssignaturen vollständig wegzulassen. Dennoch bot Elms Typinferenz robuste Fehlerprüfung und Anleitung. Dies beweist, dass die Vorstellung äberholt ist, dass in statisch typisierte Sprachen umfangreiche Typdefinitionen im Voraus erforderlich sind.</p>
+
+<h2 id="fazit">Fazit</h2>
+
+<p>Dieses Experiment beweist, dass statisch typisierte Sprachen wie Elm für Prototyping genauso agil sein können wie ihre dynamischen Gegenstücke. Die Fähigkeit, ein browserbasiertes Spiel in weniger als 2,5 Stunden zu erstellen und zu deployen, mit den zusätzlichen Vorteilen der Typsicherheit, ist ein überzeugendes Argument Alternativen zu traditionellen Skriptsprachen in Erwägung zu ziehen.</p>
+
+<p>Ob du ein Entwickler bist, der sonst lieber in seiner Komfortzone bleibt, oder jemand, der im Tumult der sich ständig ändernden JavaScript-Frameworks gefangen ist, ich ermutige dich, Elm auszuprobieren. Du wirst überrascht sein, wie schnell du Ideen in funktionierende, deploybare Anwendungen umsetzen kannst.</p>
+
+<p>Das Ziel ist nicht unbedingt, deine Lieblingstools zu ersetzen, sondern dein Toolkit zu erweitern. Elm bietet eine einzigartige Mischung aus Geschwindigkeit, Sicherheit und Einfachheit, die die Art und Weise, wie du dein nächstes Projekt angehst, verändern wird.</p>
+
+<p>Was denkst du? Hast du ähnliche Erfahrungen mit statisch typisierten Sprachen gemacht? Ich würde gerne deine Perspektive in den Kommentaren unten hören!</p>
+
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=v_WUxuwj5Mk">Schau dir den vollständigen Stream an</a></li>
+  <li><a href="https://github.com/axelerator/supreme-octo-lamp/tree/main">Erkunde den Code auf GitHub</a></li>
+  <li><a href="https://blog.axelerator.de/supreme-octo-lamp/">Spiele die Live-Demo</a></li>
+</ul>
+
+<h2 id="ressourcen-für-deine-elm-reise">Ressourcen für deine Elm-Reise</h2>
+
+<p>Wenn das dein Interesse an Elm geweckt hat, hier sind ein paar Ressourcen, mit denen du loslegen kannst:</p>
+
+<ul>
+  <li><a href="https://guide.elm-lang.org/">Offizieller Elm-Guide</a></li>
+  <li><a href="https://package.elm-lang.org/">Elm Package Registry</a></li>
+  <li><a href="https://a-tour-of-elm.axelerator.de/">Eine Tour durch Elm</a></li>
+</ul>
+
+</section>
+
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'https://comments.axelerator.de',
+    site_id: 'comments',
+  }
+</script>
+<script>!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);</script>
+
+
+     </article>
+    </main>
+  </body>
+  <script src="/assets/js/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script data-goatcounter="https://goatcounter.axelerator.de/count"
+        async src="//goatcounter.axelerator.de/count.js"></script>
+</html>
+

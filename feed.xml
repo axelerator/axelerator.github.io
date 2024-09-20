@@ -1,4 +1,239 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://blog.axelerator.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.axelerator.de/" rel="alternate" type="text/html" /><updated>2024-08-25T15:19:20-04:00</updated><id>https://blog.axelerator.de/feed.xml</id><title type="html">Rants &amp;amp; ramblings of yours truly</title><subtitle>Mostly posts about how to make getting started with Elm easy and the general joys of functional programming.</subtitle><entry xml:lang="en"><title type="html">If Kent Beck is your doctor, Elm is your pharmacy</title><link href="https://blog.axelerator.de/development/en/kent-beck-prescriptions" rel="alternate" type="text/html" title="If Kent Beck is your doctor, Elm is your pharmacy" /><published>2024-08-24T14:00:00-04:00</published><updated>2024-08-24T14:00:00-04:00</updated><id>https://blog.axelerator.de/development/en/kent-beck-prescriptions-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/kent-beck-prescriptions"><![CDATA[<p><img src="/assets/posts/kent-beck-prescriptions/doctor_square.jpg" width="230" style="float:right; margin: 5px 10px 10px 0" />
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://blog.axelerator.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.axelerator.de/" rel="alternate" type="text/html" /><updated>2024-09-20T14:59:34-04:00</updated><id>https://blog.axelerator.de/feed.xml</id><title type="html">Rants &amp;amp; ramblings of yours truly</title><subtitle>Mostly posts about how to make getting started with Elm easy and the general joys of functional programming.</subtitle><entry xml:lang="en"><title type="html">Speed coding Minesweeper in a statically typed functional language</title><link href="https://blog.axelerator.de/development/en/minesweeper" rel="alternate" type="text/html" title="Speed coding Minesweeper in a statically typed functional language" /><published>2024-09-19T10:00:00-04:00</published><updated>2024-09-19T10:00:00-04:00</updated><id>https://blog.axelerator.de/development/en/minesweeper-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/minesweeper"><![CDATA[<p><img src="/assets/posts/minesweeper/elmsweeper.svg" width="125px" style="float:left; margin: 5px 10px 10px 0" />
+Elm can be just as agile for prototyping as dynamic progamming languages! I challenged myself to created and deploy a browser-based Minesweeper clone in under 2.5 hours and less than 100 lines of code.</p>
+
+<hr />
+
+<h2 id="the-challenge-statically-typed-prototyping">The Challenge: Statically Typed Prototyping</h2>
+
+<p><label for="ruby-minesweeper" class="margin-toggle">⊕</label>
+<input type="checkbox" id="ruby-minesweeper" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://radanskoric.com/experiments/minesweeper-100-lines-of-clean-ruby"><img src="/assets/posts/minesweeper/ruby.jpg" alt="screenshot of Radan Skorić's personal site" /></a>
+Read the full article <a href="https://radanskoric.com/experiments/minesweeper-100-lines-of-clean-ruby">“Exercise: Minesweeper in 100 lines of clean Ruby”</a> on Radan Skorić’s personal site . 
+</span></p>
+
+<p>Recently, I stumbled upon a blog post titled <a href="https://radanskoric.com/experiments/minesweeper-100-lines-of-clean-ruby">“Exercise: Minesweeper in 100 lines of clean Ruby”</a>.</p>
+
+<p>As a developer who’s been working with Ruby since 2006, I’ve long appreciated its readable syntax and extensive ecosystem. 
+The ability to rapidly prototype in Ruby has been a cornerstone of my career, serving both startups and multi-million user applications.
+But I also had my fair share of grief with specifically Ruby on Rails. The default to mutability and the lack of proper static analysis often led to the creation of systems that are hard to maintain and extend.</p>
+
+<p>Reading the article sparked an idea. Could I replicate this feat in Elm, a statically typed, strict functional language often perceived as slower for prototyping?</p>
+
+<p>I set myself a challenge:</p>
+
+<ol>
+  <li>Recreate Minesweeper in Elm</li>
+  <li>Keep it under 100 lines of code</li>
+  <li>Complete it in less than 2.5 hours</li>
+  <li>Include deployment</li>
+</ol>
+
+<p>And to raise the stakes, I decided to stream the entire process on <a href="https://www.twitch.tv/programmingisfun">Twitch</a>.</p>
+
+<p>I also uploaded the recording to <a href="https://www.youtube.com/watch?v=v_WUxuwj5Mk">YouTube</a> with detailed chapter jump points in the description.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v_WUxuwj5Mk?si=s5S2tM_RMjCnLXxs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+<h2 id="breaking-down-preconceptions">Breaking Down Preconceptions</h2>
+
+<p>Before we dive into the results, let’s address the elephant in the room. Functional and statically typed languages often face prejudice:</p>
+
+<ul>
+  <li>They’re seen as slow to work with</li>
+  <li>Prototyping is believed to be cumbersome</li>
+  <li>The need to define everything upfront is viewed as a hindrance</li>
+</ul>
+
+<p>These assumptions couldn’t be further from the truth, and I was about to prove it.</p>
+
+<h3 id="the-elm-advantage">The Elm Advantage</h3>
+
+<p><label for="inference" class="margin-toggle">⊕</label>
+<input type="checkbox" id="inference" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://guide.elm-lang.org/types/">From the Elm guide</a>:
+<br /><em>If a value can ever be used in an invalid way, the compiler tells you about it with a friendly error message. This is called type inference. The compiler figures out what type of values flow in and out of all your functions.</em>
+</span></p>
+
+<p>One of Elm’s standout features is its <em>type inference</em>. This allowed me to work quickly without writing explicit type signatures,
+addressing a major concern of dynamic language proponents.
+Throughout the session, the compiler provided helpful error messages based on inferred types, guiding my development process.</p>
+
+<h2 id="the-development-process">The Development Process</h2>
+
+<p>Setting up the Elm app from scratch and configuring contious deployment with GitHub Actions took less than 15 minutes.
+From there, I progressively extended the example app from the official Elm guide, transforming it into a fully functional Minesweeper clone.</p>
+
+<p>A key strength of Elm became apparent early on: the browser as the default target platform.
+Unlike the Ruby version which relied on command-line input, our Elm Minesweeper offered a clickable UI, making it significantly easier to verify gameplay.</p>
+
+<p>I’m a big fan of Elm’s expressive power but I don’t want to go into implementation details too much.
+So here is a little snippet that demonstrates one of the many ways that contribute to writing readable code.</p>
+
+<p>This code calculates the number of surrounding bombs.
+Notice how the <code class="language-plaintext highlighter-rouge">|&gt;</code> operator allows us to describe pipeline-like operations clearly, a hallmark of functional programming.
+The <code class="language-plaintext highlighter-rouge">|&gt;</code> operator basically passes the output of a line as <strong>last</strong> argument to the function call on the following line.</p>
+
+<pre><code class="language-Elm">numBombs =
+  [(-1, -1), (0, -1), (1, -1) , (-1, 0),(1, 0) , (-1, 1), (0, 1), (1, 1)]
+  |&gt; List.map (\(x,y) -&gt; (tx + x, ty + y))
+  |&gt; List.filter (inBounds width height)
+  |&gt; List.filter isBomb
+  |&gt; List.length
+</code></pre>
+
+<h2 id="challenges-and-solutions">Challenges and Solutions</h2>
+
+<p>The biggest hurdle came about two hours in when implementing the recursion for revealing empty fields.
+This is usually solved recursively so of course I creted an infinite loop.
+The missing criteria was not to recurse on fields that have already been revealed. 
+Elm is very expressive and as a result the whole function to respond to a click a field fits in <a href="https://github.com/axelerator/supreme-octo-lamp/blob/stream/src/Main.elm#L34">20 lines</a>.
+So it just took some proper staring at the code and mulling over to find the missing condition.</p>
+
+<h2 id="reflections-and-implications">Reflections and Implications</h2>
+
+<p>I was surprised by how much the Elm compiler assisted me, even without custom types and annotations. This experience reinforced my belief that statically typed languages like Elm are not just viable for rapid prototyping – they excel at it.</p>
+
+<p>The challenge of staying under 100 lines forced me to omit function signatures entirely.
+Yet, Elm’s type inference still provided robust error checking and guidance. This challenges the notion that statically typed languages require extensive upfront type definitions.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This experiment proves that statically typed languages like Elm can be just as agile for prototyping as their dynamic counterparts. The ability to create and deploy a browser-based game in under 2.5 hours, with the added benefits of type safety, is a compelling argument for exploring alternatives to traditional scripting languages.</p>
+
+<p>Whether you’re a comfort-zone developer or someone caught in the whirlwind of ever-changing JavaScript frameworks, I encourage you to give Elm a try. You might be surprised at how quickly you can turn ideas into working, deployed applications.</p>
+
+<p>Remember, the goal isn’t to replace your favorite tools, but to expand your toolkit. Elm offers a unique blend of speed, safety, and simplicity that might just change the way you approach your next project.</p>
+
+<p>What are your thoughts? Have you had similar experiences with statically typed languages? I’d love to hear your perspective in the comments below!</p>
+
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=v_WUxuwj5Mk">Watch the full stream</a></li>
+  <li><a href="https://github.com/axelerator/supreme-octo-lamp/tree/main">Explore the code on GitHub</a></li>
+  <li><a href="https://blog.axelerator.de/supreme-octo-lamp/">Play the live demo</a></li>
+</ul>
+
+<h2 id="resources-for-your-elm-journey">Resources for Your Elm Journey</h2>
+
+<p>If this has piqued your interest in Elm, here are some resources to get you started:</p>
+
+<ul>
+  <li><a href="https://guide.elm-lang.org/">Official Elm Guide</a></li>
+  <li><a href="https://package.elm-lang.org/">Elm Package Registry</a></li>
+  <li><a href="https://a-tour-of-elm.axelerator.de/">A tour of Elm</a></li>
+</ul>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Elm can be just as agile for prototyping as dynamic progamming languages! I challenged myself to created and deploy a browser-based Minesweeper clone in under 2.5 hours and less than 100 lines of code.]]></summary></entry><entry xml:lang="de"><title type="html">Speed coding Minesweeper in a statically typed functional language</title><link href="https://blog.axelerator.de/development/de/minesweeper" rel="alternate" type="text/html" title="Speed coding Minesweeper in a statically typed functional language" /><published>2024-09-19T10:00:00-04:00</published><updated>2024-09-19T10:00:00-04:00</updated><id>https://blog.axelerator.de/development/de/minesweeper-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/minesweeper"><![CDATA[<p><img src="/assets/posts/minesweeper/elmsweeper.svg" width="125px" style="float:left; margin: 5px 10px 10px 0" />
+Elm kann fürs Prototyping genauso produktiv sein wie dynamische Programmiersprachen! Ich habe mir selbst die Herausforderung gestellt, einen browserbasierten Minesweeper-Klon in weniger als 2,5 Stunden und mit weniger als 100 Codezeilen zu programmieren und zu deployen.</p>
+
+<hr />
+
+<h2 id="die-herausforderung-statisch-typisiertes-prototyping">Die Herausforderung: Statisch typisiertes Prototyping</h2>
+
+<p><label for="ruby-minesweeper" class="margin-toggle">⊕</label>
+<input type="checkbox" id="ruby-minesweeper" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://radanskoric.com/experiments/minesweeper-100-lines-of-clean-ruby"><img src="/assets/posts/minesweeper/ruby.jpg" alt="Screenshot von Radan Skorićs persönlicher Website" /></a>
+Lies den vollständigen Artikel <a href="https://radanskoric.com/experiments/minesweeper-100-lines-of-clean-ruby">“Exercise: Minesweeper in 100 lines of clean Ruby”</a> auf Radan Skorićs persönlicher Website. 
+</span></p>
+
+<p>Kürzlich bin ich auf einen Blogbeitrag mit dem Titel <a href="https://radanskoric.com/experiments/minesweeper-100-lines-of-clean-ruby">“Exercise: Minesweeper in 100 lines of clean Ruby”</a> gestoßen.</p>
+
+<p>Als Entwickler, der seit 2006 mit Ruby arbeitet, habe ich Ruby’s lesbare Syntax und umfangreiches Ökosystem immer geschätzt. Die Fähigkeit, mit Ruby schnell Prototypen zu erstellen, war ein Eckpfeiler meiner Karriere und diente sowohl Startups als auch Anwendungen mit Millionen von Nutzern. Aber es gab auch Schattenseiten, insbesondere mit Ruby on Rails. Die Grundannahme das alle Objekte immer verändert werden können und der Mangel an ordentlicher statischer Analyse führten oft dazu, dass komplexere Anwendungen schwer zu warten und zu erweitern sind.</p>
+
+<p>Beim Lesen des Artikels kam ich auf eine Idee. Kann ich das Gleiche in Elm erreich? Einer statisch typisierten, streng funktionalen Sprache, die oft als langsamer fürs Prototyping wahrgenommen wird?</p>
+
+<p>Ich stellte mir selbst eine Herausforderung:</p>
+
+<ol>
+  <li>Minesweeper in Elm nachbauen</li>
+  <li>Unter 100 Codezeilen bleiben</li>
+  <li>In weniger als 2,5 Stunden fertig werden</li>
+  <li>Live Deployment inklusive</li>
+</ol>
+
+<p>Und um den Einsatz zu erhöhen, beschloss ich, den gesamten Prozess auf <a href="https://www.twitch.tv/programmingisfun">Twitch</a> zu streamen.</p>
+
+<p>Ich habe die Aufnahme auch auf <a href="https://www.youtube.com/watch?v=v_WUxuwj5Mk">YouTube</a> hochgeladen, mit detaillierten Kapitel-Sprungpunkten in der Beschreibung.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v_WUxuwj5Mk?si=s5S2tM_RMjCnLXxs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+<h2 id="vorurteile-abbauen">Vorurteile abbauen</h2>
+
+<p>Bevor wir uns die Ergebnisse ansehen, möchte ich erst den Elefanten im Raum ansprechen. Funktionale und statisch typisierte Sprachen leiden oft unter Vorurteilen:</p>
+
+<ul>
+  <li>Sie gelten als langsam bei der Entwicklung</li>
+  <li>Prototyping wird als umständlich empfunden</li>
+  <li>Die Notwendigkeit, alles im Voraus zu definieren, wird als Hindernis gesehen</li>
+</ul>
+
+<p>Diese Annahmen könnten nicht weiter von der Wahrheit entfernt sein, und ich war dabei, das zu beweisen.</p>
+
+<h3 id="der-elm-vorteil">Der Elm-Vorteil</h3>
+
+<p><label for="inference" class="margin-toggle">⊕</label>
+<input type="checkbox" id="inference" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://guide.elm-lang.org/types/">Aus dem Elm-Guide</a>:
+<br /><em>Wenn ein Wert jemals auf ungültige Weise verwendet werden kann, teilt dir der Compiler das mit einer freundlichen Fehlermeldung mit. Das nennt man Typinferenz. Der Compiler ermittelt, welche Art von Werten in alle deine Funktionen hinein- und herausfließen.</em>
+</span></p>
+
+<p>Eine der herausragenden Eigenschaften von Elm ist die <em>Typinferenz</em>. Dies ermöglichte es mir, schnell zu arbeiten, ohne explizite Typsignaturen schreiben zu müssen, was einer großen Kritikpunkte der Befürworter dynamischer Sprachen ist.
+Während der gesamten Sitzung lieferte der Compiler hilfreiche Fehlermeldungen basierend auf abgeleiteten Typen und leitete meinen Entwicklungsprozess.</p>
+
+<h2 id="der-entwicklungsprozess">Der Entwicklungsprozess</h2>
+
+<p>Das Aufsetzen der Elm-App von Grund auf und die Konfiguration des kontinuierlichen Deployments mit GitHub Actions dauerte weniger als 15 Minuten. Von dort aus erweiterte ich schrittweise die Beispiel-App aus dem offiziellen Elm-Guide und verwandelte sie in einen voll funktionsfähigen Minesweeper-Klon.</p>
+
+<p>Eine der Stärken von Elm wurde früh deutlich: der Browser als Zielplattform. Im Gegensatz zur Ruby-Version, die auf Kommandozeileneingaben angewiesen war, bot unser Elm-Minesweeper eine klickbare Bedienelemente, was es erheblich einfacher machte, den Spielverlauf zu überprüfen.</p>
+
+<p>Ich bin ein großer Fan von Elms Ausdrucksstärke, möchte hier aber nicht zu sehr auf Implementierungsdetails eingehen. Hier ist nur ein kleiner Ausschnitt, der eine der vielen Aspekte demonstriert, die zu lesbarem Code beitragen.</p>
+
+<p>Dieser Code berechnet die Anzahl der umgebenden Bomben. Beachte, wie der <code class="language-plaintext highlighter-rouge">|&gt;</code> Operator es uns ermöglicht, pipeline-artige Operationen klar zu beschreiben, ein Markenzeichen der funktionalen Programmierung. Der <code class="language-plaintext highlighter-rouge">|&gt;</code> Operator übergibt im Grunde die Ausgabe einer Zeile als <strong>letztes</strong> Argument an den Funktionsaufruf in der folgenden Zeile.</p>
+
+<pre><code class="language-Elm">numBombs =
+  [(-1, -1), (0, -1), (1, -1) , (-1, 0),(1, 0) , (-1, 1), (0, 1), (1, 1)]
+  |&gt; List.map (\(x,y) -&gt; (tx + x, ty + y))
+  |&gt; List.filter (inBounds width height)
+  |&gt; List.filter isBomb
+  |&gt; List.length
+</code></pre>
+
+<h2 id="herausforderungen-und-lösungen">Herausforderungen und Lösungen</h2>
+
+<p>Das größte Hindernis kam nach etwa zwei Stunden bei der Implementierung der Rekursion zum Aufdecken leerer Felder. Dies wird normalerweise rekursiv gelöst, also habe ich natürlich eine Endlosschleife erstellt. Das fehlende Kriterium war, nicht auf Feldern zu rekursieren, die bereits aufgedeckt wurden. Elm ist sehr ausdrucksstark, und als Ergebnis passt die gesamte Funktion zum Reagieren auf einen Feldklick in <a href="https://github.com/axelerator/supreme-octo-lamp/blob/stream/src/Main.elm#L34">20 Zeilen</a>. Es brauchte also nur etwas stoisches Anstarren und Nachdenken, um die fehlende Bedingung zu identifizieren.</p>
+
+<h2 id="reflexionen-und-implikationen">Reflexionen und Implikationen</h2>
+
+<p>Ich war überrascht, wie sehr der Elm-Compiler mich unterstützte, selbst ohne benutzerdefinierte Typen und Annotationen. Diese Erfahrung bestärkte meine Überzeugung, dass in statisch typisierte Sprachen wie Elm Prototyping nicht nur möglich ist - sie sind tatsächlich besonders gut dafür geeignet!</p>
+
+<p>Die Herausforderung, unter 100 Zeilen zu bleiben, zwang mich dazu, Funktionssignaturen vollständig wegzulassen. Dennoch bot Elms Typinferenz robuste Fehlerprüfung und Anleitung. Dies beweist, dass die Vorstellung äberholt ist, dass in statisch typisierte Sprachen umfangreiche Typdefinitionen im Voraus erforderlich sind.</p>
+
+<h2 id="fazit">Fazit</h2>
+
+<p>Dieses Experiment beweist, dass statisch typisierte Sprachen wie Elm für Prototyping genauso agil sein können wie ihre dynamischen Gegenstücke. Die Fähigkeit, ein browserbasiertes Spiel in weniger als 2,5 Stunden zu erstellen und zu deployen, mit den zusätzlichen Vorteilen der Typsicherheit, ist ein überzeugendes Argument Alternativen zu traditionellen Skriptsprachen in Erwägung zu ziehen.</p>
+
+<p>Ob du ein Entwickler bist, der sonst lieber in seiner Komfortzone bleibt, oder jemand, der im Tumult der sich ständig ändernden JavaScript-Frameworks gefangen ist, ich ermutige dich, Elm auszuprobieren. Du wirst überrascht sein, wie schnell du Ideen in funktionierende, deploybare Anwendungen umsetzen kannst.</p>
+
+<p>Das Ziel ist nicht unbedingt, deine Lieblingstools zu ersetzen, sondern dein Toolkit zu erweitern. Elm bietet eine einzigartige Mischung aus Geschwindigkeit, Sicherheit und Einfachheit, die die Art und Weise, wie du dein nächstes Projekt angehst, verändern wird.</p>
+
+<p>Was denkst du? Hast du ähnliche Erfahrungen mit statisch typisierten Sprachen gemacht? Ich würde gerne deine Perspektive in den Kommentaren unten hören!</p>
+
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=v_WUxuwj5Mk">Schau dir den vollständigen Stream an</a></li>
+  <li><a href="https://github.com/axelerator/supreme-octo-lamp/tree/main">Erkunde den Code auf GitHub</a></li>
+  <li><a href="https://blog.axelerator.de/supreme-octo-lamp/">Spiele die Live-Demo</a></li>
+</ul>
+
+<h2 id="ressourcen-für-deine-elm-reise">Ressourcen für deine Elm-Reise</h2>
+
+<p>Wenn das dein Interesse an Elm geweckt hat, hier sind ein paar Ressourcen, mit denen du loslegen kannst:</p>
+
+<ul>
+  <li><a href="https://guide.elm-lang.org/">Offizieller Elm-Guide</a></li>
+  <li><a href="https://package.elm-lang.org/">Elm Package Registry</a></li>
+  <li><a href="https://a-tour-of-elm.axelerator.de/">Eine Tour durch Elm</a></li>
+</ul>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Elm kann fürs Prototyping genauso produktiv sein wie dynamische Programmiersprachen! Ich habe mir selbst die Herausforderung gestellt, einen browserbasierten Minesweeper-Klon in weniger als 2,5 Stunden und mit weniger als 100 Codezeilen zu programmieren und zu deployen.]]></summary></entry><entry xml:lang="en"><title type="html">If Kent Beck is your doctor, Elm is your pharmacy</title><link href="https://blog.axelerator.de/development/en/kent-beck-prescriptions" rel="alternate" type="text/html" title="If Kent Beck is your doctor, Elm is your pharmacy" /><published>2024-08-24T14:00:00-04:00</published><updated>2024-08-24T14:00:00-04:00</updated><id>https://blog.axelerator.de/development/en/kent-beck-prescriptions-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/kent-beck-prescriptions"><![CDATA[<p><img src="/assets/posts/kent-beck-prescriptions/doctor_square.jpg" width="230" style="float:right; margin: 5px 10px 10px 0" />
 <a href="https://www.kentbeck.com">Kent Beck</a> is known for his pragmatic approach to software design and his focus on improving the quality of code and the efficiency of development processes. In one of his articles he gives a list of “prescriptions” to write less bug prone code. And now I have a concrete list of reasons why I like writing code in Elm so much.</p>
 
 <hr />
@@ -321,147 +556,7 @@ Viele der Techniken, die ich für Elm lernen <em>musste</em> habe ich in Projekt
   <li><a href="https://ellie-app.com/new">Ellie: eine browserbasierte Elm-IDE</a></li>
   <li><a href="https://a-tour-of-elm.axelerator.de">A tour of Elm: Ein interaktives Tutorial</a></li>
   <li><a href="https://youtu.be/WgJ2FUW1miA?si=ukwOl36y9rLTyOEn">Videoserie: Welcome to Elm</a></li>
-</ul>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Kent Beck ist bekannt für seinen pragmatischen Ansatz im Softwaredesign sowie seinen Fokus auf die Verbesserung der Codequalität und Effizienz von Entwicklungsprozessen. In einem seiner Artikel “verschreibt” er eine Liste von “Rezepten”, um weniger fehleranfälligen Code zu schreiben. Und jetzt habe ich eine konkrete Liste von Gründen, warum ich es so sehr mag in Elm zu programmieren.]]></summary></entry><entry xml:lang="en"><title type="html">The misguided dream of language monogamy in web development</title><link href="https://blog.axelerator.de/development/en/language-monogamy" rel="alternate" type="text/html" title="The misguided dream of language monogamy in web development" /><published>2024-01-02T13:00:00-05:00</published><updated>2024-01-02T13:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/language-monogamy-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/language-monogamy"><![CDATA[<p><img src="/assets/posts/language-monogamy/handshake.webp" width="230" style="float:right; margin: 5px 10px 10px 0" />
-In the ever-changing world of web development, many seek the ideal of using one
-language for both frontend and backend.
-But if we focus on common data instead of a common language, 
-we can get the best out of both worlds without having to sacrifice 
-significant synergies.
-—</p>
-
-<p>Content:</p>
-
-<ul>
-  <li><a href="#dream">Exploring the One-Language Dream</a></li>
-  <li><a href="#illusion">Unraveling the Illusion</a></li>
-  <li><a href="#data">Shared Data Definition vs. Language Uniformity</a></li>
-  <li><a href="#ruelm">A Real-world Example: Rust and Elm Collaboration</a></li>
-</ul>
-
-<hr />
-
-<h2 id="-exploring-the-one-language-dream"><a name="dream"></a> Exploring the One-Language Dream:</h2>
-
-<p>Many are drawn to the idea of sticking to a single programming language for both frontend and backend.
-<label for="def-nodejs" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-nodejs" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://nodejs.org/en/about"><img src="/assets/posts/language-monogamy/nodejs-logo.svg" style="background-color:#333" /></a><br />
-<a href="https://nodejs.org/en/about">Node.js</a> is a runtime environment that allows developers to execute JavaScript code server-side
-</span></p>
-
-<p>One reason is the appeal of having to master just a single language 
-For example <a href="https://nodejs.org/en">NodeJS</a>
-offers JavaScript developers to write their backend in
-the same language that the browser understands.</p>
-
-<p><label for="def-htmx" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-htmx" class="margin-toggle" />
-<span class="marginnote">
-<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 40%" /><br />
-<a href="https://htmx.org/docs/">htmx</a> is a library that allows you to access modern browser features directly from HTML, rather than using javascript.
-</span></p>
-
-<p><a href="https://htmx.org/docs/">htmx</a> advertises more to backend developers by having to only produce HTML in their backend language 
-to create a dynamic UX.</p>
-
-<p>A second argument, is the idea of writing certain functionalities only <em>once</em>
-and being able to use them both on front- and backend. However, let’s pause and
-consider whether these reasons paint the complete picture or merely optimize
-for a local maximum.</p>
-
-<h2 id="unraveling-the-illusion"><a name="illusion"></a>Unraveling the Illusion</h2>
-
-<p>I would argue that the <em>surface area</em> of code/functionality that can <strong>genuinely be
-reused</strong> between the frontend and the backend is often overestimated. 
-The backend and the browser, operate in vastly different runtime environments,
-demanding distinct programming patterns. 
-In the browser, we run an interactive, graphical user interface.
-Our primary goal in the backend is the correct and efficient management of business data.</p>
-
-<p>I would further argue that in most cases you will spend at least as much (if not
-more) effort learning the <strong>framework</strong> (and the problem they’re solving) as you
-spend learning the programming language.</p>
-
-<p>The reason that there are little synergies between learning let’s say <em>React</em> and
-<em>Ruby on Rails</em> is not so much that they are written in different languages. It’s the
-fact that they solve completely disparate problems.</p>
-
-<h2 id="shared-data-definition-vs-language-uniformity"><a name="data"></a>Shared Data Definition vs. Language Uniformity</h2>
-
-<p>The main potential for code reuse is the use of <strong>shared data structures</strong>!</p>
-
-<p><label for="def-gql" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-gql" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://graphql.org"><img src="/assets/posts/language-monogamy/graphql-logo.svg" style="width: 2em" /> GraphQL</a><br />
-lets you define a schema for the types and relationships of data in an API, serving as a contract between the client and the server, ensuring structured and consistent communication.
-</span></p>
-
-<p>To achieve this, many companies use <a href="https://graphql.org">GraphQL</a>. 
-However, managing a <strong>“GraphQL layer”</strong> is associated with considerable costs.
-Companies often have entire teams dedicated solely to the integrity of the GraphQL API. 
-On top of that GraphQL comes with its own (schema/query) language that developers have to learn as well.</p>
-
-<p>If you focus on the right problem <strong>- “the common data definition” -</strong> and put the challenge of learning a new language in the right perspective, a lot of interesting possibilities open up.
-Rather than fixating on the homogeneity of programming languages, focusing on a
-shared understanding of data structures provides a more pragmatic and effective
-approach to achieving code reuse <em>where it matters the most</em>.</p>
-
-<h2 id="a-real-world-example-rust-and-elm-collaboration"><a name="ruelm"></a>A Real-world Example: Rust and Elm Collaboration</h2>
-
-<p><label for="def-elm" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-elm" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://elm-lang.org"><img src="/assets/posts/language-monogamy/elm-logo.svg" style="width: 4em" /> Elm</a>
-is a <strong>small</strong> programming language focused on simplicity. In my 
-<a href="../a-tour-of-elm">previous post</a>,
-I go into detail why I think everyone should give it a try.
-</span></p>
-
-<p>Elm is a functional programming language for front-end web development,
-known for its strong type system and focus on simplicity, correctness,
-and reliability in building interactive user interfaces.</p>
-
-<p>Rust excels in the backend with its focus on safety, performance, and concurrency,
-offering a robust and efficient development experience.</p>
-
-<p>Choosing Elm as the frontend language and Rust in the backend gives us the best
-of both worlds.
-Since both are statically typed we can use the type information from our Rust 
-data structures to generate Elm types and (de-)serializers.</p>
-
-<p><label for="def-elmrs" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-elmrs" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://crates.io/crates/elm-rs">elm_rs</a> is a Rust crate that
-automatically generates type definitions and functions for your Elm frontend from your Rust backend types, making it easy to keep the two in sync. 
-</span></p>
-
-<p>The backend makes the natural candidate for the <em>“source of truth”</em> of the shared
-data type. The <code class="language-plaintext highlighter-rouge">elm_rs</code> crate translates the Rust data types into the
-corresponding Elm types (and de-/serializers).</p>
-
-<p>Instead of adding complexity through a dedicated API layer we define 
-two data types <code class="language-plaintext highlighter-rouge">ToBackend</code> or <code class="language-plaintext highlighter-rouge">ToFrontend</code>, each representing messages flowing
-either to the backend or to the frontend.
-This way of communication is highly inspired by <a href="https://dashboard.lamdera.app/docs/overview">Lamdera</a>.
-<label for="def-lamdera" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-lamdera" class="margin-toggle" />
-<span class="marginnote">
-<a href="https://dashboard.lamdera.app/docs/overview"><img src="/assets/posts/language-monogamy/lamdera-logo.png" style="width: 10em" /></a><br />
-Lamdera is a full-stack platform that actually <strong>does</strong> use Elm in both the frontend and the backend.
-But it also imposes significant restrictions on how you can run code in the backend.
-</span></p>
-
-<p>In this way, we can use Elm for what it was created for: Working 
-with the Brwoser API in a safe and delightful way without having to sacrifice a responsive UI.
-In return, we don’t have to deal with HTML and the state of the user interface in the backend <strong>at all</strong>.</p>
-
-<p>My <a href="https://github.com/axelerator/ruelm">starter template <em>“Rülm”</em></a> shows that such an architecture beyond the popular web frameworks
-does not have to be complicated. In less than <code class="language-plaintext highlighter-rouge">400</code> lines of code we get a web application that is type-safe
-and efficiently exchange data in both directions.
-And all this without external build tools!</p>]]></content><author><name></name></author><category term="elm" /><category term="rust" /><summary type="html"><![CDATA[In the ever-changing world of web development, many seek the ideal of using one language for both frontend and backend. But if we focus on common data instead of a common language, we can get the best out of both worlds without having to sacrifice significant synergies. —]]></summary></entry><entry xml:lang="de"><title type="html">Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung</title><link href="https://blog.axelerator.de/development/de/language-monogamy" rel="alternate" type="text/html" title="Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung" /><published>2024-01-02T13:00:00-05:00</published><updated>2024-01-02T13:00:00-05:00</updated><id>https://blog.axelerator.de/development/de/language-monogamy-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/language-monogamy"><![CDATA[<p><img src="/assets/posts/language-monogamy/handshake.webp" width="230" style="float:right; margin: 5px 10px 10px 0" />
+</ul>]]></content><author><name></name></author><category term="elm" /><summary type="html"><![CDATA[Kent Beck ist bekannt für seinen pragmatischen Ansatz im Softwaredesign sowie seinen Fokus auf die Verbesserung der Codequalität und Effizienz von Entwicklungsprozessen. In einem seiner Artikel “verschreibt” er eine Liste von “Rezepten”, um weniger fehleranfälligen Code zu schreiben. Und jetzt habe ich eine konkrete Liste von Gründen, warum ich es so sehr mag in Elm zu programmieren.]]></summary></entry><entry xml:lang="de"><title type="html">Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung</title><link href="https://blog.axelerator.de/development/de/language-monogamy" rel="alternate" type="text/html" title="Der fehlgeleitete Traum von Sprachmonogamie in der Webentwicklung" /><published>2024-01-02T13:00:00-05:00</published><updated>2024-01-02T13:00:00-05:00</updated><id>https://blog.axelerator.de/development/de/language-monogamy-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/language-monogamy"><![CDATA[<p><img src="/assets/posts/language-monogamy/handshake.webp" width="230" style="float:right; margin: 5px 10px 10px 0" />
 In der sich ständig wandelnden Welt der Webentwicklung streben viele nach dem
 Ideal, die gleiche Programmiersprache sowohl im Frontend als auch im Backend zu
 verwenden. Wenn wir uns aber auf gemeinsame Daten anstatt auf eine gemeinsame Sprache 
@@ -604,7 +699,147 @@ Zustand der Benutzeroberfläche befassen.</p>
 so eine Architektur abseits von den populären Web-Frameworks nicht kompliziert
 sein muss. In weniger als <code class="language-plaintext highlighter-rouge">400</code> Zeilen Code bekommen wir eine Webanwendung die
 typsicher und effizient Daten in beide Richtungen austauschen kann. Und das
-alles ohne externe Build-Tools!</p>]]></content><author><name></name></author><category term="elm" /><category term="rust" /><summary type="html"><![CDATA[In der sich ständig wandelnden Welt der Webentwicklung streben viele nach dem Ideal, die gleiche Programmiersprache sowohl im Frontend als auch im Backend zu verwenden. Wenn wir uns aber auf gemeinsame Daten anstatt auf eine gemeinsame Sprache Sprache konzentrieren, können wir das Beste aus beiden Welten rausholen ohne auf signifikante Synergien verzichten zu müssen. —]]></summary></entry><entry xml:lang="en"><title type="html">Discover Functional Programming with Elm</title><link href="https://blog.axelerator.de/development/en/a-tour-of-elm" rel="alternate" type="text/html" title="Discover Functional Programming with Elm" /><published>2023-12-09T14:00:00-05:00</published><updated>2023-12-09T14:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/a-tour-of-elm-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/a-tour-of-elm"><![CDATA[<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
+alles ohne externe Build-Tools!</p>]]></content><author><name></name></author><category term="elm" /><category term="rust" /><summary type="html"><![CDATA[In der sich ständig wandelnden Welt der Webentwicklung streben viele nach dem Ideal, die gleiche Programmiersprache sowohl im Frontend als auch im Backend zu verwenden. Wenn wir uns aber auf gemeinsame Daten anstatt auf eine gemeinsame Sprache Sprache konzentrieren, können wir das Beste aus beiden Welten rausholen ohne auf signifikante Synergien verzichten zu müssen. —]]></summary></entry><entry xml:lang="en"><title type="html">The misguided dream of language monogamy in web development</title><link href="https://blog.axelerator.de/development/en/language-monogamy" rel="alternate" type="text/html" title="The misguided dream of language monogamy in web development" /><published>2024-01-02T13:00:00-05:00</published><updated>2024-01-02T13:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/language-monogamy-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/language-monogamy"><![CDATA[<p><img src="/assets/posts/language-monogamy/handshake.webp" width="230" style="float:right; margin: 5px 10px 10px 0" />
+In the ever-changing world of web development, many seek the ideal of using one
+language for both frontend and backend.
+But if we focus on common data instead of a common language, 
+we can get the best out of both worlds without having to sacrifice 
+significant synergies.
+—</p>
+
+<p>Content:</p>
+
+<ul>
+  <li><a href="#dream">Exploring the One-Language Dream</a></li>
+  <li><a href="#illusion">Unraveling the Illusion</a></li>
+  <li><a href="#data">Shared Data Definition vs. Language Uniformity</a></li>
+  <li><a href="#ruelm">A Real-world Example: Rust and Elm Collaboration</a></li>
+</ul>
+
+<hr />
+
+<h2 id="-exploring-the-one-language-dream"><a name="dream"></a> Exploring the One-Language Dream:</h2>
+
+<p>Many are drawn to the idea of sticking to a single programming language for both frontend and backend.
+<label for="def-nodejs" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-nodejs" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://nodejs.org/en/about"><img src="/assets/posts/language-monogamy/nodejs-logo.svg" style="background-color:#333" /></a><br />
+<a href="https://nodejs.org/en/about">Node.js</a> is a runtime environment that allows developers to execute JavaScript code server-side
+</span></p>
+
+<p>One reason is the appeal of having to master just a single language 
+For example <a href="https://nodejs.org/en">NodeJS</a>
+offers JavaScript developers to write their backend in
+the same language that the browser understands.</p>
+
+<p><label for="def-htmx" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-htmx" class="margin-toggle" />
+<span class="marginnote">
+<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 40%" /><br />
+<a href="https://htmx.org/docs/">htmx</a> is a library that allows you to access modern browser features directly from HTML, rather than using javascript.
+</span></p>
+
+<p><a href="https://htmx.org/docs/">htmx</a> advertises more to backend developers by having to only produce HTML in their backend language 
+to create a dynamic UX.</p>
+
+<p>A second argument, is the idea of writing certain functionalities only <em>once</em>
+and being able to use them both on front- and backend. However, let’s pause and
+consider whether these reasons paint the complete picture or merely optimize
+for a local maximum.</p>
+
+<h2 id="unraveling-the-illusion"><a name="illusion"></a>Unraveling the Illusion</h2>
+
+<p>I would argue that the <em>surface area</em> of code/functionality that can <strong>genuinely be
+reused</strong> between the frontend and the backend is often overestimated. 
+The backend and the browser, operate in vastly different runtime environments,
+demanding distinct programming patterns. 
+In the browser, we run an interactive, graphical user interface.
+Our primary goal in the backend is the correct and efficient management of business data.</p>
+
+<p>I would further argue that in most cases you will spend at least as much (if not
+more) effort learning the <strong>framework</strong> (and the problem they’re solving) as you
+spend learning the programming language.</p>
+
+<p>The reason that there are little synergies between learning let’s say <em>React</em> and
+<em>Ruby on Rails</em> is not so much that they are written in different languages. It’s the
+fact that they solve completely disparate problems.</p>
+
+<h2 id="shared-data-definition-vs-language-uniformity"><a name="data"></a>Shared Data Definition vs. Language Uniformity</h2>
+
+<p>The main potential for code reuse is the use of <strong>shared data structures</strong>!</p>
+
+<p><label for="def-gql" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-gql" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://graphql.org"><img src="/assets/posts/language-monogamy/graphql-logo.svg" style="width: 2em" /> GraphQL</a><br />
+lets you define a schema for the types and relationships of data in an API, serving as a contract between the client and the server, ensuring structured and consistent communication.
+</span></p>
+
+<p>To achieve this, many companies use <a href="https://graphql.org">GraphQL</a>. 
+However, managing a <strong>“GraphQL layer”</strong> is associated with considerable costs.
+Companies often have entire teams dedicated solely to the integrity of the GraphQL API. 
+On top of that GraphQL comes with its own (schema/query) language that developers have to learn as well.</p>
+
+<p>If you focus on the right problem <strong>- “the common data definition” -</strong> and put the challenge of learning a new language in the right perspective, a lot of interesting possibilities open up.
+Rather than fixating on the homogeneity of programming languages, focusing on a
+shared understanding of data structures provides a more pragmatic and effective
+approach to achieving code reuse <em>where it matters the most</em>.</p>
+
+<h2 id="a-real-world-example-rust-and-elm-collaboration"><a name="ruelm"></a>A Real-world Example: Rust and Elm Collaboration</h2>
+
+<p><label for="def-elm" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-elm" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://elm-lang.org"><img src="/assets/posts/language-monogamy/elm-logo.svg" style="width: 4em" /> Elm</a>
+is a <strong>small</strong> programming language focused on simplicity. In my 
+<a href="../a-tour-of-elm">previous post</a>,
+I go into detail why I think everyone should give it a try.
+</span></p>
+
+<p>Elm is a functional programming language for front-end web development,
+known for its strong type system and focus on simplicity, correctness,
+and reliability in building interactive user interfaces.</p>
+
+<p>Rust excels in the backend with its focus on safety, performance, and concurrency,
+offering a robust and efficient development experience.</p>
+
+<p>Choosing Elm as the frontend language and Rust in the backend gives us the best
+of both worlds.
+Since both are statically typed we can use the type information from our Rust 
+data structures to generate Elm types and (de-)serializers.</p>
+
+<p><label for="def-elmrs" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-elmrs" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://crates.io/crates/elm-rs">elm_rs</a> is a Rust crate that
+automatically generates type definitions and functions for your Elm frontend from your Rust backend types, making it easy to keep the two in sync. 
+</span></p>
+
+<p>The backend makes the natural candidate for the <em>“source of truth”</em> of the shared
+data type. The <code class="language-plaintext highlighter-rouge">elm_rs</code> crate translates the Rust data types into the
+corresponding Elm types (and de-/serializers).</p>
+
+<p>Instead of adding complexity through a dedicated API layer we define 
+two data types <code class="language-plaintext highlighter-rouge">ToBackend</code> or <code class="language-plaintext highlighter-rouge">ToFrontend</code>, each representing messages flowing
+either to the backend or to the frontend.
+This way of communication is highly inspired by <a href="https://dashboard.lamdera.app/docs/overview">Lamdera</a>.
+<label for="def-lamdera" class="margin-toggle">⊕</label>
+<input type="checkbox" id="def-lamdera" class="margin-toggle" />
+<span class="marginnote">
+<a href="https://dashboard.lamdera.app/docs/overview"><img src="/assets/posts/language-monogamy/lamdera-logo.png" style="width: 10em" /></a><br />
+Lamdera is a full-stack platform that actually <strong>does</strong> use Elm in both the frontend and the backend.
+But it also imposes significant restrictions on how you can run code in the backend.
+</span></p>
+
+<p>In this way, we can use Elm for what it was created for: Working 
+with the Brwoser API in a safe and delightful way without having to sacrifice a responsive UI.
+In return, we don’t have to deal with HTML and the state of the user interface in the backend <strong>at all</strong>.</p>
+
+<p>My <a href="https://github.com/axelerator/ruelm">starter template <em>“Rülm”</em></a> shows that such an architecture beyond the popular web frameworks
+does not have to be complicated. In less than <code class="language-plaintext highlighter-rouge">400</code> lines of code we get a web application that is type-safe
+and efficiently exchange data in both directions.
+And all this without external build tools!</p>]]></content><author><name></name></author><category term="elm" /><category term="rust" /><summary type="html"><![CDATA[In the ever-changing world of web development, many seek the ideal of using one language for both frontend and backend. But if we focus on common data instead of a common language, we can get the best out of both worlds without having to sacrifice significant synergies. —]]></summary></entry><entry xml:lang="en"><title type="html">Discover Functional Programming with Elm</title><link href="https://blog.axelerator.de/development/en/a-tour-of-elm" rel="alternate" type="text/html" title="Discover Functional Programming with Elm" /><published>2023-12-09T14:00:00-05:00</published><updated>2023-12-09T14:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/a-tour-of-elm-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/a-tour-of-elm"><![CDATA[<p><img src="/assets/posts/a-tour-of-elm/elm.webp" width="130" style="float:left; margin: 5px 10px 10px 0" />
 If you’ve been eyeing functional programming or diving into Single Page
 Application (SPA) development I think no other tool is better suited for you than
 <a href="https://elm-lang.org">Elm</a>. It stands out as a language that not only makes development
@@ -1204,199 +1439,4 @@ connect "app-server2" "db"
 </liquid-diagram>
 </figure>
 
-<script src="/assets/js/liquid-diagrams.js"></script>]]></content><author><name></name></author><category term="diagrams" /><category term="visualization" /><category term="documentation" /><summary type="html"><![CDATA[Statische Bilder, Videos und SVG-Animationen bringen jeweils ihre eigenen Herausforderungen mit sich, wenn es darum geht komplexe Systeme durch Diagramme zu visualisieren. Ich habe eine Minisprache und eine Webkomponente entwickelt, um Diagrammen ein erzählerisches Element hinzuzufügen.]]></summary></entry><entry xml:lang="en"><title type="html">htmx vs. SPA</title><link href="https://blog.axelerator.de/development/en/htmx-vs-spa" rel="alternate" type="text/html" title="htmx vs. SPA" /><published>2023-11-05T17:00:00-05:00</published><updated>2023-11-05T17:00:00-05:00</updated><id>https://blog.axelerator.de/development/en/htmx-vs-spa-en</id><content type="html" xml:base="https://blog.axelerator.de/development/en/htmx-vs-spa"><![CDATA[<p><img src="/assets/posts/htmx-vs-spa/scientist_caveman.jpg" width="130" height="130" style="float:left; margin: 5px 10px 10px 0" />
-As web developers, it’s our responsibility to discern the best tool for the
-job. htmx indeed simplifies the tech stack and lowers the entry barrier for
-budding developers or simpler projects. However, for intricate UIs that demand
-consistent data representation, the SPA approach offers better support. Rather
-than getting swayed by trends, it’s time we appreciated the nuance in these
-discussions and chose our tools wisely.</p>
-
-<hr />
-
-<p>Content:</p>
-
-<ul>
-  <li><a href="#hype">The htmx hype</a></li>
-  <li><a href="#simplicity">Simplicity is relative</a></li>
-  <li><a href="#tool">The Right Tool for the Job</a></li>
-</ul>
-
-<hr />
-
-<p><label for="def-spa" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-spa" class="margin-toggle" />
-<span class="marginnote">
-A <a href="https://en.wikipedia.org/wiki/Single-page_application">single-page application (SPA)</a> is a web application or website that interacts with the user by dynamically rewriting the current web page with new data from the web server, instead of the default method of a web browser loading entire new pages.
-</span></p>
-
-<p>The technology landscape is ever-evolving, and in the realm of web development,
-nothing has generated more buzz recently than <strong>htmx</strong>. As web developers, we’ve
-seen a myriad of technologies and practices come into the spotlight, only to
-fade into obscurity when something better comes along. The current fanfare
-around htmx is testament to this cycle, with many praising its ability to
-simplify the process of crafting interactive HTML pages. But as with all tech
-discussions, it’s crucial to introduce some nuance, especially when comparing
-htmx to  Single Page Applications (SPAs).</p>
-
-<p><label for="def-htmx" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-htmx" class="margin-toggle" />
-<span class="marginnote">
-<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 50%" /><br />
-<a href="https://htmx.org/docs/">htmx</a> is a library that allows you to access modern browser features directly from HTML, rather than using javascript.
-</span></p>
-
-<h3 id="-the-htmx-hype"><a name="htmx"></a> The htmx Hype</h3>
-
-<p>htmx offers a refreshing take on web app development. It brings in a tangible
-simplicity to the tech stack, reducing the need for multiple languages and
-eliminating certain build tools. This is a measurable simplicity that appeals
-to developers who want a straightforward approach to interactive web
-components.</p>
-
-<p>That said, the rise of htmx has also ushered in a wave of criticism towards
-SPAs, painting them as overcomplicated and cumbersome. But it’s essential to
-recognize that simplicity isn’t universal; what’s simple in one context might
-be complex in another.</p>
-
-<h3 id="-simplicity-is-relative"><a name="simplicity"></a> Simplicity is relative</h3>
-
-<p>While htmx champions the simplicity of the tech stack, SPAs champion a 
-different kind of simplicity - the simplicity of UI state management.</p>
-
-<p>The <a href="https://guide.elm-lang.org/architecture/">Elm architecture</a>, for instance, ensures a clear derivation of UI state from
-<strong>a single data source</strong>. Such a setup helps with consistent reflection of data across
-the user interface.</p>
-
-<p>I’m sure you’ve run into the following bug on even bigger web platforms:</p>
-
-<p>In the top-right corner there is a counters that displays the number of unread messages. 
-You’re following a link to an unread message, just not through that very counter.
-But now that counter fails to update unless the whole page is refreshed.</p>
-
-<p>With a dedicated data model for the UI, there’s a heightened confidence in producing user interfaces that
-consistently reflect accurate data.</p>
-
-<p>Now, this isn’t to say that SPAs guarantee flawless UIs, but the foundational
-architecture gives developers a more robust framework to ensure UI consistency.</p>
-
-<h3 id="-the-right-tool-for-the-job"><a name="tool"></a> The Right Tool for the Job</h3>
-
-<p>The discussion between htmx and SPA shouldn’t be about which is universally
-better; it should be about understanding the strengths and limitations of each.
-htmx sets a lower entry barrier for those looking to get started with web apps.
-It’s brilliant for projects that require less intricate user interfaces, like a
-simple signup form for a newsletter.</p>
-
-<p>On the other hand, for complex, interactive UIs where consistent data
-representation is crucial, the SPA approach, especially with frameworks like
-Elm, offers a more reliable structure.</p>
-
-<p>The most common criticism of SPAs is how complicated they are to work with. 
-In the following video I show how you can set up an SPA setup within a few minutes, 
-without the usage of NPM, Webpack and actually even without JavaScript.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/xLUpTaI1oE0?si=M0CGBqFvMQOOMzoy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>]]></content><author><name></name></author><category term="webdevelopment" /><category term="htmx" /><category term="spa" /><category term="elm" /><summary type="html"><![CDATA[As web developers, it’s our responsibility to discern the best tool for the job. htmx indeed simplifies the tech stack and lowers the entry barrier for budding developers or simpler projects. However, for intricate UIs that demand consistent data representation, the SPA approach offers better support. Rather than getting swayed by trends, it’s time we appreciated the nuance in these discussions and chose our tools wisely.]]></summary></entry><entry xml:lang="de"><title type="html">htmx vs. SPA</title><link href="https://blog.axelerator.de/development/de/htmx-vs-spa" rel="alternate" type="text/html" title="htmx vs. SPA" /><published>2023-11-05T17:00:00-05:00</published><updated>2023-11-05T17:00:00-05:00</updated><id>https://blog.axelerator.de/development/de/htmx-vs-spa-de</id><content type="html" xml:base="https://blog.axelerator.de/development/de/htmx-vs-spa"><![CDATA[<p><img src="/assets/posts/htmx-vs-spa/scientist_caveman.jpg" width="130" style="float:left; margin: 5px 10px 10px 0" />
-Als Webentwickler liegt es in unserer Verantwortung, das beste Werkzeug für die
-jeweilige Aufgabe zu finden. htmx vereinfacht in der Tat den technischen Stack
-und senkt die Einstiegshürde für angehende Entwickler oder einfachere Projekte.
-Für komplizierte Benutzeroberflächen, die eine konsistente Darstellung der Daten
-erfordern, bietet der SPA-Ansatz jedoch eine bessere Unterstützung. Anstatt
-sich von Trends beeinflussen zu lassen, sollten wir die
-Nuancen in diesen Diskussionen anerkennen und unsere Tools mit Bedacht auswählen.</p>
-
-<hr />
-
-<p>Inhalt:</p>
-
-<ul>
-  <li><a href="#hype">Der htmx Hype</a></li>
-  <li><a href="#simplicity"><em>Einfach</em> ist realtive</a></li>
-  <li><a href="#tool">Das passende Werkzeug für den Job </a></li>
-</ul>
-
-<hr />
-
-<p><label for="def-spa" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-spa" class="margin-toggle" />
-<span class="marginnote">
-Eine <a href="https://en.wikipedia.org/wiki/Single-page_application">single-page application (SPA)</a>
-wird eine Webanwendung bezeichnet, die aus einem einzigen HTML-Dokument besteht und deren Inhalte dynamisch nachgeladen werden.
-</span></p>
-
-<p>Die Technologielandschaft entwickelt sich ständig weiter, und im Bereich der
-Webentwicklung hat in letzter Zeit nichts mehr Aufsehen erregt als <em>htmx</em>. Als
-Webentwickler erleben wir kontinuierliech, wie eine Vielzahl von Technologien und
-Praktiken ins Rampenlicht gerückt wurden, nur um dann wieder in der Versenkung zu
-verschwinden, wenn etwas Besseres auftaucht. Der derzeitige Hype um htmx ist
-ein Beleg für diesen Zyklus, und viele loben seine Fähigkeit, den Prozess der
-Erstellung interaktiver HTML-Seiten zu vereinfachen. Aber wie bei allen
-technischen Diskussionen ist es wichtig zu differenzieren, besonders
-wenn man htmx mit Single Page Applications (SPAs) vergleicht.</p>
-
-<p><label for="def-htmx" class="margin-toggle">⊕</label>
-<input type="checkbox" id="def-htmx" class="margin-toggle" />
-<span class="marginnote">
-<img src="/assets/posts/htmx-vs-spa/htmx.svg" style="width: 50%" /><br />
-<a href="https://htmx.org/docs/">htmx</a> ist eine JavaScript Bibliothek die es, erlaubt
-moderne Browserfunktionen direkt von HTML aus zuzugreifen, anstatt Javascript
-zu verwenden.
-</span></p>
-
-<h3 id="-der-htmx-hype"><a name="htmx"></a> Der htmx hype</h3>
-
-<p>htmx bietet einen erfrischenden Ansatz für die Entwicklung von Webanwendungen.
-Es bringt eine nachweisliche Einfachheit in den Tech-Stack, reduziert den Bedarf an
-mehreren Sprachen und eliminiert bestimmte Build-Tools. Diese messbare
-Einfachheit spricht Entwickler an, die einen geradlinigen Ansatz für
-interaktive Webseiten suchen.</p>
-
-<p>Allerdings hat der Aufstieg von htmx auch eine Welle der Kritik an SPAs
-ausgelöst, die sie als zu kompliziert und schwerfällig darstellen. Es ist
-jedoch wichtig anzuerkennen, dass Einfachheit nicht universell ist; was in einem
-Kontext einfach ist, kann in einem anderen komplex sein.</p>
-
-<h3 id="-einfach-ist-relativ"><a name="simplicity"></a> <em>Einfach</em> ist relativ</h3>
-
-<p>Während htmx für die Einfachheit des technischen Stacks optimiert, setzen SPAs
-auf eine andere Art von Einfachheit - die Einfachheit des UI-Zustnadnds-Managements.</p>
-
-<p>Die <a href="https://guide.elm-lang.org/architecture/">Elm-Architektur</a> 
-beispielsweise gewährleistet eine klare Ableitung der
-Darstellung aus einer einzigen Datenquelle. Ein solches Setup hilft bei der
-konsistenten Widerspiegelung von Daten in der gesamten Benutzeroberfläche.</p>
-
-<p>Ich bin mir sicher, dass Du auch auf größeren Webplattformen schon einmal auf
-den folgenden Fehler gestoßen sind:</p>
-
-<p>In der oberen rechten Ecke befindet sich ein Zähler, der die Anzahl der
-ungelesenen Nachrichten anzeigt. Du folgst einem Link zu einer ungelesenen
-Nachricht, nur nicht über genau diesen Zähler. Nun wird dieser Zähler aber nur
-dann aktualisiert, wenn die gesamte Seite neu geladen wird.</p>
-
-<p>Mit einem dedizierten Datenmodell für die Benutzeroberfläche steigt das
-Vertrauen Benutzeroberflächen bauen zu können, die konsistent genaue
-Daten wiedergeben.</p>
-
-<p>Das soll nicht heißen, dass SPAs eine Garantie für fehlerfreie
-Benutzeroberflächen sind, aber die grundlegende Architektur bietet Entwicklern
-einen robusteren Rahmen, um die Konsistenz der Benutzeroberfläche zu
-gewährleisten.</p>
-
-<h3 id="-das-richtige-werkzeug-für-die-aufgabe"><a name="tool"></a> Das richtige Werkzeug für die Aufgabe</h3>
-
-<p>Bei der Diskussion zwischen htmx und SPA sollte es nicht darum gehen, welches
-Tool <em>“auf der Welt”</em> ist, sondern darum, die Stärken und Grenzen der beiden zu
-verstehen.
-htmx setzt eine niedrigere Einstiegshürde für diejenigen, die mit
-einfachen Webanwendungen beginnen wollen. Es eignet sich hervorragend für Projekte, die
-weniger komplizierte Benutzeroberflächen erfordern, wie zum Beispiel ein einfaches
-Anmeldeformular für einen Newsletter.
-Für komplexe, interaktive Benutzeroberflächen, bei denen eine konsistente Datendarstellung entscheidend
-ist, bietet der SPA-Ansatz, insbesondere mit Frameworks wie Elm, eine zuverlässigere Struktur.</p>
-
-<p>Die häufigste Kritik an SPAs is wie <em>kompliziert</em> sie sind. In dem foglenden Video zeige
-ich wie man inerhalb weniger Minuten ein SPA setup aufsetzen kann, ganz ohne <em>NPM</em>, <em>Webpack</em>
-und eigentlich sogar ohne JavaScript.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/xLUpTaI1oE0?si=M0CGBqFvMQOOMzoy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>]]></content><author><name></name></author><category term="webdevelopment" /><category term="htmx" /><category term="spa" /><category term="elm" /><summary type="html"><![CDATA[Als Webentwickler liegt es in unserer Verantwortung, das beste Werkzeug für die jeweilige Aufgabe zu finden. htmx vereinfacht in der Tat den technischen Stack und senkt die Einstiegshürde für angehende Entwickler oder einfachere Projekte. Für komplizierte Benutzeroberflächen, die eine konsistente Darstellung der Daten erfordern, bietet der SPA-Ansatz jedoch eine bessere Unterstützung. Anstatt sich von Trends beeinflussen zu lassen, sollten wir die Nuancen in diesen Diskussionen anerkennen und unsere Tools mit Bedacht auswählen.]]></summary></entry></feed>
+<script src="/assets/js/liquid-diagrams.js"></script>]]></content><author><name></name></author><category term="diagrams" /><category term="visualization" /><category term="documentation" /><summary type="html"><![CDATA[Statische Bilder, Videos und SVG-Animationen bringen jeweils ihre eigenen Herausforderungen mit sich, wenn es darum geht komplexe Systeme durch Diagramme zu visualisieren. Ich habe eine Minisprache und eine Webkomponente entwickelt, um Diagrammen ein erzählerisches Element hinzuzufügen.]]></summary></entry></feed>
